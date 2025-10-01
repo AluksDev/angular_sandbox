@@ -1,0 +1,17 @@
+{
+  "/services/sandbox": {
+    "target": "http://sandbox-api:8000",
+    "secure": false,
+    "pathRewrite": {
+      "^/services/sandbox": "/services/sandbox"
+    }
+  },
+  "/services/geo": {
+    "target": "https://netiproa.corppro.imi.bcn:447",
+    "secure": false,
+    "pathRewrite": {
+      "^/services/geo": "/GEORest"
+    }
+  },
+  "logLevel": "debug"
+}

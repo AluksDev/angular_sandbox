@@ -1,0 +1,72 @@
+<div class="p-5">
+  @for (language of languages; track language; let last = $last) {
+    <div class="flex flex-col">
+      <div class="mb-3 flex flex-row justify-between items-center flex-[1_1_100%] box-border">
+        <div>
+          <h3 class="text-xl font-bold">{{ language.name }}</h3>
+          @if (!translations[language.id]) {
+            <p class="text-gray-400"><i i18n class="material-icons"> check_circle</i> No existeixen traduccions</p>
+          }
+          @if (translations[language.id]?.status === 'request') {
+            <p class="text-blue-700">
+              <i i18n class="material-icons"> check_circle</i>
+              Sol·licitud enviada
+              <a
+                i18n
+                *ifAllowed="'translation.cancel'"
+                href="javascript:void(null)"
+                class="pl-8 text-blue-500 hover:underline"
+                (click)="cancelTranslation(translations[language.id])"
+              >
+                Cancel·lar sol·licitud</a
+              >
+            </p>
+          }
+          @if (translations[language.id]?.status === 'in_process') {
+            <p class="text-amber-800">
+              <i i18n class="material-icons"> check_circle</i>
+              Traducció en procés
+            </p>
+          }
+          @if (translations[language.id]?.status === 'done') {
+            <p class="text-green-800">
+              <i i18n class="material-icons"> check_circle</i>
+              Traducció realitzada el
+              {{ translations[language.id]?.created | date }}
+            </p>
+          }
+        </div>
+        <div>
+          <button
+            i18n
+            *ifAllowed="'translation.request'"
+            [disabled]="
+                    translations[language.id]?.status === 'request' || translations[language.id]?.status === 'in_process'
+                  "
+            mat-raised-button
+            color="accent"
+            class="mr-12 bg-[#0097a7]  text-white py-2 px-4 rounded"
+            (click)="requestTranslation(language.id)"
+          >
+            Sol·licitar traducció
+          </button>
+          <button
+            i18n
+            *ifAllowed="'translation.create'"
+            class="mr-12 bg-[#0097a7]  text-white py-2 px-4 rounded"
+            [disabled]="translations[language.id]?.status === 'in_process'"
+            mat-raised-button
+            color="accent"
+            (click)="inlineTranslation(language.id)"
+          >
+            Traduir ara
+          </button>
+        </div>
+      </div>
+      <mat-divider class="mb-4"></mat-divider>
+    </div>
+  }
+</div>
+<div mat-dialog-actions class="text-right justify-end items-center flex p-4">
+  <button i18n mat-button [mat-dialog-close]="false" class="bg-gray-200 text-gray-700 px-4 py-2 rounded">Tancar</button>
+</div>

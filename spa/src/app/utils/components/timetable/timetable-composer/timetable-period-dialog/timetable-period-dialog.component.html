@@ -1,0 +1,61 @@
+<!-- TODO: Check the below conversion, use git compare to see the difference-->
+<div class="container flex flex-col w-full h-full min-w-full min-h-full box-border overflow-hidden">
+  <div class="header flex flex-row justify-between items-center flex-[1_1_70px] box-border">
+    <h1 i18n mat-dialog-title class="box-border text-white">Selecció de període</h1>
+  </div>
+  <div class="p-6 flex w-full box-border">
+    <form name="form" [formGroup]="form" class="flex flex-col justify-start
+    w-full box-border">
+      <div class="flex flex-col w-full box-border">
+        <!-- General Entity Data -->
+
+        <div class="flex flex-row justify-between w-full box-border">
+          <app-date-time-picker
+            type="date"
+            placeholder="Data d'inici"
+            i18n-placeholder
+            formControlName="from"
+            [control]="form.get('from')"
+            (change)="calculateAutoAlias()"
+            class="flex w-[45%]"
+          >
+          </app-date-time-picker>
+          <app-date-time-picker
+            type="date"
+            placeholder="Data de fin"
+            i18n-placeholder
+            formControlName="to"
+            [control]="form.get('to')"
+            (change)="calculateAutoAlias()"
+            class="flex w-[45%]"
+          >
+          </app-date-time-picker>
+        </div>
+
+        <div class="autoalias">{{ auto_alias$ | async }}</div>
+
+        <mat-slide-toggle i18n class="pb-9 bg-white" formControlName="custom_alias">
+          Personalitza àlies
+        </mat-slide-toggle>
+        @if (form.value['custom_alias']) {
+          <div class="h-auto">
+            <quill-editor
+              class="w-full h-[150px]"
+              placeholder="Alias"
+              i18n-placeholder
+              formControlName="alias"
+              [modules]="wysiwygConfig"
+            ></quill-editor>
+          </div>
+        }
+      </div>
+    </form>
+  </div>
+
+  <div class="actions justify-end items-center flex gap-[15px] box-border">
+    <button i18n mat-button [mat-dialog-close]="false">Cancel·lar</button>
+    <button i18n mat-button [disabled]="form.invalid" (click)="confirm()" mat-raised-button color="accent">
+      Confirmar
+    </button>
+  </div>
+</div>

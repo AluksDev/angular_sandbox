@@ -1,0 +1,18 @@
+@if (messageType() == 'big') {
+  <div class="p-4 mt-12 primary-100-fg flex flex-col justify-center items-center">
+    <mat-icon i18n class="primary-50-fg s-150" aria-label="nou attribute" i18n-aria-label> wb_sunny </mat-icon>
+    <span i18n class="mat-display-1">Sense resultats</span>
+  </div>
+}
+
+@if (messageType() == 'medium') {
+  <div class="p-4 mt-2 primary-100-fg flex flex-col justify-center items-center">
+    <span i18n class="mat-display-1">Sense resultats</span>
+  </div>
+}
+
+@if (messageType() == 'small') {
+  <div class="p-4 primary-100-fg flex flex-col">
+    <span i18n>Sense resultats</span>
+  </div>
+}

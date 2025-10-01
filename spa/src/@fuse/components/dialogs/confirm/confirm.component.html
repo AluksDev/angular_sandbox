@@ -1,0 +1,22 @@
+<h1 class="text-xl font-bold p-5">{{ data.title }}</h1>
+<div class="px-6" mat-dialog-content>
+  @if (data.text) {
+    <p>{{ data.text }}</p>
+  }
+  @if (data.html) {
+    <p [innerHTML]="data.html" class="mb-2"></p>
+  }
+  @if (data.warnings) {
+    <ul class="list-disc pl-5">
+      @for (w of data.warnings; track w) {
+        <li class="text-red-500">{{ w }}</li>
+      }
+    </ul>
+  }
+</div>
+<div class="flex justify-end p-4">
+  <button i18n mat-button [mat-dialog-close]="false" class="mr-2">Cancel·la</button>
+  <button i18n mat-button [mat-dialog-close]="true" id="dialog_confirm" mat-raised-button color="primary">
+    Confirma
+  </button>
+</div>

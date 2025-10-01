@@ -1,0 +1,3131 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Aixo no es un joc API",
+    "description": "Aixo no es un joc",
+    "termsOfService": "http://example.com",
+    "contact": {
+      "name": "IMI",
+      "url": "http://ajuntament.barcelona.cat/imi/es",
+      "email": "aixonoesunjoc@example.com"
+    },
+    "license": {
+      "name": "IMI"
+    },
+    "version": "0.0.13"
+  },
+  "host": "0.0.0.0:8000",
+  "schemes": [
+    "http"
+  ],
+  "basePath": "/services/aixonoesunjoc",
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+    "Basic": {
+      "type": "basic"
+    }
+  },
+  "security": [
+    {
+      "Basic": []
+    }
+  ],
+  "paths": {
+    "/department/": {
+      "get": {
+        "operationId": "department_list",
+        "description": "Views for Department REST",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "name",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The initial index from which to return the results.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "required": [
+                "count",
+                "results"
+              ],
+              "type": "object",
+              "properties": {
+                "count": {
+                  "type": "integer"
+                },
+                "next": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "previous": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Department"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "department"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint",
+          "manager": "Manager can use this endpoint"
+        }
+      },
+      "parameters": []
+    },
+    "/department/{id}/": {
+      "get": {
+        "operationId": "department_read",
+        "description": "Views for Department REST",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Department"
+            }
+          }
+        },
+        "tags": [
+          "department"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint",
+          "manager": "Manager can use this endpoint"
+        }
+      },
+      "put": {
+        "operationId": "department_update",
+        "description": "Views for Department REST",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Department"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Department"
+            }
+          }
+        },
+        "tags": [
+          "department"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint"
+        }
+      },
+      "patch": {
+        "operationId": "department_partial_update",
+        "description": "Views for Department REST",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Department"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Department"
+            }
+          }
+        },
+        "tags": [
+          "department"
+        ],
+        "x-imi-roles": {
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "A unique integer value identifying this department.",
+          "required": true,
+          "type": "integer"
+        }
+      ]
+    },
+    "/game_answer/": {
+      "get": {
+        "operationId": "game_answer_list",
+        "description": "Gets a list of answers",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The initial index from which to return the results.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "required": [
+                "count",
+                "results"
+              ],
+              "type": "object",
+              "properties": {
+                "count": {
+                  "type": "integer"
+                },
+                "next": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "previous": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/GameAnswer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "game_answer"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint",
+          "manager": "Manager can use this endpoint"
+        }
+      },
+      "post": {
+        "operationId": "game_answer_create",
+        "description": "Create an answer",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GameAnswer"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GameAnswer"
+            }
+          }
+        },
+        "tags": [
+          "game_answer"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint"
+        }
+      },
+      "parameters": []
+    },
+    "/game_answer/{id}/": {
+      "get": {
+        "operationId": "game_answer_read",
+        "description": "Retrieves an answer",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GameAnswer"
+            }
+          }
+        },
+        "tags": [
+          "game_answer"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint",
+          "manager": "Manager can use this endpoint"
+        }
+      },
+      "put": {
+        "operationId": "game_answer_update",
+        "description": "Views for Game Question REST",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GameAnswer"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GameAnswer"
+            }
+          }
+        },
+        "tags": [
+          "game_answer"
+        ],
+        "x-imi-roles": {
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
+        }
+      },
+      "patch": {
+        "operationId": "game_answer_partial_update",
+        "description": "Partially updates an answer",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GameAnswer"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GameAnswer"
+            }
+          }
+        },
+        "tags": [
+          "game_answer"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint"
+        }
+      },
+      "delete": {
+        "operationId": "game_answer_delete",
+        "description": "Delete an answer",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "game_answer"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint"
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "A unique integer value identifying this game answer.",
+          "required": true,
+          "type": "integer"
+        }
+      ]
+    },
+    "/game_question/": {
+      "get": {
+        "operationId": "game_question_list",
+        "description": "Gets a list of questions",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "stage_number",
+            "in": "query",
+            "description": "stage_number",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "is_active",
+            "in": "query",
+            "description": "is_active",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "department_score__department",
+            "in": "query",
+            "description": "department_score__department",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The initial index from which to return the results.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "required": [
+                "count",
+                "results"
+              ],
+              "type": "object",
+              "properties": {
+                "count": {
+                  "type": "integer"
+                },
+                "next": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "previous": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/GameQuestion"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "game_question"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint",
+          "manager": "Manager can use this endpoint"
+        }
+      },
+      "post": {
+        "operationId": "game_question_create",
+        "description": "Create a question",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GameQuestion"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GameQuestion"
+            }
+          }
+        },
+        "tags": [
+          "game_question"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint"
+        }
+      },
+      "parameters": []
+    },
+    "/game_question/get_active_stages/": {
+      "get": {
+        "operationId": "game_question_get_active_stages",
+        "description": "Views for Game Question REST",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "stage_number",
+            "in": "query",
+            "description": "stage_number",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "is_active",
+            "in": "query",
+            "description": "is_active",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "department_score__department",
+            "in": "query",
+            "description": "department_score__department",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The initial index from which to return the results.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Stage"
+              }
+            }
+          }
+        },
+        "tags": [
+          "game_question"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint",
+          "manager": "Manager can use this endpoint"
+        }
+      },
+      "parameters": []
+    },
+    "/game_question/get_map_stages/": {
+      "get": {
+        "operationId": "game_question_get_map_stages",
+        "description": "Delete a question",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "stage_number",
+            "in": "query",
+            "description": "stage_number",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "is_active",
+            "in": "query",
+            "description": "is_active",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "department_score__department",
+            "in": "query",
+            "description": "department_score__department",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The initial index from which to return the results.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StageMap"
+              }
+            }
+          }
+        },
+        "tags": [
+          "game_question"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint",
+          "manager": "Manager can use this endpoint"
+        }
+      },
+      "parameters": []
+    },
+    "/game_question/{id}/": {
+      "get": {
+        "operationId": "game_question_read",
+        "description": "Retrieves a question",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GameQuestion"
+            }
+          }
+        },
+        "tags": [
+          "game_question"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint",
+          "manager": "Manager can use this endpoint"
+        }
+      },
+      "put": {
+        "operationId": "game_question_update",
+        "description": "Views for Game Question REST",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GameQuestion"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GameQuestion"
+            }
+          }
+        },
+        "tags": [
+          "game_question"
+        ],
+        "x-imi-roles": {
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
+        }
+      },
+      "patch": {
+        "operationId": "game_question_partial_update",
+        "description": "Partially updates a question",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GameQuestion"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GameQuestion"
+            }
+          }
+        },
+        "tags": [
+          "game_question"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint"
+        }
+      },
+      "delete": {
+        "operationId": "game_question_delete",
+        "description": "Delete a question",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "game_question"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint"
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "A unique integer value identifying this game question.",
+          "required": true,
+          "type": "integer"
+        }
+      ]
+    },
+    "/game_question/{id}/delete_image/": {
+      "delete": {
+        "operationId": "game_question_delete_image",
+        "description": "Endpoint to delete the image of the question",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GameQuestion"
+            }
+          }
+        },
+        "tags": [
+          "game_question"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint"
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "A unique integer value identifying this game question.",
+          "required": true,
+          "type": "integer"
+        }
+      ]
+    },
+    "/game_question/{id}/force_destroy/": {
+      "delete": {
+        "operationId": "game_question_force_destroy",
+        "description": "Endpoint to delete a question and all its related objects. USE ONLY FOR TRYOUTS",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "game_question"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint"
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "A unique integer value identifying this game question.",
+          "required": true,
+          "type": "integer"
+        }
+      ]
+    },
+    "/game_question/{id}/upload_image/": {
+      "post": {
+        "operationId": "game_question_upload_image",
+        "description": "Endpoint to post the image of the question",
+        "parameters": [
+          {
+            "name": "image",
+            "in": "formData",
+            "description": "Image file to upload",
+            "required": true,
+            "type": "file"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GameQuestion"
+            }
+          }
+        },
+        "consumes": [
+          "multipart/form-data",
+          "application/x-www-form-urlencoded"
+        ],
+        "tags": [
+          "game_question"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint"
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "A unique integer value identifying this game question.",
+          "required": true,
+          "type": "integer"
+        }
+      ]
+    },
+    "/game_user_answer/": {
+      "get": {
+        "operationId": "game_user_answer_list",
+        "description": "Gets a list of user answers",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The initial index from which to return the results.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "required": [
+                "count",
+                "results"
+              ],
+              "type": "object",
+              "properties": {
+                "count": {
+                  "type": "integer"
+                },
+                "next": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "previous": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/GameUserAnswer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "game_user_answer"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint",
+          "manager": "Manager can use this endpoint"
+        }
+      },
+      "post": {
+        "operationId": "game_user_answer_create",
+        "description": "Create a user answer",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GameUserAnswer"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GameUserAnswer"
+            }
+          }
+        },
+        "tags": [
+          "game_user_answer"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint",
+          "manager": "Manager can use this endpoint"
+        }
+      },
+      "parameters": []
+    },
+    "/game_user_answer/delete_all/": {
+      "get": {
+        "operationId": "game_user_answer_delete_all",
+        "description": "Views for Game Question REST",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The initial index from which to return the results.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Users answers deleted successfully."
+          }
+        },
+        "tags": [
+          "game_user_answer"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint",
+          "manager": "Manager can use this endpoint"
+        }
+      },
+      "parameters": []
+    },
+    "/game_user_answer/recalculate_score/": {
+      "get": {
+        "operationId": "game_user_answer_recalculate_score",
+        "description": "Views for Game Question REST",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The initial index from which to return the results.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Scores recalculated successfully."
+          }
+        },
+        "tags": [
+          "game_user_answer"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint",
+          "manager": "Manager can use this endpoint"
+        }
+      },
+      "parameters": []
+    },
+    "/game_user_answer/{id}/": {
+      "get": {
+        "operationId": "game_user_answer_read",
+        "description": "Retrieves a user answer",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GameUserAnswer"
+            }
+          }
+        },
+        "tags": [
+          "game_user_answer"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint",
+          "manager": "Manager can use this endpoint"
+        }
+      },
+      "put": {
+        "operationId": "game_user_answer_update",
+        "description": "Views for Game Question REST",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GameUserAnswer"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GameUserAnswer"
+            }
+          }
+        },
+        "tags": [
+          "game_user_answer"
+        ],
+        "x-imi-roles": {
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
+        }
+      },
+      "patch": {
+        "operationId": "game_user_answer_partial_update",
+        "description": "Partially updates a user answer",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GameUserAnswer"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GameUserAnswer"
+            }
+          }
+        },
+        "tags": [
+          "game_user_answer"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint",
+          "manager": "Manager can use this endpoint"
+        }
+      },
+      "delete": {
+        "operationId": "game_user_answer_delete",
+        "description": "Delete a user answer",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "game_user_answer"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint",
+          "manager": "Manager can use this endpoint"
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "A unique integer value identifying this game user answer.",
+          "required": true,
+          "type": "integer"
+        }
+      ]
+    },
+    "/imiauth/hello/": {
+      "get": {
+        "operationId": "imiauth_hello",
+        "description": "Method to refresh the user last login date.",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/IMIAuthorization"
+            }
+          },
+          "400": {
+            "description": "Parsed x-imi-authorization data is not valid"
+          }
+        },
+        "tags": [
+          "imiauth"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint",
+          "manager": "Manager can use this endpoint"
+        }
+      },
+      "parameters": []
+    },
+    "/score/": {
+      "get": {
+        "operationId": "score_list",
+        "description": "Gets a list of scores",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "question",
+            "in": "query",
+            "description": "question",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "question__stage_number",
+            "in": "query",
+            "description": "question__stage_number",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The initial index from which to return the results.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "required": [
+                "count",
+                "results"
+              ],
+              "type": "object",
+              "properties": {
+                "count": {
+                  "type": "integer"
+                },
+                "next": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "previous": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Score"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "score"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint",
+          "manager": "Manager can use this endpoint"
+        }
+      },
+      "post": {
+        "operationId": "score_create",
+        "description": "Create a user answer",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Score"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Score"
+            }
+          }
+        },
+        "tags": [
+          "score"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint"
+        }
+      },
+      "parameters": []
+    },
+    "/score/delete_all/": {
+      "get": {
+        "operationId": "score_delete_all",
+        "description": "Views for Game Question REST",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "question",
+            "in": "query",
+            "description": "question",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "question__stage_number",
+            "in": "query",
+            "description": "question__stage_number",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The initial index from which to return the results.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Scores deleted successfully."
+          }
+        },
+        "tags": [
+          "score"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint"
+        }
+      },
+      "parameters": []
+    },
+    "/score/get_award_for_perseverance/": {
+      "get": {
+        "operationId": "score_get_award_for_perseverance",
+        "description": "Award for the department which has been the weekly winner most times",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "question",
+            "in": "query",
+            "description": "question",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "question__stage_number",
+            "in": "query",
+            "description": "question__stage_number",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The initial index from which to return the results.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Department"
+            }
+          }
+        },
+        "tags": [
+          "score"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint",
+          "manager": "Manager can use this endpoint"
+        }
+      },
+      "parameters": []
+    },
+    "/score/get_stage_podium/": {
+      "get": {
+        "operationId": "score_get_stage_podium",
+        "description": "Views for Game Question REST",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "question",
+            "in": "query",
+            "description": "question",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "question__stage_number",
+            "in": "query",
+            "description": "question__stage_number",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The initial index from which to return the results.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StagePodium"
+              }
+            }
+          }
+        },
+        "tags": [
+          "score"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint",
+          "manager": "Manager can use this endpoint"
+        }
+      },
+      "parameters": []
+    },
+    "/score/get_weekly_podium/": {
+      "get": {
+        "operationId": "score_get_weekly_podium",
+        "description": "Returns the weekly podium, annotating the scores accumulated during the weeks, ordered from highest to lowest",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "question",
+            "in": "query",
+            "description": "question",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "question__stage_number",
+            "in": "query",
+            "description": "question__stage_number",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The initial index from which to return the results.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Podium"
+              }
+            }
+          }
+        },
+        "tags": [
+          "score"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint",
+          "manager": "Manager can use this endpoint"
+        }
+      },
+      "parameters": []
+    },
+    "/score/{id}/": {
+      "get": {
+        "operationId": "score_read",
+        "description": "Retrieves a score",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Score"
+            }
+          }
+        },
+        "tags": [
+          "score"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint",
+          "manager": "Manager can use this endpoint"
+        }
+      },
+      "put": {
+        "operationId": "score_update",
+        "description": "Views for Game Question REST",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Score"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Score"
+            }
+          }
+        },
+        "tags": [
+          "score"
+        ],
+        "x-imi-roles": {
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
+        }
+      },
+      "patch": {
+        "operationId": "score_partial_update",
+        "description": "Partially updates a score",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Score"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Score"
+            }
+          }
+        },
+        "tags": [
+          "score"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint"
+        }
+      },
+      "delete": {
+        "operationId": "score_delete",
+        "description": "Deletes a score",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "score"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint"
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "A unique integer value identifying this score.",
+          "required": true,
+          "type": "integer"
+        }
+      ]
+    },
+    "/user/": {
+      "get": {
+        "operationId": "user_list",
+        "description": "Get a list of reports",
+        "parameters": [
+          {
+            "name": "ordering",
+            "in": "query",
+            "description": "Which field to use when ordering the results.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "last_login",
+            "in": "query",
+            "description": "last_login",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "last_login__isnull",
+            "in": "query",
+            "description": "last_login__isnull",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The initial index from which to return the results.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "required": [
+                "count",
+                "results"
+              ],
+              "type": "object",
+              "properties": {
+                "count": {
+                  "type": "integer"
+                },
+                "next": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "previous": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/User"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "user"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint"
+        }
+      },
+      "parameters": []
+    },
+    "/user/current/": {
+      "get": {
+        "operationId": "user_current",
+        "description": "Gets user current data",
+        "parameters": [
+          {
+            "name": "ordering",
+            "in": "query",
+            "description": "Which field to use when ordering the results.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "last_login",
+            "in": "query",
+            "description": "last_login",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "last_login__isnull",
+            "in": "query",
+            "description": "last_login__isnull",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The initial index from which to return the results.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        },
+        "tags": [
+          "user"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint",
+          "manager": "Manager can use this endpoint"
+        }
+      },
+      "parameters": []
+    },
+    "/user/{id}/": {
+      "get": {
+        "operationId": "user_read",
+        "description": "Gets an report",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        },
+        "tags": [
+          "user"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint",
+          "manager": "Manager can use this endpoint"
+        }
+      },
+      "put": {
+        "operationId": "user_update",
+        "description": "Views for User REST",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        },
+        "tags": [
+          "user"
+        ],
+        "x-imi-roles": {
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
+        }
+      },
+      "patch": {
+        "operationId": "user_partial_update",
+        "description": "Views for User REST",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        },
+        "tags": [
+          "user"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint"
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "A unique integer value identifying this user.",
+          "required": true,
+          "type": "integer"
+        }
+      ]
+    },
+    "/user/{id}/disable/": {
+      "post": {
+        "operationId": "user_disable",
+        "description": "Marks as unactive a user",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        },
+        "tags": [
+          "user"
+        ],
+        "x-imi-roles": {
+          "admin": "administrator can use this endpoint"
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "A unique integer value identifying this user.",
+          "required": true,
+          "type": "integer"
+        }
+      ]
+    }
+  },
+  "definitions": {
+    "Department": {
+      "required": [
+        "name",
+        "num_users"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "ID",
+          "type": "integer",
+          "readOnly": true
+        },
+        "name": {
+          "title": "Name",
+          "description": "The name of the department",
+          "type": "string",
+          "maxLength": 512,
+          "minLength": 1
+        },
+        "num_users": {
+          "title": "Number of users",
+          "description": "The number of users in the department",
+          "type": "integer",
+          "maximum": 999999997,
+          "minimum": -999999997
+        },
+        "code": {
+          "title": "Code",
+          "description": "The code of the department",
+          "type": "string",
+          "readOnly": true,
+          "minLength": 1
+        },
+        "three_percent": {
+          "title": "Three percent",
+          "type": "string",
+          "readOnly": true
+        },
+        "six_percent": {
+          "title": "Six percent",
+          "type": "string",
+          "readOnly": true
+        },
+        "num_weeks_won": {
+          "title": "Num weeks won",
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
+    "GameAnswer": {
+      "required": [
+        "question",
+        "answer"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "ID",
+          "type": "integer",
+          "readOnly": true
+        },
+        "question": {
+          "title": "Question",
+          "type": "integer"
+        },
+        "answer": {
+          "title": "Answer",
+          "type": "string",
+          "minLength": 1
+        },
+        "is_correct": {
+          "title": "Correct?",
+          "description": "Is the correct answer?",
+          "type": "boolean"
+        },
+        "num_answers": {
+          "title": "Num answers",
+          "type": "string",
+          "readOnly": true
+        },
+        "percentage_answers": {
+          "title": "Percentage answers",
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
+    "GameQuestion": {
+      "required": [
+        "question"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "ID",
+          "type": "integer",
+          "readOnly": true
+        },
+        "title": {
+          "title": "Title",
+          "type": "string",
+          "maxLength": 255,
+          "minLength": 1,
+          "x-nullable": true
+        },
+        "question": {
+          "title": "Question",
+          "type": "string",
+          "minLength": 1
+        },
+        "is_active": {
+          "title": "Active",
+          "type": "boolean"
+        },
+        "is_phishing": {
+          "title": "Is phishing?",
+          "description": "If this question is a phishing question (has no answers and the scoring method varies",
+          "type": "boolean"
+        },
+        "explanation": {
+          "title": "Explanation",
+          "description": "Explanation that appears after the question has been answered.",
+          "type": "string",
+          "x-nullable": true
+        },
+        "date_activated": {
+          "title": "Date activated",
+          "description": "Date this question will be activated.",
+          "type": "string",
+          "format": "date-time",
+          "x-nullable": true
+        },
+        "total_num_answers": {
+          "title": "Total num answers",
+          "type": "string",
+          "readOnly": true
+        },
+        "total_num_correct_answers": {
+          "title": "Total num correct answers",
+          "type": "string",
+          "readOnly": true
+        },
+        "stage_number": {
+          "title": "Stage number",
+          "description": "The stage number this question will appear in.",
+          "type": "integer",
+          "maximum": 999999997,
+          "minimum": -999999997,
+          "x-nullable": true
+        },
+        "image": {
+          "title": "Image",
+          "type": "string",
+          "readOnly": true
+        },
+        "image_url": {
+          "title": "Image url",
+          "type": "string",
+          "readOnly": true
+        },
+        "question_answers_data": {
+          "title": "Question answers data",
+          "type": "string",
+          "readOnly": true
+        },
+        "can_be_deleted": {
+          "title": "Can be deleted",
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
+    "Stage": {
+      "type": "object",
+      "properties": {
+        "question": {
+          "title": "Question",
+          "type": "integer",
+          "readOnly": true
+        },
+        "stage_number": {
+          "title": "Stage number",
+          "description": "The stage number this question will appear in.",
+          "type": "integer",
+          "readOnly": true,
+          "x-nullable": true
+        }
+      }
+    },
+    "GameUserAnswer": {
+      "required": [
+        "user",
+        "question",
+        "answer"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "ID",
+          "type": "integer",
+          "readOnly": true
+        },
+        "user": {
+          "title": "User",
+          "type": "integer"
+        },
+        "question": {
+          "title": "Question",
+          "type": "integer"
+        },
+        "answer": {
+          "title": "Answer",
+          "type": "integer"
+        },
+        "is_correct": {
+          "title": "Is correct",
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
+    "StageMap": {
+      "type": "object",
+      "properties": {
+        "stage_number": {
+          "title": "Stage number",
+          "type": "integer",
+          "readOnly": true
+        },
+        "question": {
+          "$ref": "#/definitions/GameQuestion"
+        },
+        "is_active": {
+          "title": "Is active",
+          "type": "boolean",
+          "readOnly": true
+        },
+        "is_answered": {
+          "title": "Is answered",
+          "type": "boolean",
+          "readOnly": true
+        },
+        "department_is_correct": {
+          "title": "Department is correct",
+          "type": "boolean",
+          "readOnly": true
+        },
+        "user_is_correct": {
+          "title": "User is correct",
+          "type": "boolean",
+          "readOnly": true
+        },
+        "answer": {
+          "$ref": "#/definitions/GameUserAnswer"
+        }
+      }
+    },
+    "IMIAuthorization": {
+      "required": [
+        "user"
+      ],
+      "type": "object",
+      "properties": {
+        "user": {
+          "title": "User",
+          "type": "string",
+          "minLength": 1
+        },
+        "email": {
+          "title": "Email",
+          "type": "string",
+          "format": "email",
+          "minLength": 1
+        },
+        "iss": {
+          "title": "Iss",
+          "type": "string",
+          "x-nullable": true
+        },
+        "sub": {
+          "title": "Sub",
+          "type": "string",
+          "x-nullable": true
+        },
+        "div": {
+          "title": "Div",
+          "type": "string",
+          "x-nullable": true
+        },
+        "tipusUsuari": {
+          "title": "Tipususuari",
+          "type": "string",
+          "x-nullable": true
+        },
+        "acces": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "exp": {
+          "title": "Exp",
+          "type": "string",
+          "x-nullable": true
+        },
+        "iat": {
+          "title": "Iat",
+          "type": "string",
+          "x-nullable": true
+        },
+        "jti": {
+          "title": "Jti",
+          "type": "string",
+          "x-nullable": true
+        },
+        "typ": {
+          "title": "Typ",
+          "type": "string",
+          "x-nullable": true
+        },
+        "azp": {
+          "title": "Azp",
+          "type": "string",
+          "x-nullable": true
+        },
+        "session_state": {
+          "title": "Session state",
+          "type": "string",
+          "x-nullable": true
+        },
+        "resource_access": {
+          "title": "Resource access",
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "scope": {
+          "title": "Scope",
+          "type": "string",
+          "x-nullable": true
+        },
+        "sid": {
+          "title": "Sid",
+          "type": "string",
+          "x-nullable": true
+        },
+        "displayName": {
+          "title": "Displayname",
+          "type": "string",
+          "x-nullable": true
+        },
+        "givenName": {
+          "title": "Givenname",
+          "type": "string",
+          "x-nullable": true
+        },
+        "departmentNumber": {
+          "title": "Departmentnumber",
+          "type": "string",
+          "x-nullable": true
+        },
+        "divNumber": {
+          "title": "Divnumber",
+          "type": "string",
+          "x-nullable": true
+        },
+        "sn": {
+          "title": "Sn",
+          "type": "string",
+          "x-nullable": true
+        },
+        "department": {
+          "title": "Department",
+          "type": "string",
+          "x-nullable": true
+        },
+        "dstrFlt": {
+          "title": "Dstrflt",
+          "type": "string",
+          "x-nullable": true
+        },
+        "ratDpt": {
+          "title": "Ratdpt",
+          "type": "string",
+          "x-nullable": true
+        }
+      }
+    },
+    "Score": {
+      "required": [
+        "question",
+        "department"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "ID",
+          "type": "integer",
+          "readOnly": true
+        },
+        "score": {
+          "title": "Score",
+          "type": "integer",
+          "maximum": 10,
+          "minimum": -999999997
+        },
+        "question": {
+          "title": "Question",
+          "type": "integer"
+        },
+        "department": {
+          "title": "Department",
+          "type": "integer"
+        },
+        "department_name": {
+          "title": "Department name",
+          "type": "string",
+          "readOnly": true
+        },
+        "timestamp": {
+          "title": "Timestamp",
+          "description": "Timestamp when the score reached 10",
+          "type": "string",
+          "format": "date-time",
+          "x-nullable": true
+        },
+        "num_answers_department": {
+          "title": "Num answers department",
+          "type": "string",
+          "readOnly": true
+        },
+        "num_wrong_answers_department": {
+          "title": "Num wrong answers department",
+          "type": "string",
+          "readOnly": true
+        },
+        "num_correct_answers_department": {
+          "title": "Num correct answers department",
+          "type": "string",
+          "readOnly": true
+        },
+        "percentage_num_answers_department": {
+          "title": "Percentage num answers department",
+          "type": "string",
+          "readOnly": true
+        },
+        "percentage_wrong_answers_department": {
+          "title": "Percentage wrong answers department",
+          "type": "string",
+          "readOnly": true
+        },
+        "percentage_correct_answers_department": {
+          "title": "Percentage correct answers department",
+          "type": "string",
+          "readOnly": true
+        },
+        "is_weekly_winner": {
+          "title": "Weekly winner?",
+          "description": "Weekly winner when score reached 10",
+          "type": "boolean"
+        },
+        "has_reached_max": {
+          "title": "Reached max",
+          "description": "Reached max when score reached 10",
+          "type": "boolean"
+        },
+        "stage_number": {
+          "title": "Stage number",
+          "type": "string",
+          "readOnly": true
+        },
+        "accuracy": {
+          "title": "Accuracy",
+          "description": "Accuracy for phishing questions",
+          "type": "number"
+        },
+        "inaccuracy": {
+          "title": "Inaccuracy",
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
+    "StagePodium": {
+      "type": "object",
+      "properties": {
+        "stage_number": {
+          "title": "Stage number",
+          "type": "integer",
+          "readOnly": true
+        },
+        "question": {
+          "title": "Question",
+          "type": "integer",
+          "readOnly": true
+        },
+        "department": {
+          "title": "Department",
+          "type": "string",
+          "readOnly": true,
+          "minLength": 1
+        },
+        "participation": {
+          "title": "Participation",
+          "type": "integer",
+          "readOnly": true
+        },
+        "score": {
+          "title": "Score",
+          "type": "integer",
+          "readOnly": true
+        },
+        "timestamp": {
+          "title": "Timestamp",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "num_users": {
+          "title": "Num users",
+          "type": "integer",
+          "readOnly": true
+        },
+        "percentage_right": {
+          "title": "Percentage right",
+          "type": "integer",
+          "readOnly": true
+        },
+        "percentage_wrong": {
+          "title": "Percentage wrong",
+          "type": "integer",
+          "readOnly": true
+        },
+        "has_reached_max": {
+          "title": "Has reached max",
+          "type": "boolean",
+          "readOnly": true
+        }
+      }
+    },
+    "Podium": {
+      "type": "object",
+      "properties": {
+        "department": {
+          "title": "Department",
+          "type": "integer",
+          "readOnly": true
+        },
+        "department_name": {
+          "title": "Department name",
+          "type": "string",
+          "readOnly": true,
+          "minLength": 1
+        },
+        "total_score": {
+          "title": "Total score",
+          "type": "integer",
+          "readOnly": true
+        },
+        "stages_passed": {
+          "title": "Stages passed",
+          "type": "integer",
+          "readOnly": true
+        },
+        "num_wrong_answers": {
+          "title": "Num wrong answers",
+          "type": "integer",
+          "readOnly": true
+        },
+        "num_correct_answers": {
+          "title": "Num correct answers",
+          "type": "integer",
+          "readOnly": true
+        },
+        "timestamp": {
+          "title": "Timestamp",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        }
+      }
+    },
+    "User": {
+      "required": [
+        "username"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "ID",
+          "type": "integer",
+          "readOnly": true
+        },
+        "email": {
+          "title": "Email",
+          "type": "string",
+          "format": "email",
+          "maxLength": 255,
+          "x-nullable": true
+        },
+        "dni": {
+          "title": "Dni",
+          "type": "string",
+          "maxLength": 255,
+          "x-nullable": true
+        },
+        "username": {
+          "title": "Username",
+          "type": "string",
+          "maxLength": 255,
+          "minLength": 1
+        },
+        "date_joined": {
+          "title": "Creation datetime",
+          "type": "string",
+          "format": "date-time",
+          "x-nullable": true
+        },
+        "last_login": {
+          "title": "Last login",
+          "type": "string",
+          "format": "date-time",
+          "x-nullable": true
+        },
+        "is_active": {
+          "title": "Is active",
+          "type": "boolean"
+        },
+        "lopd_accepted": {
+          "title": "Lopd accepted",
+          "description": "Has the user accepted the data protection law?",
+          "type": "boolean"
+        },
+        "department": {
+          "title": "Department",
+          "type": "integer",
+          "x-nullable": true
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,87 @@
+version: '3'
+
+volumes:
+  local_postgres_data: { }
+  local_postgres_data_backups: { }
+  spa_node_modules: { }
+
+services:
+  django: &django
+    container_name: sandbox-api
+    build:
+      context: ./api/
+      dockerfile: ./docker/local/Dockerfile
+    image: sandbox_local_django
+    depends_on:
+      - redis
+      - postgres
+      - celeryworker
+    volumes:
+      - ./api/src:/app
+    env_file:
+      - ./devtools/.envs/.local/.postgres
+      - ./devtools/.envs/.local/.django-storages
+      - ./devtools/.envs/.local/.django-email
+      - ./api/.envs/.local/.django
+    environment:
+      - "REDIS_FLUSHALL=yes"
+    stdin_open: true
+    tty: true
+    ports:
+      - "8000:8000"
+    command: dev-webserver-api
+
+  celeryworker:
+    <<: *django
+    container_name: sandbox-celeryworker
+    image: sandbox_local_celeryworker
+    depends_on:
+      - redis
+      - postgres
+      - celerybeat
+    ports: [ ]
+    command: celery-worker
+
+  celerybeat:
+    <<: *django
+    container_name: sandbox-celerybeat
+    image: sandbox_local_celerybeat
+    depends_on:
+      - redis
+      - postgres
+    ports: [ ]
+    command: celery-beat
+
+  postgres:
+    container_name: sandbox-postgres
+    build:
+      context: ./devtools
+      dockerfile: ./compose/postgresql/Dockerfile
+    image: sandbox_local_postgres
+    volumes:
+      - local_postgres_data:/var/lib/postgresql/data
+      - local_postgres_data_backups:/backups
+    env_file:
+      - ./devtools/.envs/.local/.postgres
+    ports:
+      - "5432:5432"
+
+  redis:
+    container_name: sandbox-redis
+    build:
+      context: ./devtools
+      dockerfile: ./compose/redis/Dockerfile
+    image: sandbox_local_redis
+
+  spa:
+    container_name: sandbox-spa
+    build:
+      context: ./spa
+      dockerfile: ./compose/local/Dockerfile
+    image: sandbox_local_spa
+    volumes:
+      - ./spa/.:/usr/src/app
+      - ./spa/node_modules:/usr/src/app/node_modules
+    ports:
+      - '4200:4200'
+      - '8888:8888' # This is used for the bundle-report command

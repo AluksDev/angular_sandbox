@@ -1,0 +1,32 @@
+<h1 mat-dialog-title>{{ data.title }}</h1>
+<div mat-dialog-content class="flex flex-col">
+  <p>{{ data.text }}</p>
+
+  <div class="flex flex-row justify-start items-center flex-[1_0_auto] box-border">
+    <mat-form-field class="flex-[1_1_100%] box-border">
+      <mat-label i18n>Descripció</mat-label>
+      <textarea
+        required
+        matAutosizeMinRows="5"
+        matAutosizeMaxRows="10"
+        #description
+        matTextareaAutosize
+        matInput
+      ></textarea>
+    </mat-form-field>
+  </div>
+</div>
+
+<div mat-dialog-actions class="text-right justify-end items-center flex">
+  <button i18n mat-button [mat-dialog-close]="false">Cancel·lar</button>
+  <button
+    i18n
+    mat-button
+    [mat-dialog-close]="description.value"
+    [disabled]="!description.value"
+    mat-raised-button
+    color="accent"
+  >
+    Acceptar
+  </button>
+</div>

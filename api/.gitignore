@@ -1,0 +1,6 @@
+staticfiles
+celerybeat-schedule
+elastic.log
+__pycache__
+
+src/coverage-reports/

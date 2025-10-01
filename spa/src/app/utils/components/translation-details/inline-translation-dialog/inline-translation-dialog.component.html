@@ -1,0 +1,76 @@
+<div class="container flex flex-col w-full h-full min-w-full min-h-full box-border">
+              @if (translation$ | async; as translation) {
+                <div class="pt-4 pb-24" [formGroup]="formService.form.controls['data']">
+                  <div class="px-6 flex flex-row justify-between items-center">
+                    <h1 class="text-xl font-bold">
+                      Traducció a:<strong> {{ languages[translation.target_lang] }}</strong>
+                    </h1>
+                    <div class="actions flex justify-end items-center gap-4 flex-1 box-border">
+                      @if (['es', 'en'].indexOf(translation.target_lang) > -1) {
+                        <button i18n mat-raised-button [bcnWaitingButton]="translating" (click)="trigger_lucy()" color="accent" class="btn btn-accent bg-[#0097a7] rounded-none">
+                          Traducir con Lucy
+                        </button>
+                      }
+                      <button i18n mat-raised-button [mat-dialog-close]="false" class="btn btn-secondary rounded-none">Cancel·lar</button>
+                      <button i18n mat-raised-button (click)="save()" color="accent" class="btn btn-accent bg-[#0097a7] rounded-none">Guardar</button>
+                    </div>
+                  </div>
+                  <div class="px-6 flex flex-row">
+                    <div class="flex-1 box-border"><h2 i18n class="text-lg font-semibold">Font</h2></div>
+                    <div class="flex-1 box-border"><h2 i18n class="text-lg font-semibold">Traducció</h2></div>
+                  </div>
+                  @for (text of translation.origin_texts; track text; let index = $index) {
+                    <div class="fieldrow py-2 px-6 flex flex-row gap-5" formArrayName="translations">
+                      <div class="flex-1 box-border">
+                        @if (!text.value || text.value.substring(0, 1) != '<') {
+                          <mat-form-field class="flex-1 box-border">
+                            <textarea
+                              disabled="true"
+                              cdkTextareaAutosize
+                              cdkAutosizeMinRows="2"
+                              cdkAutosizeMaxRows="5"
+                              matInput
+                              [placeholder]="text.title"
+                              [value]="text.value"
+                              class="textarea textarea-disabled"
+                            ></textarea>
+                          </mat-form-field>
+                        }
+                        @if (text.value && text.value.substring(0, 1) == '<') {
+                          <div class="quill flex flex-col">
+                            <label class="block text-sm font-medium">{{ text.title }}</label>
+                            <div [innerHTML]="text.value" class="p-2 border border-gray-300 rounded"></div>
+                          </div>
+                        }
+                      </div>
+                      <div [formGroupName]="index" class="flex-1 box-border">
+                        @if (!text.value || text.value.substring(0, 1) != '<') {
+                          <mat-form-field class="flex-1 box-border">
+                            <textarea
+                              cdkTextareaAutosize
+                              cdkAutosizeMinRows="2"
+                              cdkAutosizeMaxRows="5"
+                              matInput
+                              [placeholder]="text.title"
+                              formControlName="value"
+                              class="textarea"
+                            ></textarea>
+                          </mat-form-field>
+                        }
+                        @if (text.value && text.value.substring(0, 1) == '<') {
+                          <div class="quill flex flex-col">
+                            <quill-editor
+                              [placeholder]="text.title"
+                              style="width: 100%"
+                              formControlName="value"
+                              [modules]="wysiwygConfig"
+                              class="editor"
+                            ></quill-editor>
+                          </div>
+                        }
+                      </div>
+                    </div>
+                  }
+                </div>
+              }
+            </div>

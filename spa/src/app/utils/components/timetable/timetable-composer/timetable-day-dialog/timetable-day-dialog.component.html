@@ -1,0 +1,215 @@
+<!-- TODO: Check the below conversion, use git compare to see the difference-->
+<div class="container flex flex-col w-full h-full min-w-full min-h-full box-border">
+  <div class="header flex flex-row justify-between items-center box-border">
+    <h1 i18n mat-dialog-title>Selecció de dies</h1>
+  </div>
+  <div class="flex w-full box-border">
+    <div class="flex flex-row w-full box-border">
+      <form class="dayForm flex w-[36%] box-border" name="form" [formGroup]="dayForm">
+        <mat-tab-group>
+          <mat-tab label="Cícliques" i18n-label class="p-6">
+            <div class="p-1.5 flex flex-col">
+              <div class="days flex flex-row justify-between items-center">
+                <mat-checkbox i18n (change)="updateAllDaysCheck()" formControlName="monday">dl</mat-checkbox>
+                <mat-checkbox i18n (change)="updateAllDaysCheck()" formControlName="tuesday">dt</mat-checkbox>
+                <mat-checkbox i18n (change)="updateAllDaysCheck()" formControlName="wednesday">dc</mat-checkbox>
+                <mat-checkbox i18n (change)="updateAllDaysCheck()" formControlName="thursday">dj</mat-checkbox>
+                <mat-checkbox i18n (change)="updateAllDaysCheck()" formControlName="friday">dv</mat-checkbox>
+                <mat-checkbox i18n (change)="updateAllDaysCheck()" formControlName="saturday">ds</mat-checkbox>
+                <mat-checkbox i18n (change)="updateAllDaysCheck()" formControlName="sunday">dg</mat-checkbox>
+                <mat-checkbox i18n (change)="selectAllDays($event)" formControlName="all">tots</mat-checkbox>
+              </div>
+              <mat-form-field class="flex-[1_1_100%] box-border">
+                <mat-label i18n>Periodicitat</mat-label>
+                <mat-select
+                  placeholder="Periodicitat"
+                  i18n-placeholder
+                  formControlName="periodicity"
+                  required
+                  class="flex-[1_1_100%] box-border"
+                >
+                  @for (periodicity of periodicities; track periodicity) {
+                    <mat-option [value]="periodicity.id">
+                      {{ periodicity.name }}
+                    </mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+
+
+              <div class="flex flex-row justify-between items-center">
+                <mat-checkbox i18n formControlName="holidays">Festius</mat-checkbox>
+                <mat-checkbox i18n formControlName="holidayEves">Vigílies de festius</mat-checkbox>
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab label="Concretes" i18n-label>
+            <div class="p-1.5 flex flex-col justify-center items-center">
+              <div class="datelist">
+                @for (day of selectedSpecificDays; track day) {
+                  <span class="date">{{ day | date: 'd MMMM' }}</span>
+                }
+              </div>
+              <mat-calendar #calendar [dateFilter]="dateFilter"
+                            (selectedChange)="selectDate($event)"></mat-calendar>
+            </div>
+          </mat-tab>
+          <mat-tab label="Globals" i18n-label>
+            <div class="p-1.5 flex-[1_1_100%] box-border">
+              <mat-form-field class="flex-[1_1_100%] box-border">
+                <mat-label i18n>Seleccionar dies</mat-label>
+                <mat-select
+                  placeholder="Seleccionar dies"
+                  i18n-placeholder
+                  formControlName="globalDays"
+                  multiple
+                  class="flex-[1_1_100%] box-border"
+                >
+                  @for (day of globalDays | keyvalue; track day) {
+                    <mat-option [value]="day.key">{{ day.value['alias'] }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </form>
+
+      <div class="flex flex-col w-[39%] box-border">
+        <div class="daytable">
+          <table mat-table class="list-table entity-table" [dataSource]="days">
+            <ng-container matColumnDef="icon" i18n-matColumnDef>
+              <td mat-cell class="icon-cell" *matCellDef="let day">
+                <div class="icon" [class.include]="!day.exclude" [class.exclude]="day.exclude">
+                  {{ day.exclude ? 'E' : 'I' }}
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="dayalias" i18n-matColumnDef>
+              <td mat-cell class="name-cell" *matCellDef="let day">
+                <div class="autotext">{{ day['auto_alias$'] | async }}</div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions" i18n-matColumnDef>
+              <th i18n style="width: 72px; text-align: center" mat-header-cell *matHeaderCellDef>Accions</th>
+              <td mat-cell class="actions-cell text-right"
+                  *matCellDef="let day; let first = first; let last = last">
+                @if (!first) {
+                  <button mat-icon-button (click)="moveUp(day)">
+                    <mat-icon
+                      i18n
+                      class="secondary-text"
+                      title="Moure amunt"
+                      i18n-title
+                      aria-label="Moure amunt"
+                      i18n-aria-label
+                    >keyboard_arrow_up
+                    </mat-icon>
+                  </button>
+                }
+                @if (!last) {
+                  <button mat-icon-button (click)="moveDown(day)">
+                    <mat-icon
+                      i18n
+                      class="secondary-text"
+                      title="Moure avall"
+                      i18n-title
+                      aria-label="Moure avall"
+                      i18n-aria-label
+                    >keyboard_arrow_down
+                    </mat-icon>
+                  </button>
+                }
+                <button mat-icon-button (click)="remove(day)">
+                  <mat-icon
+                    i18n
+                    class="secondary-text"
+                    title="Eliminar"
+                    i18n-title
+                    aria-label="Eliminar"
+                    i18n-aria-label
+                  >delete
+                  </mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="p-1.5 flex flex-col flex-[1_1_25%] box-border autoaliasbox">
+        <form name="form" [formGroup]="form" class="flex flex-col justify-start
+        flex-[1_1_100%] box-border">
+          <div class="flex flex-col justify-center items-center">
+            <h3 i18n>Text automàtic</h3>
+            <mat-slide-toggle i18n (change)="toggleAutoAlias()"
+                              class="pb-24 bg-white" formControlName="custom_alias">
+              Personalitzar
+            </mat-slide-toggle>
+          </div>
+
+          @if (!form.value['custom_alias']) {
+            <div class="autoalias pt-1">{{ day_auto_alias }}</div>
+          }
+
+          @if (form.value['custom_alias']) {
+            <quill-editor
+              placeholder="Alias"
+              i18n-placeholder
+              style="width: 100%"
+              [style]="{ height: '150px' }"
+              formControlName="alias"
+              [modules]="wysiwygConfig"
+            ></quill-editor>
+          }
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions justify-between items-center flex">
+    <div class="dayFormFooter flex flex-row justify-end items-center gap-[15px]
+     flex-[1_1_36%] box-border">
+      <button i18n mat-raised-button (click)="cancel()"
+              [disabled]="dayForm['pristine'] || dayForm.invalid">
+        Cancel·lar
+      </button>
+      <button
+        i18n
+        mat-raised-button
+        color="accent"
+        (click)="include()"
+        [disabled]="(dayForm['pristine'] && selectedSpecificDays.length === 0) || dayForm.invalid"
+      >
+        Incluir
+      </button>
+      <button
+        i18n
+        mat-raised-button
+        color="warn"
+        (click)="exclude()"
+        [disabled]="(dayForm['pristine'] && selectedSpecificDays.length === 0) || dayForm.invalid"
+      >
+        Excluir
+      </button>
+      <!--<span> auto_alias </span>-->
+    </div>
+    <div class="footer flex flex-row justify-end items-center gap-[15px] flex-[1_1_64%] box-border">
+      <button i18n mat-button [mat-dialog-close]="false">Cancel·lar</button>
+      <button
+        i18n
+        mat-button
+        [disabled]="!dayForm['pristine'] || form.invalid"
+        [mat-dialog-close]="closeDialog()"
+        mat-raised-button
+        color="accent"
+      >
+        Confirmar
+      </button>
+    </div>
+  </div>
+</div>

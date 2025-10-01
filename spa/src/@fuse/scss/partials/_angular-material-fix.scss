@@ -1,0 +1,181 @@
+// Fix: "Icon button ripple radius is not correct on Edge & Safari"
+.mat-icon-button {
+  .mat-button-ripple {
+    border-radius: 50%;
+  }
+}
+
+// Fix: Error messages margin
+.mat-form-field-appearance-legacy .mat-form-field-subscript-wrapper {
+  margin-top: 0.3em;
+}
+
+// Fix: "Inconsistent font sizes across elements"
+.mat-form-field-wrapper {
+  font-size: 16px;
+}
+
+.mat-checkbox {
+  font-size: 16px;
+}
+
+.mat-radio-button {
+  font-size: 16px;
+}
+
+.mat-pseudo-checkbox-checked:after {
+  width: 14px !important;
+  height: 7px !important;
+}
+
+// Fix: "Input underlines has wrong color opacity value"
+.mat-form-field-appearance-legacy .mat-form-field-underline {
+  background-color: rgba(0, 0, 0, 0.22);
+}
+
+textarea.mat-input-element {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+// Fix: "Some idiots using table-cell and inline-table in mat-select"
+.mat-form-field {
+  &.mat-form-field-type-mat-select {
+    .mat-form-field-infix {
+      display: inline-flex;
+      width: auto;
+
+      .mat-select-trigger {
+        display: inline-flex;
+        align-items: center;
+        width: 100%;
+
+        .mat-select-value {
+          display: flex;
+          max-width: none;
+          margin-right: 8px;
+        }
+
+        .mat-select-arrow-wrapper {
+          display: inline-flex;
+        }
+      }
+    }
+  }
+}
+
+// Fix: Stepper icons are broken due to BCN's icon helpers
+mat-horizontal-stepper,
+mat-vertical-stepper {
+  mat-step-header {
+    mat-icon {
+      height: 16px !important;
+      width: 16px !important;
+      min-width: 0 !important;
+      min-height: 0 !important;
+      color: inherit !important;
+    }
+  }
+}
+
+mat-vertical-stepper {
+  padding: 16px 0;
+}
+
+// Fix: Chip remove icon is broken due to BCN's icon helpers
+mat-chip {
+  mat-icon {
+    min-width: 0 !important;
+    min-height: 0 !important;
+  }
+}
+
+// Fix: Mat-card-image requires a bigger width than 100%
+.mat-card-image {
+  max-width: none !important;
+}
+
+// Changes to have more density
+tr.mat-footer-row,
+tr.mat-row {
+  height: 41px !important;
+}
+
+tr.mat-header-row {
+  height: 28px !important;
+}
+
+//.mat-icon-button {
+//    width: 30px !important;
+//    height: 30px !important;
+//    line-height: 30px !important;
+//}
+//
+//.mat-button, .mat-flat-button, .mat-icon-button, .mat-stroked-button{
+//  line-height: 30px !important;
+//}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option,
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-optgroup {
+  //line-height: 2em !important;
+  //min-height: 2em !important;
+  //height: auto !important;
+  height: 48px !important;
+  line-height: 48px !important;
+}
+
+.mat-select-panel .mat-optgroup-label,
+.mat-select-panel .mat-option {
+  line-height: 2.5em !important;
+  height: 2.5em !important;
+}
+
+.ng-dropdown-panel.ng-select-bottom {
+  //top: 100% !important;
+}
+
+.timepicker {
+  .timepicker__header {
+    background-color: #00838f !important;
+  }
+
+  .clock-face__clock-hand {
+    background-color: #00838f !important;
+
+    &::after {
+      background-color: #00838f !important;
+    }
+
+    &::before {
+      border-color: #00838f !important;
+    }
+  }
+
+  .clock-face__number {
+    > span.active {
+      background-color: #00838f !important;
+    }
+  }
+
+  button:not(.timepicker-dial__item) {
+    color: #00838f !important;
+  }
+}
+
+.mat-tab-label,
+.mat-tab-link {
+  color: #000000 !important;
+  opacity: 1 !important;
+}
+
+.mat-tab-label.mat-tab-disabled {
+  opacity: 0.4 !important;
+}
+
+.mat-tab-label {
+  transition: opacity ease-in-out 0.5s;
+}
+
+.ql-container {
+  height: calc(100% - 40px) !important;
+}

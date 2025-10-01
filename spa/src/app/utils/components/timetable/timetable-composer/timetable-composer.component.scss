@@ -1,0 +1,146 @@
+:host {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+  overflow: hidden;
+}
+
+.header {
+  background: white;
+  border: 1px solid white;
+  th {
+    text-align: center;
+    padding: 10px;
+  }
+}
+
+.timetable {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  overflow-y: auto;
+}
+
+table {
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+  table-layout: fixed;
+  height: 100%;
+
+  tr {
+    height: 1px;
+
+    &.down,
+    &.up,
+    &.none {
+      background: #bcd4d6;
+      background-size:
+        1px 90px,
+        100% 100%;
+      background-repeat: repeat-x;
+
+      td app-timetable-cell {
+        background: transparent !important;
+
+        ::ng-deep .error {
+          background: transparent !important;
+        }
+      }
+    }
+
+    &.none {
+      background: #ffcdd2;
+    }
+
+    &.down {
+      background-image:
+        -moz-linear-gradient(top, #bcd4d6 0%, #bcd4d6 91%, #00838f 100%),
+        -moz-linear-gradient(top, #bcd4d6 0%, #bcd4d6 100%); /* FF3.6-15 */
+      background-image:
+        -webkit-linear-gradient(top, #bcd4d6 0%, #bcd4d6 91%, #00838f 100%),
+        -webkit-linear-gradient(top, #bcd4d6 0%, #bcd4d6 100%); /* Chrome10-25,Safari5.1-6 */
+      background-image: linear-gradient(to bottom, #bcd4d6 0%, #bcd4d6 91%, #00838f 100%),
+        linear-gradient(to bottom, #bcd4d6 0%, #bcd4d6 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+
+      background-position: bottom;
+    }
+
+    &.up {
+      background:
+        -moz-linear-gradient(top, #00838f 0%, #bcd4d6 9%, #bcd4d6 100%),
+        -moz-linear-gradient(top, #bcd4d6 0%, #bcd4d6 100%); /* FF3.6-15 */
+      background:
+        -webkit-linear-gradient(top, #00838f 0%, #bcd4d6 9%, #bcd4d6 100%),
+        -webkit-linear-gradient(top, #bcd4d6 0%, #bcd4d6 100%); /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(to bottom, #00838f 0%, #bcd4d6 9%, #bcd4d6 100%),
+        linear-gradient(to bottom, #bcd4d6 0%, #bcd4d6 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+
+      background-position: top;
+    }
+
+    th {
+      width: 20%;
+    }
+
+    td {
+      height: 100%;
+
+      table {
+        // margin-bottom: -1px;
+        height: 100%;
+      }
+
+      padding: 0;
+
+      &.period {
+        width: 20%;
+      }
+      &.period-content {
+        width: 80%;
+      }
+      &.day {
+        width: 25%;
+      }
+      &.day-content {
+        width: 75%;
+      }
+      &.hour {
+        width: 33.33%;
+      }
+      &.hour-content {
+        width: 66.66%;
+      }
+      &.price {
+        width: 50%;
+      }
+      &.price-content {
+        width: 50%;
+      }
+      &.comment {
+        width: 50%;
+      }
+    }
+  }
+}
+
+.newtimetable {
+  padding: 20px;
+  font-size: 20px;
+}
+
+.hide_timetable {
+  background-color: #f7e0db;
+}
+
+.show_timetable {
+  background-color: #cdf7cc;
+}
+
+.copytimetable {
+  padding: 40px;
+  font-size: 20px;
+  text-align: center;
+}

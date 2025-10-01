@@ -1,0 +1,72 @@
+version: '3'
+
+volumes:
+  prod_postgres_data: { }
+  prod_postgres_data_backups: { }
+
+services:
+  django: &django
+    container_name: prod-aixonoesunjoc-api
+    build:
+      context: ./api
+      dockerfile: ./Dockerfile
+    image: prod-aixonoesunjoc-django
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+    env_file:
+      - ./devtools/.envs/.production-test/.django
+      - ./devtools/.envs/.production-test/.django-email
+      - ./devtools/.envs/.production-test/.uwsgi
+      - ./devtools/.envs/.production-test/.postgres
+      - ./devtools/.envs/.production-test/.redis
+    ports:
+      - "8000:8000"
+    command: uwsgi-api
+
+  celeryworker:
+    <<: *django
+    container_name: prod-aixonoesunjoc-celeryworker
+    image: prod-aixonoesunjoc-celeryworker
+    ports: [ ]
+    command: celery-worker
+
+  celerybeat:
+    <<: *django
+    container_name: prod-aixonoesunjoc-celerybeat
+    image: prod-aixonoesunjoc-celerybeat
+    ports: [ ]
+    command: celery-beat
+
+  postgres:
+    container_name: prod-aixonoesunjoc-postgres
+    build:
+      context: ./devtools
+      dockerfile: ./compose/postgresql/Dockerfile
+    image: prod-aixonoesunjoc-postgres
+    volumes:
+      - prod_postgres_data:/var/lib/postgresql/data
+      - prod_postgres_data_backups:/backups
+    env_file:
+      - ./devtools/.envs/.production-test/.postgres
+    ports:
+      - "5432:5432"
+
+  redis:
+    container_name: prod-aixonoesunjoc-redis
+    build:
+      context: ./devtools
+      dockerfile: ./compose/redis/Dockerfile
+    image: prod-aixonoesunjoc-redis
+
+  spa:
+    container_name: prod-aixonoesunjoc-spa
+    build:
+      context: ./spa
+      dockerfile: ./compose/production-test/Dockerfile
+    image: prod-aixonoesunjoc-spa
+    depends_on:
+      - django
+    ports:
+      - '80:80'

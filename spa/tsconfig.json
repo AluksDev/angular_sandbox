@@ -1,0 +1,51 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "strict": false,
+    "strictNullChecks": false,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./src",
+    "outDir": "./dist",
+    "forceConsistentCasingInFileNames": true,
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "typeRoots": ["node_modules/@types", "@types"],
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "useDefineForClassFields": false,
+    "lib": ["ES2022", "dom"],
+    "noUnusedParameters": false,
+    "noUnusedLocals": false,
+    "noImplicitReturns": false,
+    // true
+    "strictFunctionTypes": false,
+    // true
+    "noImplicitOverride": false,
+    // true
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": false,
+    // true
+    "noImplicitThis": true,
+    "strictBindCallApply": true,
+    "paths": {
+      "@api/*": ["api/*"],
+      "@apigeo/*": ["apigeo/*"],
+      "@fuse": ["@fuse/"],
+      "@fuse/*": ["@fuse/*"],
+      "@layout/*": ["app/layout/*"],
+      "@modules/*": ["app/modules/*"],
+      "@utils/*": ["app/utils/*"],
+      "@app/*": ["app/*"],
+      "@core/*": ["app/core/*"]
+    }
+  },
+  "angularCompilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "enableI18nLegacyMessageIdFormat": false
+  }
+}

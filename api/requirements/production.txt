@@ -1,0 +1,15 @@
+# PRECAUTION: avoid production dependencies that aren't in development
+
+-r ./base.txt
+
+Collectfast==2.2.0  # https://github.com/antonagestam/collectfast
+raven==6.10.0  # https://github.com/getsentry/raven-python
+
+# Django
+# ------------------------------------------------------------------------------
+django-anymail[mailgun]==11.1  # https://github.com/anymail/django-anymail
+
+
+# uWSGI
+# ------------------------------------------------------------------------------
+uwsgi==2.0.26  # https://uwsgi-docs.readthedocs.io/en/latest/   https://github.com/unbit/uwsgi

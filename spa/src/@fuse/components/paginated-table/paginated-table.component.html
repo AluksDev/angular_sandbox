@@ -1,0 +1,49 @@
+<div class="flex flex-col justify-center">
+  <div #topPage></div>
+
+  <div class="flex flex-row justify-between items-center flex-wrap self-end w-full">
+    <ng-content select="[paginated-table-search-form]"></ng-content>
+
+    <div style="position: relative" class="w-auto flex flex-row justify-end items-center box-border">
+      @if (loading()) {
+        <mat-spinner class="paginator-spinner" [diameter]="16"></mat-spinner>
+      }
+      <bcn-paginator
+        [ngClass]="{
+          hide: paginatorConfig() === 'bottom' || paginatorConfig() === 'none',
+        }"
+        class="topPaginator"
+        #topPaginator
+        [length]="resultsCount()"
+        [pageSize]="pageSizeOptions()[2]"
+        [pageSizeOptions]="pageSizeOptions()"
+        (page)="syncPaginators($event)"
+        [hidePageSize]="pageSizeOptions().length == 1"
+      >
+      </bcn-paginator>
+    </div>
+  </div>
+
+  <ng-content select="[paginated-table-table]"></ng-content>
+
+  @if (!loading() && resultsCount() === 0) {
+    <app-no-results [messageType]="styleConfig()"></app-no-results>
+  }
+
+  @if (loading() && resultsCount() === 0) {
+    <app-fake-loading [type]="'list'"></app-fake-loading>
+  }
+
+  <bcn-paginator
+    [ngClass]="{
+      hide: paginatorConfig() === 'top' || paginatorConfig() === 'none',
+    }"
+    #bottomPaginator
+    [length]="resultsCount()"
+    [pageSize]="pageSizeOptions()[2]"
+    [pageSizeOptions]="pageSizeOptions()"
+    (page)="syncPaginators($event)"
+    [hidePageSize]="pageSizeOptions().length == 1"
+  >
+  </bcn-paginator>
+</div>

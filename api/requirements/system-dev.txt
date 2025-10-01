@@ -1,0 +1,5 @@
+gettext
+libpq-dev
+netcat
+redis-tools
+gdal-bin

@@ -1,0 +1,7 @@
+gcc
+gettext
+libpq-dev
+netcat
+redis-tools
+gdal-bin
+python-dev

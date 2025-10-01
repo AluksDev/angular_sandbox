@@ -1,0 +1,35 @@
+<!-- TODO: Check the below conversion, use git compare to see the difference-->
+<div class="container flex flex-col w-full h-full min-w-full min-h-full box-border">
+  <div class="header flex flex-row justify-between items-center box-border">
+    <h1 i18n mat-dialog-title class="flex-[1_1_50%] box-border">Observacions</h1>
+  </div>
+  <div class="p-6 flex-[1_1_100%] box-border">
+    <div class="flex flex-row flex-[1_1_100%] box-border">
+      <form name="form" [formGroup]="form" class="flex flex-col justify-start flex-[1_1_100%] box-border">
+        <quill-editor
+          placeholder="Escriu aquí les observacions..."
+          i18n-placeholder
+          style="width: 100%"
+          [style]="{ height: '150px' }"
+          formControlName="alias"
+          [modules]="wysiwygConfig"
+          [formats]="wysiwygFormats"
+        ></quill-editor>
+      </form>
+    </div>
+  </div>
+
+  <div class="actions justify-end items-center flex gap-[15px] box-border">
+    <button i18n mat-button [mat-dialog-close]="false">Cancel·lar</button>
+    <button
+      i18n
+      mat-button
+      [disabled]="form.invalid"
+      [mat-dialog-close]="closeDialog()"
+      mat-raised-button
+      color="accent"
+    >
+      Confirmar
+    </button>
+  </div>
+</div>

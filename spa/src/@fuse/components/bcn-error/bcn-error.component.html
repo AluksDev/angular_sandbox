@@ -1,0 +1,19 @@
+@if (control()?.hasError('required')) {
+  <span>{{ requiredText() }}</span>
+}
+@if (control()?.hasError('maxlength')) {
+  <span i18n>El text ha de ser inferior a {{ control().errors['maxlength'].requiredLength }} caràcters</span>
+}
+@if (control()?.hasError('serverError')) {
+  <span>
+    @for (error of serverErrors(); track error) {
+      <span>{{ error }}</span>
+    }
+    @for (error of frontErrors(); track error) {
+      <span>{{ error }}</span>
+    }
+    @for (error of control()?.getError('__errors'); track error) {
+      <span>{{ error }}</span>
+    }
+  </span>
+}

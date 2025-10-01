@@ -1,0 +1,40 @@
+<div
+  id="main"
+  [ngClass]="folded ? 'main-folded' : 'main-unfolded'"
+  class="overflow-hidden">
+  <div>
+    <app-global-spinner></app-global-spinner>
+    <div class="mat-accent relative z-49 flex h-14 items-center shadow dark:border-b dark:bg-transparent dark:shadow-none px-2 print:hidden">
+      <!-- Navigation toggle button -->
+      <div class="text-white ml-auto flex items-center space-x-0.5 pl-2 sm:space-x-2">
+        <user></user>
+      </div>
+    </div>
+
+    <div class="flex flex-row w-full min-h-[100vh]">
+      @if (this._layoutService.getShowMenu()) {
+        <fuse-vertical-navigation
+          class="light bg-white print:hidden basis-1/5"
+          [modeInput]="'side'"
+          [nameInput]="'mainNavigation'"
+          [navigation]="navigation"
+          [appearanceInput]="'default'"
+          [openedInput]="!isScreenSmall">
+          <!-- Navigation header hook -->
+          <ng-container fuseVerticalNavigationContentHeader>
+            <!-- Logo -->
+            <button
+              class="m-2"
+              (click)="toggleNavigation('mainNavigation')"
+              mat-icon-button>
+              <mat-icon
+                class="text-black"
+                [svgIcon]="'heroicons_outline:bars-3'"></mat-icon>
+            </button>
+          </ng-container>
+        </fuse-vertical-navigation>
+      }
+      <content class="basis-4/5"></content>
+    </div>
+  </div>
+</div>

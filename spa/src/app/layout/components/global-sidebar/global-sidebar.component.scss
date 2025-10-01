@@ -1,0 +1,50 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 250px;
+  min-width: 250px;
+  max-width: 250px;
+  z-index: 1000;
+  box-shadow: none !important;
+  background-color: #f2f2f2;
+
+  &.left-positioned {
+    left: 0;
+    transform: translateX(-100%);
+  }
+
+  &.open {
+    transform: translateX(0);
+  }
+
+  &.locked-open {
+    position: relative !important;
+    transform: translateX(0) !important;
+  }
+
+  &.folded {
+    position: absolute !important;
+    top: 0;
+    bottom: 0;
+
+    &:not(.unfolded) {
+      width: 64px;
+      min-width: 64px;
+      max-width: 64px;
+    }
+  }
+
+  &.animations-enabled {
+    transition-property: transform, width, min-width, max-width;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
+  }
+}
+
+.toolbar {
+  background-color: #ddd;
+  padding: 7px;
+}

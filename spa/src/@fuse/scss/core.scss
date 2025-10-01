@@ -1,0 +1,36 @@
+// This file meant to be imported only once! Use bcn.scss to access
+// to the core BCN and Angular Material mixins
+
+// ngx-datatable
+//@import '@swimlane/ngx-datatable/release/themes/material';
+
+// Perfect scrollbar
+//@import 'perfect-scrollbar/css/perfect-scrollbar';
+
+// BCN
+@use 'bcn';
+
+// Include core Angular Material styles
+//@include mat-core();
+
+// Setup the typography
+//@include angular-material-typography($typography);
+
+// Create an Angular Material theme from the $theme map
+//@include angular-material-theme($theme);
+
+// Partials
+//@import 'partials/reset';
+@use 'partials/normalize';
+//@import 'partials/scrollbars';
+//@import 'partials/helpers';
+//@import 'partials/global';
+//@import 'partials/icons';
+//@import 'partials/colors';
+@use 'partials/angular-material-fix';
+//@import 'partials/typography';
+@use 'partials/page-layouts';
+@use 'partials/print';
+
+// Plugins
+//@import "partials/plugins/plugins";

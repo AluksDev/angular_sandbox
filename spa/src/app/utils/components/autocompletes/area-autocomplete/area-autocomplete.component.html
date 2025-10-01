@@ -1,0 +1,113 @@
+<div fxLayout="column" fxLayoutAlign="start start" class="w-full mb-0">
+    <div
+        fxLayout="row"
+        fxLayoutAlign="start center"
+        class="w-full label"
+        *ngIf="labelName"
+    >
+        {{ labelName }}
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start center" class="w-full">
+        <ng-select
+            fxFlex
+            class="custom-tags"
+            appendTo="body"
+            bindLabel="name"
+            bindValue="id"
+            appearance="outline"
+            [items]="area$ | async"
+            [multiple]="multiple"
+            [(ngModel)]="modelArea"
+            [closeOnSelect]="true"
+            [loading]="areaLoading"
+            [typeahead]="areaInput$"
+            [maxSelectedItems]="maxSelectedItems"
+            [addTag]="canCreate ? createNew : undefined"
+            [disabled]="disabled"
+            [readonly]="readonly"
+            [placeholder]="placeholder + (required ? ' *' : '')"
+            [attr.required]="required"
+            [hideSelected]="true"
+            (change)="setArea($event)"
+            [ngClass]="{
+                border: !!serverErrors,
+                'border-red-500': !!serverErrors,
+            }"
+        >
+            <ng-template ng-optgroup-tmp let-item="item">
+                <span fxLayout="row" fxLayoutAlign="start center">
+                    <span
+                        >{{ item?.code ? "( " + item?.code + ") -" : "" }}
+                        {{ item.name }}</span
+                    >
+                    <span class="ml-2" *ngIf="showTypeLabel"
+                        >({{ item?.type_data?.name }})</span
+                    >
+                </span>
+            </ng-template>
+            <ng-template ng-optgroup-tmp ng-option-tmp let-item="item">
+                <span fxLayout="row" fxLayoutAlign="start center">
+                    <span
+                        >{{ item?.code ? "( " + item?.code + ") -" : "" }}
+                        {{ item.name }}</span
+                    >
+                    <span class="ml-2" *ngIf="showTypeLabel"
+                        >({{ item?.type_data?.name }})</span
+                    >
+                </span>
+            </ng-template>
+            <ng-template
+                ng-label-tmp
+                let-item="item"
+                let-clear="clear"
+                *ngIf="multiple"
+            >
+                <span
+                    class="mr-1 mt-1 inline-flex items-center rounded-md bg-gray-100 px-2 py-0 text-md font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10"
+                    fxLayoutAlign="start center"
+                >
+                    <span fxLayout="row" fxLayoutAlign="start center">
+                        <span
+                            >{{ item?.code ? "( " + item?.code + ") -" : "" }}
+                            {{ item.name }}</span
+                        >
+                        <span class="ml-2" *ngIf="showTypeLabel"
+                            >({{ item?.type_data?.name }})</span
+                        >
+                    </span>
+                    <button
+                        mat-icon-button
+                        class="inline-flex items-center pl-1 text-grey-400 bg-transparent"
+                        *ngIf="!readonly"
+                    >
+                        <mat-icon
+                            class="text-lg"
+                            (click)="!disabled ? clearItem(item) : ''"
+                            [matTooltip]="'Borrar elemento'"
+                            >close</mat-icon
+                        >
+                    </button>
+                </span>
+            </ng-template>
+            <ng-template
+                ng-label-tmp
+                ng-option-tmp
+                let-item="item"
+                *ngIf="!multiple"
+            >
+                <span fxLayout="row" fxLayoutAlign="start center">
+                    <span
+                        >{{ item?.code ? "( " + item?.code + ") -" : "" }}
+                        {{ item.name }}</span
+                    >
+                    <span class="ml-2" *ngIf="showTypeLabel"
+                        >({{ item?.type_data?.name }})</span
+                    >
+                </span>
+            </ng-template>
+        </ng-select>
+    </div>
+    <div class="text-red-500 text-sm font-medium m-0 p-0" *ngIf="serverErrors">
+        {{ serverErrors }}
+    </div>
+</div>

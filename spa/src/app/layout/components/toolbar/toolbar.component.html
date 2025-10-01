@@ -1,0 +1,76 @@
+<mat-toolbar class="p-0" fxLayout="column">
+  <mat-progress-bar *ngIf="showLoadingBar" class="loading-bar" color="accent" mode="indeterminate"></mat-progress-bar>
+  <div class="impersonation" *ngIf="auth.impersonatedRole" fxLayout="row" fxLayoutAlign="start center">
+    <h1 class="app-title">NASIA</h1>
+
+    Rol suplantat: {{ auth.impersonatedRole[0] }}
+    <button mat-icon-button (click)="disableImpersonation()">
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
+
+  <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start center">
+    <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+      <button
+        mat-icon-button
+        class="navbar-toggle-button"
+        *ngIf="!hiddenNavbar && !rightNavbar"
+        (click)="toggleSidebarOpen('navbar')"
+        fxHide.gt-md
+      >
+        <mat-icon class="secondary-text">menu</mat-icon>
+      </button>
+
+      <div class="toolbar-separator" *ngIf="!hiddenNavbar && !rightNavbar" fxHide.gt-md></div>
+
+      <h1 class="app-title">NASIA</h1>
+    </div>
+
+    <div class="" fxFlex="0 1 auto" fxLayout="row" fxLayoutAlign="start center">
+      <button mat-button [matMenuTriggerFor]="userMenu" class="user-button">
+        <div *ngIf="imiAuthInfo$ | async as imiAuthInfo" fxLayout="row" fxLayoutAlign="center center">
+          <img class="avatar" src="assets/images/avatars/profile.jpg" />
+          <span class="username mr-12" fxHide fxShow.gt-sm>{{ imiAuthInfo.email }}</span>
+          <mat-icon class="s-16" fxHide.xs>keyboard_arrow_down</mat-icon>
+        </div>
+      </button>
+
+      <mat-menu #userMenu="matMenu" [overlapTrigger]="false">
+        <!-- <button *ifAllowed="'impersonation'" mat-menu-item [matMenuTriggerFor]="roles">
+          <mat-icon>settings</mat-icon>
+          <span>Suplantar rol</span>
+        </button> -->
+<!-- 
+        <button mat-menu-item class="">
+          <mat-icon>help</mat-icon>
+          <span>Ajuda</span>
+        </button> -->
+
+        <button mat-menu-item (click)="auth.logoutIDP()">
+          <mat-icon>exit_to_app</mat-icon>
+          <span>Surt</span>
+        </button>
+      </mat-menu>
+
+      <mat-menu #roles="matMenu">
+        <button mat-menu-item (click)="setRole('admin')">Administrador</button>
+        <button mat-menu-item (click)="setRole('manager')">Gestió</button>
+        <button mat-menu-item (click)="setRole('maintenance')">Manteniment</button>
+        <button mat-menu-item (click)="setRole('internet_manager')">Gestió Internet</button>
+        <button mat-menu-item (click)="setRole('general_warnings')">Avisos generals</button>
+        <button mat-menu-item (click)="setRole('editor')">Editor</button>
+        <button mat-menu-item (click)="setRole('autor')">Autor</button>
+        <button mat-menu-item (click)="setRole('translator')">Traductor</button>
+        <button mat-menu-item (click)="setRole('report')">Informes</button>
+        <button mat-menu-item (click)="setRole('query')">Consulta</button>
+        <button mat-menu-item (click)="setRole('public')">Públic</button>
+        <button mat-menu-item (click)="setRole('bulk')">Edició massiva</button>
+      </mat-menu>
+
+      <!--
+             <div class="toolbar-separator"></div>
+              <bcn-search-bar (input)="search($event)"></bcn-search-bar>
+            -->
+    </div>
+  </div>
+</mat-toolbar>

@@ -1,0 +1,159 @@
+.header {
+  //padding: 18px;
+  background: #0097a7;
+  color: white;
+
+  h1 {
+    margin: 0;
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+  }
+}
+
+.container, .dayForm {
+  min-height: 400px !important;
+}
+
+.actions {
+  padding: 0px;
+  background: #ddd;
+}
+
+.autoalias {
+  padding: 5px 0 20px 0;
+  font-size: 15px;
+  color: #777;
+}
+
+.dayFormFooter {
+  background: #f2f2f2;
+  border-right: 1px solid #ddd;
+  padding: 12px;
+}
+
+.footer {
+  padding: 12px;
+}
+
+.dayForm {
+  background: #f2f2f2;
+  border-right: 1px solid #ddd;
+
+  ::ng-deep .mat-tab-label {
+    padding: 0 10px;
+    min-width: 116px !important;
+  }
+
+  ::ng-deep .mat-calendar-header {
+    padding-top: 0;
+  }
+}
+
+.days {
+  ::ng-deep .mat-checkbox-inner-container {
+    margin-right: 0;
+  }
+
+  ::ng-deep .mat-checkbox-layout {
+    display: block;
+    text-align: center;
+
+    .mat-checkbox-label {
+      display: block;
+    }
+  }
+}
+
+.daytable {
+  width: 100%;
+  max-height: 400px;
+  overflow-y: auto;
+  min-height: 150px;
+}
+
+.list-table {
+  width: 100%;
+
+  .actions-cell {
+    min-width: 140px;
+    padding-right: 0;
+  }
+
+  .icon-cell {
+    width: 60px;
+    padding-left: 12px;
+    padding-right: 0 !important;
+  }
+
+  .autotext {
+    display: inline-block;
+  }
+
+  .icon {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    //padding: 5px 10px;
+
+    align-content: center;
+    border-radius: 50%;
+    margin-right: 16px;
+    display: inline-block;
+    width: 32px;
+    text-align: center;
+    height: 32px;
+  }
+
+  .exclude {
+    background: #f44336;
+  }
+
+  .include {
+    background: #0097a7;
+  }
+}
+
+.datelist {
+  max-height: 100px;
+  overflow: auto;
+
+  .date {
+    background: #ccc;
+    padding: 3px 6px;
+    margin: 5px 5px 0 0;
+    display: inline-block;
+  }
+}
+
+mat-calendar {
+  width: 95%;
+}
+
+.highlightdate {
+  background: orange;
+  border-radius: 100%;
+}
+
+.autoaliasbox {
+  border-left: 1px solid #ddd;
+  padding: 4px 0 !important;
+  width: 100%;
+}
+
+
+::ng-deep {
+  .days mat-checkbox div.mat-internal-form-field {
+    display: flex;
+    flex-direction: column;
+    //align-items: center;
+    //align-content: center;
+    //flex-wrap: wrap;
+    padding-right: 0 !important;
+  }
+
+  .mat-internal-form-field > label {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}

@@ -1,0 +1,55 @@
+<!--<ng-container>-->
+<!--  <div class="navbar-vertical">-->
+<!--    <div class="navbar-header">-->
+<!--      <div class="logo" (click)="changeButton()">-->
+<!--        <img class="logo-icon" ngSrc="images/logo/logo.svg" alt="" width="200" height="60">-->
+<!--        <img class="logo-icon logo-icon-folded"-->
+<!--             ngSrc="images/logo/logo-badge.svg" alt=""-->
+<!--             width="200" height="60">-->
+<!--      </div>-->
+
+<!--      @if (buttonTop) {-->
+<!--        <button mat-icon-button class="toggle-sidebar-folded hidden lg:block"-->
+<!--                (click)="toggleSidebarFolded()">-->
+<!--          <mat-icon>menu</mat-icon>-->
+<!--        </button>-->
+<!--      }-->
+<!--      <button mat-icon-button class="toggle-sidebar-opened block lg:hidden"-->
+<!--              (click)="toggleSidebarOpened()">-->
+<!--        <mat-icon>arrow_back</mat-icon>-->
+<!--      </button>-->
+<!--    </div>-->
+
+<!--    <div class="navbar-content">-->
+<!--      <div class="openButton">-->
+<!--        @if (!buttonTop) {-->
+<!--          <button mat-icon-button class="toggle-sidebar-folded hidden lg:block"-->
+<!--                  (click)="toggleSidebarFolded()">-->
+<!--            <mat-icon>menu</mat-icon>-->
+<!--          </button>-->
+<!--        }-->
+<!--      </div>-->
+
+<!-- Navigation -->
+<fuse-vertical-navigation
+  class="light bg-white print:hidden"
+  [modeInput]="isScreenSmall ? 'over' : 'side'"
+  [nameInput]="'mainNavigation'"
+  [navigation]="navigation.default"
+  [openedInput]="!isScreenSmall"
+>
+  <!--        &lt;!&ndash; Navigation header hook &ndash;&gt;-->
+  <!--        <ng-container fuseVerticalNavigationContentHeader>-->
+  <!--          &lt;!&ndash; Logo &ndash;&gt;-->
+  <!--          <div class="flex h-20 items-start pb-0">-->
+  <!--            &lt;!&ndash; Light version &ndash;&gt;-->
+  <!--            <img class="w-44" alt="Logo image" i18n-alt-->
+  <!--                 width="200" height="60"-->
+  <!--                 ngSrc="images/logo/logo.svg" />-->
+  <!--          </div>-->
+  <!--        </ng-container>-->
+</fuse-vertical-navigation>
+
+<!--    </div>-->
+<!--  </div>-->
+<!--</ng-container>-->

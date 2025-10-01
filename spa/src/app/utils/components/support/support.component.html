@@ -1,0 +1,5 @@
+<div class="p-6 flex flex-row flex-wrap gap-[24px]">
+  @for (video of videos(); track video) {
+    <youtube-player width="400" height="300" [videoId]="video" [playerVars]="{ rel: 0 }"></youtube-player>
+  }
+</div>

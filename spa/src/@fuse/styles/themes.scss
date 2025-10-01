@@ -1,0 +1,201 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+@use 'user-themes' as userThemes;
+
+$black-87-opacity: rgba(0, 0, 0, 0.87);
+$white-87-opacity: rgba(255, 255, 255, 0.87);
+
+$custom-color: (
+  50: #e0f7fa,
+  100: #b2ebf2,
+  200: #80deea,
+  300: #4dd0e1,
+  400: #26c6da,
+  500: #00838f,
+  // Color principal
+  600: #007c89,
+  700: #00727c,
+  800: #006a70,
+  900: #005b5e,
+  A100: #84ffff,
+  A200: #18ffff,
+  A400: #00e5ff,
+  A700: #00b8d4,
+  contrast: (
+    50: $black-87-opacity,
+    100: $black-87-opacity,
+    200: $black-87-opacity,
+    300: $black-87-opacity,
+    400: $black-87-opacity,
+    500: $white-87-opacity,
+    600: $white-87-opacity,
+    700: $white-87-opacity,
+    800: $white-87-opacity,
+    900: $white-87-opacity,
+    A100: $black-87-opacity,
+    A200: $black-87-opacity,
+    A400: $black-87-opacity,
+    A700: $black-87-opacity,
+  ),
+);
+
+/* Include the core Angular Material styles */
+@include mat.core();
+
+/* Create a base theme without any color to set the density and typography */
+@include mat.all-component-themes(
+    (
+      color: null,
+      density: 0,
+      typography: mat.m2-define-typography-config(
+        $font-family: theme('fontFamily.sans'),
+        $headline-1: mat.m2-define-typography-level(1.875rem, 2.25rem, 800, theme('fontFamily.sans')),
+        $headline-2: mat.m2-define-typography-level(1.25rem, 1.75rem, 700, theme('fontFamily.sans')),
+        $headline-3: mat.m2-define-typography-level(1.125rem, 1.75rem, 600, theme('fontFamily.sans')),
+        $headline-4: mat.m2-define-typography-level(0.875rem, 1.25rem, 600, theme('fontFamily.sans')),
+        $headline-5: mat.m2-define-typography-level(0.875rem, 1.5rem, 400, theme('fontFamily.sans')),
+        $headline-6: mat.m2-define-typography-level(0.875rem, 1.5rem, 400, theme('fontFamily.sans')),
+        $subtitle-1: mat.m2-define-typography-level(1rem, 1.75rem, 400, theme('fontFamily.sans')),
+        $subtitle-2: mat.m2-define-typography-level(0.875rem, 1.25rem, 600, theme('fontFamily.sans')),
+        $body-1: mat.m2-define-typography-level(0.875rem, 1.5rem, 400, theme('fontFamily.sans')),
+        $body-2: mat.m2-define-typography-level(0.875rem, 1.5rem, 400, theme('fontFamily.sans')),
+        $caption: mat.m2-define-typography-level(0.75rem, 1rem, 400, theme('fontFamily.sans')),
+        $button: mat.m2-define-typography-level(0.875rem, 0.875rem, 500, theme('fontFamily.sans')),
+        $overline: mat.m2-define-typography-level(0.75rem, 2rem, 500, theme('fontFamily.sans'))
+      ),
+    )
+);
+
+/* Loop through user themes and generate Angular Material themes */
+@each $name, $theme in userThemes.$user-themes {
+  /* Generate the palettes */
+  $palettes: ();
+  @each $name in (primary, accent, warn) {
+    /* Define the Angular Material theme */
+    $palette: mat.m2-define-palette(map.get($theme, $name));
+
+    /* Replace the default colors on the defined Material palette */
+    $palette: map.merge(
+        $palette,
+        (
+          default: map.get(map.get($theme, $name), DEFAULT),
+          lighter: map.get(map.get($theme, $name), 100),
+          darker: map.get(map.get($theme, $name), 700),
+          text: map.get(map.get($theme, $name), DEFAULT),
+          default-contrast: map.get(map.get(map.get($theme, $name), contrast), DEFAULT),
+          lighter-contrast: map.get(map.get(map.get($theme, $name), contrast), 100),
+          darker-contrast: map.get(map.get(map.get($theme, $name), contrast), 700),
+        )
+    );
+
+    $palettes: map.merge($palettes, (#{$name}: $palette));
+  }
+
+  /* Define a light & dark Angular Material theme with the generated palettes */
+  $light-theme: mat.m2-define-light-theme(
+      (
+        color: $palettes,
+      )
+  );
+
+  $dark-theme: mat.m2-define-dark-theme(
+      (
+        color: $palettes,
+      )
+  );
+
+  /* Merge the custom base colors with the generated themes */
+  $light-theme-colors: map.merge(map.get($light-theme, color), $custom-color);
+  $light-theme: map.merge(
+      (
+        color: $light-theme-colors,
+      ),
+      $light-theme-colors
+  );
+
+  $dark-theme-colors: map.merge(map.get($dark-theme, color), $custom-color);
+  $dark-theme: map.merge(
+      (
+        color: $dark-theme-colors,
+      ),
+      $dark-theme-colors
+  );
+
+  /* Generate and encapsulate Angular Material themes */
+  #{map.get($theme, selector)} .light,
+  #{map.get($theme, selector)}.light {
+    @include mat.all-component-colors($light-theme);
+  }
+
+  #{map.get($theme, selector)} .dark,
+  #{map.get($theme, selector)}.dark {
+    @include mat.all-component-colors($dark-theme);
+  }
+}
+
+mat-toolbar,
+.nav-link.active,
+.mat-accent,
+button.mat-accent,
+.timetabletitle {
+  background: #00838f;
+  color: white;
+}
+
+.mat-accent.mat-button {
+  color: white !important;
+}
+
+.theme_original {
+  mat-toolbar,
+  .nav-link.active,
+  .mat-accent,
+  button.mat-accent,
+  .timetabletitle {
+    background: #00838f;
+    color: white;
+  }
+
+  .mat-accent.mat-button {
+    color: white !important;
+  }
+}
+
+.theme_purple {
+  mat-toolbar,
+  .nav-link.active,
+  .mat-accent,
+  .timetabletitle {
+    background: rgb(155, 89, 182) !important;
+  }
+
+  .mat-accent.mat-button {
+    color: white !important;
+  }
+}
+
+.theme_orange {
+  mat-toolbar,
+  .nav-link.active,
+  .mat-accent,
+  .timetabletitle {
+    background: #e67e22 !important;
+  }
+
+  .mat-accent.mat-button {
+    color: white !important;
+  }
+}
+
+.theme_green {
+  mat-toolbar,
+  .nav-link.active,
+  .mat-accent,
+  .timetabletitle {
+    background: #27ae60 !important;
+  }
+
+  .mat-accent.mat-button {
+    color: white !important;
+  }
+}

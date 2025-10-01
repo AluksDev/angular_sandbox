@@ -1,0 +1,82 @@
+<h1 i18n mat-dialog-title class="text-xl font-bold mb-4">Confirmació de sol·licitud de traducció</h1>
+<div mat-dialog-content class="mb-4">
+  <p i18n class="text-gray-700">
+    Es va a procedir a enviar la sol·licitud de traducció a la cua. Per confirmar la sol·licitud selecciona la prioritat
+    i el sistema de traducció.
+  </p>
+</div>
+@if (user$ | async; as user) {
+  <div mat-dialog-actions class="text-right justify-end items-center flex flex-col space-y-4">
+    <div class="w-full flex flex-row mb-4 space-x-4">
+      @if (user.spending_centers?.length > 0) {
+        <app-custom-select
+          placeholder="Centre de despesa"
+          i18n-placeholder
+          [items]="user.spending_centers"
+          [multiple]="false"
+          bindLabel="name"
+          bindValue="name"
+          i18n-bindLabel
+          [formControlSelect]="form.controls['spendingCenter']"
+          class="flex-1 box-border"
+        >
+        </app-custom-select>
+        <app-custom-select
+          placeholder="Sistema de traducció"
+          i18n-placeholder
+          [items]="translatorOptions"
+          [multiple]="false"
+          bindLabel="translation_system"
+          bindValue="translation_system"
+          i18n-bindLabel
+          [formControlSelect]="form.controls['translator_option']"
+          required
+          class="flex-1 box-border"
+        >
+        </app-custom-select>
+      }
+    </div>
+    @if (user.spending_centers?.length == 0) {
+      <div i18n mat-dialog-content class="text-red-600 text-left flex flex-row flex-1 box-border">
+        No té assignat un centre de despesa per a solicitar traduccions
+      </div>
+    }
+    <div class="flex flex-row justify-end items-center w-full space-x-2">
+      <button i18n mat-button [mat-dialog-close]="false" class="bg-gray-200 text-gray-700 px-4 py-2 rounded">
+        Cancel·lar
+      </button>
+      @if (user.spending_centers?.length > 0) {
+        <button
+          [disabled]="form.invalid"
+          i18n
+          mat-button
+          (click)="close('low')"
+          mat-raised-button
+          class="bg-green-500 text-white px-4 py-2 rounded"
+        >
+          Baixa
+        </button>
+        <button
+          [disabled]="form.invalid"
+          i18n
+          mat-button
+          (click)="close('medium')"
+          mat-raised-button
+          class="bg-yellow-500 text-white px-4 py-2 rounded"
+        >
+          Mitjana
+        </button>
+        <button
+          [disabled]="form.invalid"
+          i18n
+          mat-button
+          (click)="close('high')"
+          mat-raised-button
+          class="bg-red-500 text-white px-4 py-2 rounded"
+        >
+          Alta
+        </button>
+      }
+    </div>
+  </div>
+}

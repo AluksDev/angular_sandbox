@@ -1,0 +1,37 @@
+.mat-dialog-content ::ng-deep table {
+  width: 100%;
+  border: 0;
+  empty-cells: hide;
+  border-collapse: collapse;
+  background: #e6e6e6;
+  border-spacing: 0;
+  font-weight: normal;
+
+  th {
+    padding: 0.2em 0.7em;
+    color: #000;
+    background: #d9d9d9;
+    font-weight: 600;
+    margin: 0;
+    border: 1px solid #aaa;
+    border-collapse: collapse;
+    vertical-align: top;
+    text-align: left;
+    min-width: 6em;
+  }
+
+  td {
+    border: 1px solid #c0c0c0;
+    display: table-cell;
+    padding: 0.5em 0.7em;
+    background-color: #fff;
+    border-collapse: collapse;
+    margin: 0;
+    vertical-align: middle;
+    color: #000;
+
+    &.current {
+      background-color: #eee;
+    }
+  }
+}

@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>{{ data.title }}</h1>
+<div mat-dialog-content class="flex flex-col">
+  <p>{{ data.text }}</p>
+
+  <div class="flex flex-row justify-start items-center flex-[1_0_auto] box-border">
+    <mat-label i18n>Fichero XLIFF traducido</mat-label>
+    <input #file type="file" ng2FileSelect [attr.accept]="data.fileAccept || '*/*'" formControlName="myField" />
+
+    <!--        <input-file #file [fileAccept]="data.fileAccept"-->
+    <!--                    placeholder="Fichero XLIFF traducido"-->
+    <!--                    i18n-placeholder formControlName="myField">-->
+    <!--        </input-file>-->
+  </div>
+</div>
+
+<div mat-dialog-actions class="text-right justify-end items-center flex">
+  <button i18n mat-button [mat-dialog-close]="false">Cancel·lar</button>
+  <button i18n mat-button [mat-dialog-close]="file" mat-raised-button color="accent">Acceptar</button>
+</div>
+
+<!--<input type="file" ng2FileSelect [uploader]="uploader" multiple />-->

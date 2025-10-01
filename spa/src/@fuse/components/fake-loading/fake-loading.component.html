@@ -1,0 +1,24 @@
+<div>
+  @if (type() == 'line') {
+    <ngx-skeleton-loader class="h-3" count="8" appearance="line" />
+    <!--    <ngx-skeleton-loader appearance="custom-content">-->
+      <!--      @for (item of [1, 2, 3, 4, 5, 6, 7, 8]; track item) {-->
+      <!--        <div class="h-3 bg-gray-300 rounded"></div>-->
+      <!--      }-->
+      <!--    </ngx-skeleton-loader>-->
+
+  }
+  @if (type() == 'list') {
+    <ngx-skeleton-loader class="h-3" count="8" appearance="line" />
+  }
+  @if (type() == 'simple-form') {
+    <ngx-skeleton-loader class="h-2 w-[40%] table" count="2" appearance="line" />
+    <ngx-skeleton-loader class="h-2 w-[80%] table" count="3" appearance="line" />
+    <ngx-skeleton-loader class="h-2 w-full table" count="1" appearance="line" />
+    <ngx-skeleton-loader class="h-2 w-[50%] table" count="3" appearance="line" />
+    <ngx-skeleton-loader class="h-2 w-[60%] table" count="3" appearance="line" />
+  }
+  @if (type() == 'complex-form') {
+    <ngx-skeleton-loader class="h-3" count="8" appearance="line" />
+  }
+</div>

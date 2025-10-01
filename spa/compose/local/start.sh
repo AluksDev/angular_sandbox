@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+cd /usr/src/app
+export PATH="/usr/src/app/node_modules/.bin:$PATH"
+
+
+echo "*** Setting NODE_ENV to development"
+export NODE_ENV=development
+
+echo "*** Updating node_modules"
+npm install --legacy-peer-deps
+
+echo "*** Setting strict-ssl to false"
+npm config set strict-ssl false
+
+echo "*** Running ng serve"
+exec "$@"

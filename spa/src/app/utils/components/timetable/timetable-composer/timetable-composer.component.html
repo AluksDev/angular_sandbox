@@ -1,0 +1,224 @@
+@if (data.periods.length === 0) {
+  <div class="flex flex-col justify-center items-center flex-[1_1_100%] box-border">
+    <button class="newtimetable" mat-button (click)="createEmptyTimetable()">
+      <mat-icon>add</mat-icon>
+      Afegir horari
+    </button>
+    <div class="copytimetable flex flex-col gap-[3%]">
+      <span><mat-icon>file_copy</mat-icon> Copiar d'una altre registre </span>
+      <app-entity-select (change)="entitiesSelected($event)"></app-entity-select>
+    </div>
+  </div>
+}
+
+@if (data.periods.length > 0) {
+  <div class="flex-[1_1_100%] box-border">
+    <div class="header">
+      <table>
+        <thead>
+        <tr>
+          <th i18n>Període</th>
+          <th i18n>Dies</th>
+          <th i18n>Hores</th>
+          <th i18n>Preus</th>
+          <th i18n>Observacions</th>
+        </tr>
+        </thead>
+      </table>
+    </div>
+    <div class="timetable">
+      <table>
+        <tbody>
+          @for (period of data.periods; track period; let i = $index; let iFirst = $first; let iLast = $last) {
+            <tr [class.up]="hovering[i]?.up" [class.down]="hovering[i]?.down" [class.none]="hovering[i]?.none">
+              <td class="period">
+                <app-timetable-cell
+                  role="period"
+                  [enableEdit]="true"
+                  [enableLink]="false"
+                  [isFirstLink]="period.isFirstLink"
+                  [isBelow]="period.isBelow"
+                  [text]="
+                    periods[period.timetable_period]?.alias
+                      ? periods[period.timetable_period]?.alias
+                      : periods[period.timetable_period]?.auto_alias
+                  "
+                  [subtext]="
+                    periods[period.timetable_period]?.alias ? periods[period.timetable_period]?.auto_alias : ''
+                  "
+                  [first]="iFirst"
+                  [last]="iLast"
+                  [linksData]="periods"
+                  (upToggle)="periodHover($event, 'up', i)"
+                  (downToggle)="periodHover($event, 'down', i)"
+                  (deleteToggle)="periodHover($event, 'none', i)"
+                  (addup)="addPeriod('up', i)"
+                  (adddown)="addPeriod('down', i)"
+                  (moveup)="movePeriod('up', i)"
+                  (movedown)="movePeriod('down', i)"
+                  (remove)="removePeriod(i)"
+                  (link)="linkPeriod($event, i)"
+                  (unlink)="unlinkPeriod($event, i)"
+                  (edit)="editPeriod(i)"
+                  (clone)="clonePeriod(i)"
+                ></app-timetable-cell>
+              </td>
+              <td class="period-content" colspan="4">
+                <table>
+                  @for (day of period.days; track day; let j = $index; let jFirst = $first; let jLast = $last) {
+                    <tr
+                      [class.up]="hovering[i]?.days?.[j]?.up ?? false"
+                      [class.down]="hovering[i]?.days?.[j]?.down ?? false"
+                      [class.none]="hovering[i]?.days?.[j]?.none ?? false"
+                    >
+                      <td class="day">
+                        <app-timetable-cell
+                          role="day"
+                          [enableEdit]="true"
+                          [isFirstLink]="day.isFirstLink"
+                          [isBelow]="day.isBelow"
+                          [text]="
+                            days[day.timetable_day]?.alias != ''
+                              ? days[day.timetable_day]?.alias
+                              : days[day.timetable_day]?.auto_alias
+                          "
+                          [subtext]="days[day.timetable_day]?.alias != '' ? days[day.timetable_day]?.auto_alias : ''"
+                          [first]="jFirst"
+                          [last]="jLast"
+                          [linksData]="days"
+                          (upToggle)="dayHover($event, 'up', i, j)"
+                          (downToggle)="dayHover($event, 'down', i, j)"
+                          (deleteToggle)="dayHover($event, 'none', i, j)"
+                          (addup)="addDay('up', i, j)"
+                          (adddown)="addDay('down', i, j)"
+                          (moveup)="moveDay('up', i, j)"
+                          (movedown)="moveDay('down', i, j)"
+                          (remove)="removeDay(i, j)"
+                          (link)="linkDay($event, i, j)"
+                          (unlink)="unlinkDay($event, i, j)"
+                          (edit)="editDay(i, j)"
+                        ></app-timetable-cell>
+                      </td>
+                      <td class="day-content">
+                        <table>
+                          @for (hour of day.hours; track hour; let k = $index; let kFirst = $first; let kLast = $last) {
+                            <tr
+                              [class.up]="hovering[i]?.days?.[j]?.hours?.[k]?.up ?? false"
+                              [class.down]="hovering[i]?.days?.[j]?.hours?.[k]?.down ?? false"
+                              [class.none]="hovering[i]?.days?.[j]?.hours?.[k]?.none ?? false"
+                            >
+                              <td class="hour">
+                                <app-timetable-cell
+                                  role="hour"
+                                  [enableEdit]="day.timetable_day !== null"
+                                  [isFirstLink]="hour.isFirstLink"
+                                  [isBelow]="hour.isBelow"
+                                  [text]="
+                                    hours[hour.timetable_hour]?.alias
+                                      ? hours[hour.timetable_hour]?.alias
+                                      : hours[hour.timetable_hour]?.auto_alias
+                                  "
+                                  [subtext]="
+                                    hours[hour.timetable_hour]?.alias ? hours[hour.timetable_hour]?.auto_alias : ''
+                                  "
+                                  [first]="kFirst"
+                                  [last]="kLast"
+                                  [linksData]="hours"
+                                  (upToggle)="hourHover($event, 'up', i, j, k)"
+                                  (downToggle)="hourHover($event, 'down', i, j, k)"
+                                  (deleteToggle)="hourHover($event, 'none', i, j, k)"
+                                  (addup)="addHour('up', i, j, k)"
+                                  (adddown)="addHour('down', i, j, k)"
+                                  (moveup)="moveHour('up', i, j, k)"
+                                  (movedown)="moveHour('down', i, j, k)"
+                                  (remove)="removeHour(i, j, k)"
+                                  (link)="linkHour($event, i, j, k)"
+                                  (unlink)="unlinkHour($event, i, j, k)"
+                                  (edit)="editHour(i, j, k)"
+                                ></app-timetable-cell>
+                              </td>
+                              <td class="hour-content">
+                                <table>
+                                  <tr>
+                                    <td class="price">
+                                      <app-timetable-cell
+                                        role="price"
+                                        [enableEdit]="day.timetable_day !== null"
+                                        [isFirstLink]="hour.isFirstLinkPrice"
+                                        [isBelow]="hour.isBelowPrice"
+                                        [text]="prices[hour.price]?.text"
+                                        [linksData]="prices"
+                                        (link)="linkPrice($event, i, j, k)"
+                                        (unlink)="unlinkPrice($event, i, j, k)"
+                                        (edit)="editPrice(i, j, k)"
+                                      ></app-timetable-cell>
+                                    </td>
+                                    <td class="price-content">
+                                      <table>
+                                        <tr>
+                                          <td class="comment">
+                                            <app-timetable-cell
+                                              [enableEdit]="day.timetable_day !== null"
+                                              [isFirstLink]="hour.isFirstLinkComment"
+                                              [isBelow]="hour.isBelowComment"
+                                              role="comment"
+                                              [text]="comments[hour.comment]?.text"
+                                              [linksData]="comments"
+                                              (link)="linkComment($event, i, j, k)"
+                                              (unlink)="unlinkComment($event, i, j, k)"
+                                              (edit)="editComment(i, j, k)"
+                                            ></app-timetable-cell>
+                                          </td>
+                                        </tr>
+                                      </table>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                          }
+                        </table>
+                      </td>
+                    </tr>
+                  }
+                </table>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <div class="p-20 flex flex-row justify-center items-center">
+      <button class="newtimetable" mat-button (click)="deleteTimetable()">
+        <mat-icon>delete</mat-icon>
+        Esborrar horari
+      </button>
+      <button class="newtimetable" mat-button (click)="preview()">
+        <mat-icon>remove_red_eye</mat-icon>
+        Veure horari
+      </button>
+      @if (form && form.value['hide']) {
+        <button class="newtimetable hide_timetable" mat-button (click)="toogleHideTimetable()">
+          <mat-icon>cloud_off</mat-icon>
+          Amagar horari
+        </button>
+      }
+      @if (form && !form.value['hide']) {
+        <button class="newtimetable show_timetable" mat-button (click)="toogleHideTimetable()">
+          <mat-icon>cloud</mat-icon>
+          Mostrar horari
+        </button>
+      }
+    </div>
+    <div>
+      @if (form && form.value['hide']) {
+        <form [formGroup]="form" class="flex flex-col">
+          <mat-form-field class="flex-[1_1_100%] box-border">
+            <mat-label i18n>Avís per horari ocult</mat-label>
+            <input matInput formControlName="alert" />
+          </mat-form-field>
+        </form>
+      }
+    </div>
+  </div>
+}
