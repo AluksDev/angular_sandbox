@@ -6,11 +6,11 @@ volumes:
 
 services:
   django: &django
-    container_name: prod-aixonoesunjoc-api
+    container_name: prod-sandbox-api
     build:
       context: ./api
       dockerfile: ./Dockerfile
-    image: prod-aixonoesunjoc-django
+    image: prod-sandbox-django
     restart: always
     depends_on:
       - postgres
@@ -27,24 +27,24 @@ services:
 
   celeryworker:
     <<: *django
-    container_name: prod-aixonoesunjoc-celeryworker
-    image: prod-aixonoesunjoc-celeryworker
+    container_name: prod-sandbox-celeryworker
+    image: prod-sandbox-celeryworker
     ports: [ ]
     command: celery-worker
 
   celerybeat:
     <<: *django
-    container_name: prod-aixonoesunjoc-celerybeat
-    image: prod-aixonoesunjoc-celerybeat
+    container_name: prod-sandbox-celerybeat
+    image: prod-sandbox-celerybeat
     ports: [ ]
     command: celery-beat
 
   postgres:
-    container_name: prod-aixonoesunjoc-postgres
+    container_name: prod-sandbox-postgres
     build:
       context: ./devtools
       dockerfile: ./compose/postgresql/Dockerfile
-    image: prod-aixonoesunjoc-postgres
+    image: prod-sandbox-postgres
     volumes:
       - prod_postgres_data:/var/lib/postgresql/data
       - prod_postgres_data_backups:/backups
@@ -54,18 +54,18 @@ services:
       - "5432:5432"
 
   redis:
-    container_name: prod-aixonoesunjoc-redis
+    container_name: prod-sandbox-redis
     build:
       context: ./devtools
       dockerfile: ./compose/redis/Dockerfile
-    image: prod-aixonoesunjoc-redis
+    image: prod-sandbox-redis
 
   spa:
-    container_name: prod-aixonoesunjoc-spa
+    container_name: prod-sandbox-spa
     build:
       context: ./spa
       dockerfile: ./compose/production-test/Dockerfile
-    image: prod-aixonoesunjoc-spa
+    image: prod-sandbox-spa
     depends_on:
       - django
     ports:

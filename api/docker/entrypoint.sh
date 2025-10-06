@@ -24,7 +24,7 @@ function declare_variables_in_file(){
 }
 
 # Set environment variables from properties files, if they exist
-propertiesfile=/etc/aixonoesunjoc/environment.properties
+propertiesfile=/etc/sandbox/environment.properties
 xibmclientidfile=/k8s/nonsecretconfigmaps/apimanagercredentials/apimanagerconsumercredentials.properties
 psqnonsecretfile=/k8s/nonsecretconfigmaps/datasource/postgresDs.properties
 psqsecretfile=/k8s/secretconfigmaps/datasource/postgresDs.properties
@@ -67,7 +67,7 @@ fi
 
 export DATABASE_URL="postgis://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}"
 
-apimanagerurl=/etc/aixonoesunjoc/apiManagerUrl.properties
+apimanagerurl=/etc/sandbox/apiManagerUrl.properties
 
 if [ -f $apimanagerurl ]; then
   echo "$apimanagerurl found. Executing it and exporting all declarations."

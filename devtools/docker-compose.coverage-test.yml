@@ -6,33 +6,33 @@ volumes:
 
 services:
   django: &django
-    container_name: aixonoesunjoc-coverage-test-api
+    container_name: sandbox-coverage-test-api
     build:
       context: ./api
       dockerfile: ./docker/coverage-test/Dockerfile
-    image: aixonoesunjoc-coverage-test-django
+    image: sandbox-coverage-test-django
     volumes:
       - ./api/src:/src
     environment:
       - POSTGRES_HOST=postgres-test
       - POSTGRES_PORT=5432
-      - POSTGRES_USER=aixonoesunjoc
+      - POSTGRES_USER=sandbox
       - POSTGRES_PASSWORD=coverage
     command: django pytest --cov=src src
     depends_on:
       - postgres-test
 
   postgres-test:
-    container_name: aixonoesunjoc-coverage-test-postgres
+    container_name: sandbox-coverage-test-postgres
     build:
       context: ./devtools
       dockerfile: ./compose/postgresql/Dockerfile
-    image: aixonoesunjoc-coverage-test-postgres
+    image: sandbox-coverage-test-postgres
     volumes:
       - coveragetest_postgres_data:/var/lib/postgresql/data
       - coveragetest_postgres_data_backups:/backups
     environment:
-      - POSTGRES_USER=aixonoesunjoc
+      - POSTGRES_USER=sandbox
       - POSTGRES_PASSWORD=coverage
     ports:
       - "5433:5432"
