@@ -4,7 +4,7 @@
 ##
 ## Some small modifications are made to reduce developer build time and future warnings on "pip install / pip wheel"
 
-ARG PYTHON_IMAGE=arquitectura-public-registry.ajuntament.bcn/imi/python:3.11.1-slim-bullseye-2
+ARG PYTHON_IMAGE=python:3.11.1-slim-bullseye
 
 FROM ${PYTHON_IMAGE} as builder
 ENV PYTHONUNBUFFERED 1
