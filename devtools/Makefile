@@ -94,6 +94,6 @@ api-newapp: ## Create new backend app, expects name argument.
 	rm -r ./api/src/$(name)/admin.py
 	rm -r ./api/src/$(name)/apps.py
 	sudo chown -R $(UID):$(GID) ./api/src/$(name)
-	
+
 api-createsuperuser: ## Create new superadmin user.
-	$(COMPOSE_DEV) run --rm api python manage.py createsuperuser
+	$(COMPOSE_DEV) run --rm django python manage.py createsuperuser
