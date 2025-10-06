@@ -4,6 +4,7 @@
 ##
 ## Some small modifications are made to reduce developer build time and future warnings on "pip install / pip wheel"
 
+
 ARG PYTHON_IMAGE=python:3.11.1-slim-bullseye
 
 FROM ${PYTHON_IMAGE} as builder
@@ -80,5 +81,5 @@ RUN chown -R django /app
 
 USER django
 
-ENTRYPOINT ["/entrypoint.sh"]
+# ENTRYPOINT ["/entrypoint.sh"]
 EXPOSE 8000

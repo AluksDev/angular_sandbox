@@ -24,10 +24,9 @@ function declare_variables_in_file(){
 }
 
 # Set environment variables from properties files, if they exist
-propertiesfile=/etc/sandbox/environment.properties
-xibmclientidfile=/k8s/nonsecretconfigmaps/apimanagercredentials/apimanagerconsumercredentials.properties
 psqnonsecretfile=/k8s/nonsecretconfigmaps/datasource/postgresDs.properties
 psqsecretfile=/k8s/secretconfigmaps/datasource/postgresDs.properties
+propertiesfile=/etc/sandbox/environment.properties
 
 if [ -f $propertiesfile ]; then
   echo "$propertiesfile found. Executing it and exporting all declarations."
@@ -38,13 +37,6 @@ else
   echo "$propertiesfile not found. Not altering environment variables."
 fi
 
-if [ -f $xibmclientidfile ]; then
-  echo "$xibmclientidfile found. Executing it and exporting all declarations."
-  declare_variables_in_file $xibmclientidfile
-  export X_IBM_CLIENT_ID="${clientId}"
-else
-  echo "$xibmclientidfile not found. Not altering environment variables."
-fi
 
 if [ -f $psqnonsecretfile ]; then
   echo "$psqnonsecretfile found. Executing it and exporting all declarations."
