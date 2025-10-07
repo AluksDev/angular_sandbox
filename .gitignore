@@ -1,0 +1,10 @@
+# Claude configuration (contains sensitive API keys)
+.claude/.trello.config.json
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
