@@ -74,6 +74,7 @@ class AuthView(viewsets.GenericViewSet):
 
 
 class UserView(
+    mixins.CreateModelMixin,
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,
@@ -86,6 +87,20 @@ class UserView(
     filter_backends = [SearchFilter, DjangoFilterBackend]
     search_fields = ['username', 'email', 'first_name', 'last_name']
     filterset_fields = ['department', 'is_active']
+
+    def get_serializer_class(self):
+        """Use UserRegistrationSerializer for create, UserSerializer otherwise"""
+        if self.action == 'create':
+            return UserRegistrationSerializer
+        return UserSerializer
+
+    @swagger_auto_schema(
+        request_body=UserRegistrationSerializer,
+        responses={201: UserSerializer}
+    )
+    def create(self, request, *args, **kwargs):
+        """Create a new user"""
+        return super().create(request, *args, **kwargs)
 
     @swagger_auto_schema(responses={200: UserSerializer(many=True)})
     def list(self, request, *args, **kwargs):
