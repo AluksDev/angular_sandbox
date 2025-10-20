@@ -47,3 +47,34 @@
 
 
 // };
+
+/**
+ * Guard que evita que usuarios autenticados accedan a rutas públicas como el login o registro.
+ * 
+ * @param route - La configuración de ruta que se intenta cargar.
+ * @param segments - La configuración de ruta que se intenta cargar.
+ * @returns `true` si el usuario está logeado y su token es válido de lo contrario, `false`.
+ */
+
+import { inject } from '@angular/core';
+import { CanMatchFn, Route, Router, UrlSegment } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+import { firstValueFrom } from 'rxjs';
+
+export const AuthenticatedGuard: CanMatchFn = async(
+    route: Route,
+    segments: UrlSegment[]
+) => {
+    
+    const authService = inject(AuthService);
+    const router = inject(Router);
+
+    const isAuthenticated = await firstValueFrom( authService.checkStatus() );
+
+    if ( isAuthenticated.success ) {
+        router.navigateByUrl('/');
+        return false;
+    }
+
+    return true;
+}
