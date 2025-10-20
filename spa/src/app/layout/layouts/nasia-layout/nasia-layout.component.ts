@@ -2,7 +2,7 @@ import { NgClass, NgOptimizedImage } from "@angular/common";
 import { Component, inject, OnDestroy, OnInit, ViewEncapsulation } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
-import { AuthService } from "@app/core/auth/auth.service";
+import { AuthService } from "@app/core/auth/services/auth.service";
 import { defaultNavigation } from "@app/core/navigation/navigationMap";
 import { FuseNavigationService, FuseVerticalNavigationComponent } from "@fuse/components/navigation";
 import { FuseMediaWatcherService } from "@fuse/services/media-watcher";

@@ -1,7 +1,7 @@
 import { NgClass } from "@angular/common";
 import { Component, inject, OnDestroy, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { AuthService } from "@app/core/auth/auth.service";
+import { AuthService } from "@app/core/auth/services/auth.service";
 import { FuseNavigationItem, FuseNavigationService } from "@fuse/components/navigation";
 import { FuseConfigService } from "@fuse/services/config";
 import { FuseThemeService } from "@fuse/services/theme/theme.service";
@@ -9,7 +9,7 @@ import { NasiaLayoutComponent } from "@layout/layouts/nasia-layout/nasia-layout.
 import { NgSelectConfig } from "@ng-select/ng-select";
 import { Subject, Subscription } from "rxjs";
 
-import { Router } from "@angular/router";
+import { Router, RouterOutlet } from "@angular/router";
 import { LayoutService } from "@utils/layout.service";
 import { defaultNavigation } from "./core/navigation/navigationMap";
 import { RuntimeConfigService } from "./runtime-config.service";
@@ -18,7 +18,7 @@ import { RuntimeConfigService } from "./runtime-config.service";
   selector: "app-root",
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
-  imports: [NasiaLayoutComponent, NgClass],
+  imports: [NasiaLayoutComponent, NgClass, RouterOutlet],
   providers: [],
 })
 export class AppComponent implements OnInit, OnDestroy {

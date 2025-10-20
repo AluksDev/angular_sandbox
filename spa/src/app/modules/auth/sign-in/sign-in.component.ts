@@ -1,5 +1,6 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
 import {
+  FormBuilder,
   FormsModule,
   NgForm,
   ReactiveFormsModule,
@@ -16,8 +17,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
-import { AuthService } from 'app/core/auth/auth.service';
+import { AuthService } from '@app/core/auth/services/auth.service';
 import { NgOptimizedImage } from '@angular/common';
+import { FormUtils } from '@utils/form-utils';
 
 @Component({
   selector: 'auth-sign-in',
@@ -38,92 +40,96 @@ import { NgOptimizedImage } from '@angular/common';
     NgOptimizedImage,
   ],
 })
-export class AuthSignInComponent implements OnInit {
+export class AuthSignInComponent {
   private _activatedRoute = inject(ActivatedRoute);
   private _authService = inject(AuthService);
-  private _formBuilder = inject(UntypedFormBuilder);
+  private _formBuilder = inject(FormBuilder);
   private _router = inject(Router);
 
-  @ViewChild('signInNgForm') signInNgForm: NgForm;
+
+  formUtils = FormUtils;
+
+
+  // @ViewChild('signInNgForm') signInNgForm: NgForm;
 
   alert: { type: FuseAlertType; message: string } = {
     type: 'success',
     message: '',
   };
-  signInForm: UntypedFormGroup;
-  showAlert = false;
+
+  signInForm = this._formBuilder.group({
+    username: ['', Validators.required],
+    password: ['', Validators.required],
+
+  });
+
+  isLoading = signal<boolean>(false);
+  showAlert = signal<boolean>(false);
 
   /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
+  // constructor(...args: unknown[]);
 
   /**
    * Constructor
    */
-  constructor() {}
+  // constructor() {}
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
   // -----------------------------------------------------------------------------------------------------
 
-  /**
-   * On init
-   */
-  ngOnInit(): void {
-    // Create the form
-    this.signInForm = this._formBuilder.group({
-      email: ['hughes.brian@company.com', [Validators.required, Validators.email]],
-      password: ['admin', Validators.required],
-      rememberMe: [''],
-    });
-  }
-
   // -----------------------------------------------------------------------------------------------------
   // @ Public methods
   // -----------------------------------------------------------------------------------------------------
 
-  /**
-   * Sign in
-   */
-  signIn(): void {
-    // Return if the form is invalid
-    if (this.signInForm.invalid) {
+
+  onSubmit() {
+
+    this.isLoading.set(true);
+    this.signInForm.markAllAsTouched();
+
+    if ( this.signInForm.invalid) {
+      this.handleAlert("Revise los campos");
       return;
     }
 
-    // Disable the form
-    this.signInForm.disable();
+    const { username= '', password = '' } = this.signInForm.value;
 
-    // Hide the alert
-    this.showAlert = false;
+    this._authService.login(username!, password!).subscribe( (resp) => {
+      this.isLoading.set(false);
 
-    // Sign in
-    this._authService.signIn(this.signInForm.value).subscribe(
-      () => {
-        // Set the redirect url.
-        // The '/signed-in-redirect' is a fake url to catch the request and redirect the user
-        // to the correct page after a successful sign in. This way, that url can be set via
-        // a routing file and we don't have to touch here.
-        const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || '/signed-in-redirect';
 
-        // Navigate to the redirect url
-        this._router.navigateByUrl(redirectURL);
-      },
-      () => {
-        // Re-enable the form
-        this.signInForm.enable();
+      if( resp.success) {
+        this._router.navigateByUrl('/dashboard');
+        return;
+      }
 
-        // Reset the form
-        this.signInNgForm.resetForm();
 
-        // Set the alert
-        this.alert = {
-          type: 'error',
-          message: 'Wrong email or password',
-        };
-
-        // Show the alert
-        this.showAlert = true;
-      },
-    );
+      this.handleAlert(resp.message);
+    });
   }
+
+  handleAlert(error: string) {
+    this.showAlert.set(true);
+
+    //TODO  revisar que enseñamos
+    this.alert.type = 'error';
+    this.alert.message = error;
+
+    /*
+    Credenciales incorrectas → "Usuario o contraseña incorrectos"
+
+    Usuario inactivo → "Tu cuenta está desactivada. Contacta al administrador"
+
+    Sin conexión → "No se pudo conectar con el servidor. Intenta nuevamente"
+
+    Campos vacíos → Mostrar mensaje específico por campo
+
+    */
+
+    setTimeout(() => {
+      this.showAlert.set(false);
+    }, 2000);
+  }
+
 }
