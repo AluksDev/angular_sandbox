@@ -18,7 +18,7 @@ import { RuntimeConfigService } from "./runtime-config.service";
   selector: "app-root",
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
-  imports: [NasiaLayoutComponent, NgClass, RouterOutlet],
+  imports: [RouterOutlet],
   providers: [],
 })
 export class AppComponent implements OnInit, OnDestroy {
