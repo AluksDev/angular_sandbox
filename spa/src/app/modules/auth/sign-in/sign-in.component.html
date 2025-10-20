@@ -9,11 +9,13 @@
       </div>
 
       <!-- Title -->
-      <h2 i18n class="relative mt-2 text-4xl font-extrabold leading-tight tracking-tight z-0 text-red">Sign in</h2>
-      <div class="relative mt-0.5 flex items-baseline font-medium z-0">
-        <div i18n>Don't have an account?</div>
-        <a i18n class="ml-1 text-primary-500 hover:underline" routerLink='/auth/sign-up'> Sign up </a>
-      </div>
+       <section class="relative z-0 bg-gray-100/90 rounded p-3">
+         <h2 i18n class="mt-2 text-4xl font-extrabold leading-tight tracking-tigh">Sign in</h2>
+         <div class="mt-0.5 flex items-baseline font-medium">
+           <div i18n>Don't have an account?</div>
+           <a i18n class="ml-1 text-primary-500 hover:underline" routerLink='/auth/sign-up'> Sign up </a>
+         </div>
+       </section>
 
       <!-- Alert -->
       <fuse-alert class="mt-8" [appearance]="'outline'" [showIconInput]="false" [type]="'info'">
@@ -35,23 +37,24 @@
       }
 
       <!-- Sign in form -->
-      <form class="mt-8" [formGroup]="signInForm" (ngSubmit)="onSubmit()" >
+      <form class="mt-8 relative z-0 bg-gray-100/90 p-3 rounded" 
+      [formGroup]="signInForm" (ngSubmit)="onSubmit()" >
         <!-- Username field -->
-        <mat-form-field class="w-full bg-gray-100/90">
+        <mat-form-field class="w-full">
           <mat-label i18n>Username</mat-label>
           <input
-          id="username" matInput [formControlName]="'username'" />
-          @if ( formUtils.isValidField(signInForm, "username") ) {
-              <span class="form-text text-danger">
+          id="username" matInput formControlName="username" />
+          @if ( formUtils.isNotValidField(signInForm, "username") ) {
+              <span class="text-red-600">
                   {{formUtils.getFieldError(signInForm, "username")}}
               </span>
           }
         </mat-form-field>
 
         <!-- Password field -->
-        <mat-form-field class="w-full bg-gray-100/90">
+        <mat-form-field class="w-full">
           <mat-label i18n>Password</mat-label>
-          <input id="password" matInput type="password" [formControlName]="'password'" #passwordField />
+          <input id="password" matInput type="password" formControlName="password" #passwordField />
           <button
             mat-icon-button
             type="button"
@@ -61,28 +64,38 @@
             matSuffix
           >
             @if (passwordField.type === 'password') {
-              <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:eye'"> </mat-icon>
+              <mat-icon class="icon-size-5" svgIcon='heroicons_solid:eye'> </mat-icon>
             }
             @if (passwordField.type === 'text') {
-              <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:eye-slash'"> </mat-icon>
+              <mat-icon class="icon-size-5" svgIcon='heroicons_solid:eye-slash'> </mat-icon>
             }
           </button>
-          @if ( formUtils.isValidField(signInForm, "password") ) {
-              <span class="form-text text-danger">
+          @if ( formUtils.isNotValidField(signInForm, "password") ) {
+              <span class="text-red-600">
                   {{formUtils.getFieldError(signInForm, "password")}}
               </span>
           }
+
+          
         </mat-form-field>
+
+        @if ( formUtils.allInputsRequired(signInForm) ) {
+            <span class="text-red-600 p-3">
+                Todos los campos son obligatorios
+            </span>
+        }
 
         <!-- Actions -->
         <div class="mt-1.5 inline-flex w-full items-center justify-between">
           <!-- <mat-checkbox i18n class="-ml-2" [color]="'primary'" [formControlName]="'rememberMe'">
             Remember me
           </mat-checkbox> -->
-          <a i18n class="relative z-0 text-md font-medium text-primary-500 hover:underline" [routerLink]="['/forgot-password']">
+          <a i18n class="text-md font-medium text-primary-500 hover:underline" routerLink='/auth/forgot-password'>
             Forgot password?
           </a>
         </div>
+
+        
 
         <!-- Submit button -->
         <button
@@ -90,13 +103,22 @@
           mat-flat-button
           [color]="'primary'"
           [disabled]="signInForm.invalid"
-        >
-          @if(!isLoading()){   
-            <span i18n> Sign in </span>
-          }
-          @else {
-            <mat-progress-spinner [diameter]="24" [mode]="'indeterminate'"> </mat-progress-spinner>
-          }
+        > 
+          <div class="flex items-center gap-2">
+            @if(!isLoading()){   
+              <span>Iniciar sesión</span>
+            }
+            @else {
+              <!-- <div class="flex items-center gap-2"> -->
+                <span>Iniciando sesión</span>
+                <mat-progress-spinner
+                  [diameter]="24"
+                  mode="indeterminate"
+                  color="primary">
+                </mat-progress-spinner>
+              <!-- </div> -->
+            }
+          </div>
         </button>
       </form>
     </div>
@@ -136,37 +158,7 @@
         Fuse helps developers to build organized and well coded dashboards full of beautiful and rich modules. Join us
         and start building your application today.
       </div>
-      <div class="mt-2 flex items-center">
-        <div class="flex flex-0 items-center -space-x-1.5">
-          <img
-            class="h-10 w-10 flex-0 rounded-full object-cover ring-4 ring-gray-800 ring-offset-1 ring-offset-gray-800"
-            ngSrc="images/avatars/female-18.jpg"
-            fill=""
-            alt=""
-          />
-          <img
-            class="h-10 w-10 flex-0 rounded-full object-cover ring-4 ring-gray-800 ring-offset-1 ring-offset-gray-800"
-            ngSrc="images/avatars/female-11.jpg"
-            fill=""
-            alt=""
-          />
-          <img
-            class="h-10 w-10 flex-0 rounded-full object-cover ring-4 ring-gray-800 ring-offset-1 ring-offset-gray-800"
-            ngSrc="images/avatars/male-09.jpg"
-            fill=""
-            alt=""
-          />
-          <img
-            class="h-10 w-10 flex-0 rounded-full object-cover ring-4 ring-gray-800 ring-offset-1 ring-offset-gray-800"
-            ngSrc="images/avatars/male-16.jpg"
-            fill=""
-            alt=""
-          />
-        </div>
-        <div i18n class="ml-4 font-medium tracking-tight text-gray-400">
-          More than 17k people joined us, it's your turn
-        </div>
-      </div>
+      
     </div>
   </div>
 </div>

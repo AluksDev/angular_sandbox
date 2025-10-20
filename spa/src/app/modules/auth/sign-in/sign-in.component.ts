@@ -1,11 +1,8 @@
-import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, effect, inject, OnInit, signal, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormsModule,
-  NgForm,
   ReactiveFormsModule,
-  UntypedFormBuilder,
-  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -21,6 +18,10 @@ import { AuthService } from '@app/core/auth/services/auth.service';
 import { NgOptimizedImage } from '@angular/common';
 import { FormUtils } from '@utils/form-utils';
 
+
+/**
+ * Component that displays and manages the login form.
+ */
 @Component({
   selector: 'auth-sign-in',
   templateUrl: './sign-in.component.html',
@@ -40,7 +41,7 @@ import { FormUtils } from '@utils/form-utils';
     NgOptimizedImage,
   ],
 })
-export class AuthSignInComponent {
+export class AuthSignInComponent implements OnInit {
   private _activatedRoute = inject(ActivatedRoute);
   private _authService = inject(AuthService);
   private _formBuilder = inject(FormBuilder);
@@ -50,13 +51,20 @@ export class AuthSignInComponent {
   formUtils = FormUtils;
 
 
-  // @ViewChild('signInNgForm') signInNgForm: NgForm;
-
+  /**
+   * Object representing the alert displayed in the UI.
+   *
+   * @property type - The type of alert shown (`'success'`, `'error'`, `'info'`, etc.).
+   * @property message - The message displayed inside the alert.
+   */
   alert: { type: FuseAlertType; message: string } = {
     type: 'success',
     message: '',
   };
 
+  /**
+   * ReactiveForm to sign in
+   */
   signInForm = this._formBuilder.group({
     username: ['', Validators.required],
     password: ['', Validators.required],
@@ -64,7 +72,12 @@ export class AuthSignInComponent {
   });
 
   isLoading = signal<boolean>(false);
+
   showAlert = signal<boolean>(false);
+
+  disableFormEffect = effect(() => {
+    this.isLoading() ? this.signInForm.disable() : this.signInForm.enable();
+  })
 
   /** Inserted by Angular inject() migration for backwards compatibility */
   // constructor(...args: unknown[]);
@@ -78,10 +91,32 @@ export class AuthSignInComponent {
   // @ Lifecycle hooks
   // -----------------------------------------------------------------------------------------------------
 
+  /**
+   *  Checks if the user's session has expired by inspecting the URL query parameters.
+   */
+  ngOnInit(): void {
+
+    const params = this._activatedRoute.snapshot.queryParams;
+
+    if (params['reason'] == 'expired') {
+      
+      this.handleAlert("Sesion expirada");
+    }
+
+    
+    
+  }
+
   // -----------------------------------------------------------------------------------------------------
   // @ Public methods
   // -----------------------------------------------------------------------------------------------------
 
+  /**
+   * Handles the form submission event.
+   * Validates the form data, and if it is valid,
+   * calls the authentication service to attempt a login.
+   * @returns 
+   */
 
   onSubmit() {
 
@@ -98,7 +133,6 @@ export class AuthSignInComponent {
     this._authService.login(username!, password!).subscribe( (resp) => {
       this.isLoading.set(false);
 
-
       if( resp.success) {
         this._router.navigateByUrl('/dashboard');
         return;
@@ -109,27 +143,20 @@ export class AuthSignInComponent {
     });
   }
 
+  /**
+   * Displays an alert with a custom message to the user.
+   * @param error - The text message that will appear on the screen.
+   */
+
   handleAlert(error: string) {
     this.showAlert.set(true);
 
-    //TODO  revisar que enseñamos
     this.alert.type = 'error';
     this.alert.message = error;
 
-    /*
-    Credenciales incorrectas → "Usuario o contraseña incorrectos"
-
-    Usuario inactivo → "Tu cuenta está desactivada. Contacta al administrador"
-
-    Sin conexión → "No se pudo conectar con el servidor. Intenta nuevamente"
-
-    Campos vacíos → Mostrar mensaje específico por campo
-
-    */
-
     setTimeout(() => {
       this.showAlert.set(false);
-    }, 2000);
+    }, 5000);
   }
 
 }
