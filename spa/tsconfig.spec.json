@@ -2,8 +2,16 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "esModuleInterop": true, // <--
     "outDir": "./out-tsc/spec",
-    "types": ["jasmine"]
+    "types": [
+      // "jasmine"  // En este caso podemos eliminar esta línea, pues ya no se utiliza jasmine en el proyecto
+      "jest" // <--
+    ]
   },
-  "include": ["src/**/*.spec.ts", "src/**/*.d.ts"]
+  "include": [
+    "src/**/*.spec.ts",
+    "src/**/*.d.ts",
+    "./setup-jest.ts" // <--
+  ]
 }

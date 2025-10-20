@@ -41,7 +41,8 @@
       "@modules/*": ["app/modules/*"],
       "@utils/*": ["app/utils/*"],
       "@app/*": ["app/*"],
-      "@core/*": ["app/core/*"]
+      "@core/*": ["app/core/*"],
+      "@src/*": ["app/src/*"]
     }
   },
   "angularCompilerOptions": {
