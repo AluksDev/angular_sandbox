@@ -1,6 +1,7 @@
 import { Route } from "@angular/router";
 import { DashboardPageComponent } from "@modules/landing/dashboard-page/dashboard-page.component";
 import { NotAuthenticatedGuard } from "./core/auth/guards/noAuth.guard";
+import { ListUsersComponent } from "@modules/landing/list-users/list-users.component";
 // import { AuthGuard } from "app/core/auth/guards/auth.guard";
 
 // @formatter:off
@@ -33,6 +34,10 @@ export const appRoutes: Route[] = [
       {
         path: "dashboard",
         loadComponent: () => DashboardPageComponent
+      },
+      {
+        path: "list-users",
+        loadComponent: () => ListUsersComponent
       },
       { path: "**", redirectTo: "home" },
     ],
