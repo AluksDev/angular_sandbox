@@ -1,24 +1,24 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Aixo no es un joc API",
-    "description": "Aixo no es un joc",
+    "title": "Sandbox API",
+    "description": "Sandbox",
     "termsOfService": "http://example.com",
     "contact": {
       "name": "IMI",
       "url": "http://ajuntament.barcelona.cat/imi/es",
-      "email": "aixonoesunjoc@example.com"
+      "email": "sandbox@example.com"
     },
     "license": {
       "name": "IMI"
     },
-    "version": "0.0.13"
+    "version": "0.0.15"
   },
-  "host": "0.0.0.0:8000",
+  "host": "localhost:8000",
   "schemes": [
     "http"
   ],
-  "basePath": "/services/aixonoesunjoc",
+  "basePath": "/services/sandbox",
   "consumes": [
     "application/json"
   ],
@@ -36,22 +36,100 @@
     }
   ],
   "paths": {
-    "/department/": {
+    "/auth/login/": {
+      "post": {
+        "operationId": "auth_login",
+        "description": "Login user and return token",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Login"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        },
+        "tags": [
+          "auth"
+        ],
+        "x-imi-roles": {
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
+        }
+      },
+      "parameters": []
+    },
+    "/auth/logout/": {
+      "post": {
+        "operationId": "auth_logout",
+        "description": "Logout user by deleting their token",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Login"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Logged out successfully"
+          }
+        },
+        "tags": [
+          "auth"
+        ],
+        "x-imi-roles": {
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
+        }
+      },
+      "parameters": []
+    },
+    "/auth/me/": {
       "get": {
-        "operationId": "department_list",
-        "description": "Views for Department REST",
+        "operationId": "auth_me",
+        "description": "Get current user information",
         "parameters": [
           {
             "name": "search",
             "in": "query",
             "description": "A search term.",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "name",
-            "in": "query",
-            "description": "name",
             "required": false,
             "type": "string"
           },
@@ -86,31 +164,110 @@
           "200": {
             "description": "",
             "schema": {
-              "required": [
-                "count",
-                "results"
-              ],
-              "type": "object",
-              "properties": {
-                "count": {
-                  "type": "integer"
-                },
-                "next": {
-                  "type": "string",
-                  "format": "uri",
-                  "x-nullable": true
-                },
-                "previous": {
-                  "type": "string",
-                  "format": "uri",
-                  "x-nullable": true
-                },
-                "results": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/Department"
-                  }
-                }
+              "$ref": "#/definitions/User"
+            }
+          }
+        },
+        "tags": [
+          "auth"
+        ],
+        "x-imi-roles": {
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
+        }
+      },
+      "parameters": []
+    },
+    "/auth/register/": {
+      "post": {
+        "operationId": "auth_register",
+        "description": "Register a new user",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserRegistration"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        },
+        "tags": [
+          "auth"
+        ],
+        "x-imi-roles": {
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
+        }
+      },
+      "parameters": []
+    },
+    "/department/": {
+      "get": {
+        "operationId": "department_list",
+        "description": "List all departments",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The initial index from which to return the results.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Department"
               }
             }
           }
@@ -119,8 +276,8 @@
           "department"
         ],
         "x-imi-roles": {
-          "admin": "administrator can use this endpoint",
-          "manager": "Manager can use this endpoint"
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
         }
       },
       "parameters": []
@@ -128,89 +285,8 @@
     "/department/{id}/": {
       "get": {
         "operationId": "department_read",
-        "description": "Views for Department REST",
+        "description": "Get department details",
         "parameters": [
-          {
-            "name": "fields",
-            "in": "query",
-            "description": "List of fields",
-            "type": "string"
-          },
-          {
-            "name": "expand",
-            "in": "query",
-            "description": "List of nested objects",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/Department"
-            }
-          }
-        },
-        "tags": [
-          "department"
-        ],
-        "x-imi-roles": {
-          "admin": "administrator can use this endpoint",
-          "manager": "Manager can use this endpoint"
-        }
-      },
-      "put": {
-        "operationId": "department_update",
-        "description": "Views for Department REST",
-        "parameters": [
-          {
-            "name": "data",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Department"
-            }
-          },
-          {
-            "name": "fields",
-            "in": "query",
-            "description": "List of fields",
-            "type": "string"
-          },
-          {
-            "name": "expand",
-            "in": "query",
-            "description": "List of nested objects",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/Department"
-            }
-          }
-        },
-        "tags": [
-          "department"
-        ],
-        "x-imi-roles": {
-          "admin": "administrator can use this endpoint"
-        }
-      },
-      "patch": {
-        "operationId": "department_partial_update",
-        "description": "Views for Department REST",
-        "parameters": [
-          {
-            "name": "data",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Department"
-            }
-          },
           {
             "name": "fields",
             "in": "query",
@@ -326,8 +402,8 @@
           "game_answer"
         ],
         "x-imi-roles": {
-          "admin": "administrator can use this endpoint",
-          "manager": "Manager can use this endpoint"
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
         }
       },
       "post": {
@@ -367,6 +443,7 @@
           "game_answer"
         ],
         "x-imi-roles": {
+          "undefined": "missing define which role has access to this endpoint",
           "admin": "administrator can use this endpoint"
         }
       },
@@ -402,8 +479,8 @@
           "game_answer"
         ],
         "x-imi-roles": {
-          "admin": "administrator can use this endpoint",
-          "manager": "Manager can use this endpoint"
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
         }
       },
       "put": {
@@ -484,6 +561,7 @@
           "game_answer"
         ],
         "x-imi-roles": {
+          "undefined": "missing define which role has access to this endpoint",
           "admin": "administrator can use this endpoint"
         }
       },
@@ -513,6 +591,7 @@
           "game_answer"
         ],
         "x-imi-roles": {
+          "undefined": "missing define which role has access to this endpoint",
           "admin": "administrator can use this endpoint"
         }
       },
@@ -539,6 +618,13 @@
             "type": "string"
           },
           {
+            "name": "department_score__department",
+            "in": "query",
+            "description": "department_score__department",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "stage_number",
             "in": "query",
             "description": "stage_number",
@@ -549,13 +635,6 @@
             "name": "is_active",
             "in": "query",
             "description": "is_active",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "department_score__department",
-            "in": "query",
-            "description": "department_score__department",
             "required": false,
             "type": "string"
           },
@@ -623,8 +702,8 @@
           "game_question"
         ],
         "x-imi-roles": {
-          "admin": "administrator can use this endpoint",
-          "manager": "Manager can use this endpoint"
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
         }
       },
       "post": {
@@ -664,6 +743,7 @@
           "game_question"
         ],
         "x-imi-roles": {
+          "undefined": "missing define which role has access to this endpoint",
           "admin": "administrator can use this endpoint"
         }
       },
@@ -682,6 +762,13 @@
             "type": "string"
           },
           {
+            "name": "department_score__department",
+            "in": "query",
+            "description": "department_score__department",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "stage_number",
             "in": "query",
             "description": "stage_number",
@@ -692,13 +779,6 @@
             "name": "is_active",
             "in": "query",
             "description": "is_active",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "department_score__department",
-            "in": "query",
-            "description": "department_score__department",
             "required": false,
             "type": "string"
           },
@@ -744,8 +824,8 @@
           "game_question"
         ],
         "x-imi-roles": {
-          "admin": "administrator can use this endpoint",
-          "manager": "Manager can use this endpoint"
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
         }
       },
       "parameters": []
@@ -763,6 +843,13 @@
             "type": "string"
           },
           {
+            "name": "department_score__department",
+            "in": "query",
+            "description": "department_score__department",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "stage_number",
             "in": "query",
             "description": "stage_number",
@@ -773,13 +860,6 @@
             "name": "is_active",
             "in": "query",
             "description": "is_active",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "department_score__department",
-            "in": "query",
-            "description": "department_score__department",
             "required": false,
             "type": "string"
           },
@@ -825,8 +905,8 @@
           "game_question"
         ],
         "x-imi-roles": {
-          "admin": "administrator can use this endpoint",
-          "manager": "Manager can use this endpoint"
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
         }
       },
       "parameters": []
@@ -861,8 +941,8 @@
           "game_question"
         ],
         "x-imi-roles": {
-          "admin": "administrator can use this endpoint",
-          "manager": "Manager can use this endpoint"
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
         }
       },
       "put": {
@@ -943,6 +1023,7 @@
           "game_question"
         ],
         "x-imi-roles": {
+          "undefined": "missing define which role has access to this endpoint",
           "admin": "administrator can use this endpoint"
         }
       },
@@ -972,6 +1053,7 @@
           "game_question"
         ],
         "x-imi-roles": {
+          "undefined": "missing define which role has access to this endpoint",
           "admin": "administrator can use this endpoint"
         }
       },
@@ -1015,6 +1097,7 @@
           "game_question"
         ],
         "x-imi-roles": {
+          "undefined": "missing define which role has access to this endpoint",
           "admin": "administrator can use this endpoint"
         }
       },
@@ -1055,6 +1138,7 @@
           "game_question"
         ],
         "x-imi-roles": {
+          "undefined": "missing define which role has access to this endpoint",
           "admin": "administrator can use this endpoint"
         }
       },
@@ -1109,6 +1193,7 @@
           "game_question"
         ],
         "x-imi-roles": {
+          "undefined": "missing define which role has access to this endpoint",
           "admin": "administrator can use this endpoint"
         }
       },
@@ -1198,8 +1283,8 @@
           "game_user_answer"
         ],
         "x-imi-roles": {
-          "admin": "administrator can use this endpoint",
-          "manager": "Manager can use this endpoint"
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
         }
       },
       "post": {
@@ -1239,8 +1324,8 @@
           "game_user_answer"
         ],
         "x-imi-roles": {
-          "admin": "administrator can use this endpoint",
-          "manager": "Manager can use this endpoint"
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
         }
       },
       "parameters": []
@@ -1293,8 +1378,8 @@
           "game_user_answer"
         ],
         "x-imi-roles": {
-          "admin": "administrator can use this endpoint",
-          "manager": "Manager can use this endpoint"
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
         }
       },
       "parameters": []
@@ -1347,8 +1432,8 @@
           "game_user_answer"
         ],
         "x-imi-roles": {
-          "admin": "administrator can use this endpoint",
-          "manager": "Manager can use this endpoint"
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
         }
       },
       "parameters": []
@@ -1383,8 +1468,8 @@
           "game_user_answer"
         ],
         "x-imi-roles": {
-          "admin": "administrator can use this endpoint",
-          "manager": "Manager can use this endpoint"
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
         }
       },
       "put": {
@@ -1465,8 +1550,8 @@
           "game_user_answer"
         ],
         "x-imi-roles": {
-          "admin": "administrator can use this endpoint",
-          "manager": "Manager can use this endpoint"
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
         }
       },
       "delete": {
@@ -1495,8 +1580,8 @@
           "game_user_answer"
         ],
         "x-imi-roles": {
-          "admin": "administrator can use this endpoint",
-          "manager": "Manager can use this endpoint"
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
         }
       },
       "parameters": [
@@ -1508,45 +1593,6 @@
           "type": "integer"
         }
       ]
-    },
-    "/imiauth/hello/": {
-      "get": {
-        "operationId": "imiauth_hello",
-        "description": "Method to refresh the user last login date.",
-        "parameters": [
-          {
-            "name": "fields",
-            "in": "query",
-            "description": "List of fields",
-            "type": "string"
-          },
-          {
-            "name": "expand",
-            "in": "query",
-            "description": "List of nested objects",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/IMIAuthorization"
-            }
-          },
-          "400": {
-            "description": "Parsed x-imi-authorization data is not valid"
-          }
-        },
-        "tags": [
-          "imiauth"
-        ],
-        "x-imi-roles": {
-          "admin": "administrator can use this endpoint",
-          "manager": "Manager can use this endpoint"
-        }
-      },
-      "parameters": []
     },
     "/score/": {
       "get": {
@@ -1638,8 +1684,8 @@
           "score"
         ],
         "x-imi-roles": {
-          "admin": "administrator can use this endpoint",
-          "manager": "Manager can use this endpoint"
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
         }
       },
       "post": {
@@ -1679,6 +1725,7 @@
           "score"
         ],
         "x-imi-roles": {
+          "undefined": "missing define which role has access to this endpoint",
           "admin": "administrator can use this endpoint"
         }
       },
@@ -1746,6 +1793,7 @@
           "score"
         ],
         "x-imi-roles": {
+          "undefined": "missing define which role has access to this endpoint",
           "admin": "administrator can use this endpoint"
         }
       },
@@ -1816,8 +1864,8 @@
           "score"
         ],
         "x-imi-roles": {
-          "admin": "administrator can use this endpoint",
-          "manager": "Manager can use this endpoint"
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
         }
       },
       "parameters": []
@@ -1890,8 +1938,8 @@
           "score"
         ],
         "x-imi-roles": {
-          "admin": "administrator can use this endpoint",
-          "manager": "Manager can use this endpoint"
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
         }
       },
       "parameters": []
@@ -1964,8 +2012,8 @@
           "score"
         ],
         "x-imi-roles": {
-          "admin": "administrator can use this endpoint",
-          "manager": "Manager can use this endpoint"
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
         }
       },
       "parameters": []
@@ -2000,8 +2048,8 @@
           "score"
         ],
         "x-imi-roles": {
-          "admin": "administrator can use this endpoint",
-          "manager": "Manager can use this endpoint"
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
         }
       },
       "put": {
@@ -2082,6 +2130,7 @@
           "score"
         ],
         "x-imi-roles": {
+          "undefined": "missing define which role has access to this endpoint",
           "admin": "administrator can use this endpoint"
         }
       },
@@ -2111,6 +2160,7 @@
           "score"
         ],
         "x-imi-roles": {
+          "undefined": "missing define which role has access to this endpoint",
           "admin": "administrator can use this endpoint"
         }
       },
@@ -2127,15 +2177,8 @@
     "/user/": {
       "get": {
         "operationId": "user_list",
-        "description": "Get a list of reports",
+        "description": "List all users",
         "parameters": [
-          {
-            "name": "ordering",
-            "in": "query",
-            "description": "Which field to use when ordering the results.",
-            "required": false,
-            "type": "string"
-          },
           {
             "name": "search",
             "in": "query",
@@ -2144,16 +2187,16 @@
             "type": "string"
           },
           {
-            "name": "last_login",
+            "name": "department",
             "in": "query",
-            "description": "last_login",
+            "description": "department",
             "required": false,
             "type": "string"
           },
           {
-            "name": "last_login__isnull",
+            "name": "is_active",
             "in": "query",
-            "description": "last_login__isnull",
+            "description": "is_active",
             "required": false,
             "type": "string"
           },
@@ -2188,31 +2231,9 @@
           "200": {
             "description": "",
             "schema": {
-              "required": [
-                "count",
-                "results"
-              ],
-              "type": "object",
-              "properties": {
-                "count": {
-                  "type": "integer"
-                },
-                "next": {
-                  "type": "string",
-                  "format": "uri",
-                  "x-nullable": true
-                },
-                "previous": {
-                  "type": "string",
-                  "format": "uri",
-                  "x-nullable": true
-                },
-                "results": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/User"
-                  }
-                }
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
               }
             }
           }
@@ -2221,57 +2242,21 @@
           "user"
         ],
         "x-imi-roles": {
+          "undefined": "missing define which role has access to this endpoint",
           "admin": "administrator can use this endpoint"
         }
       },
-      "parameters": []
-    },
-    "/user/current/": {
-      "get": {
-        "operationId": "user_current",
-        "description": "Gets user current data",
+      "post": {
+        "operationId": "user_create",
+        "description": "Create a new user",
         "parameters": [
           {
-            "name": "ordering",
-            "in": "query",
-            "description": "Which field to use when ordering the results.",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "search",
-            "in": "query",
-            "description": "A search term.",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "last_login",
-            "in": "query",
-            "description": "last_login",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "last_login__isnull",
-            "in": "query",
-            "description": "last_login__isnull",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Number of results to return per page.",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "description": "The initial index from which to return the results.",
-            "required": false,
-            "type": "integer"
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserRegistration"
+            }
           },
           {
             "name": "fields",
@@ -2287,7 +2272,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "201": {
             "description": "",
             "schema": {
               "$ref": "#/definitions/User"
@@ -2298,8 +2283,8 @@
           "user"
         ],
         "x-imi-roles": {
-          "admin": "administrator can use this endpoint",
-          "manager": "Manager can use this endpoint"
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
         }
       },
       "parameters": []
@@ -2307,7 +2292,7 @@
     "/user/{id}/": {
       "get": {
         "operationId": "user_read",
-        "description": "Gets an report",
+        "description": "Get user details",
         "parameters": [
           {
             "name": "fields",
@@ -2328,22 +2313,19 @@
             "schema": {
               "$ref": "#/definitions/User"
             }
-          },
-          "404": {
-            "description": "Not found"
           }
         },
         "tags": [
           "user"
         ],
         "x-imi-roles": {
-          "admin": "administrator can use this endpoint",
-          "manager": "Manager can use this endpoint"
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
         }
       },
       "put": {
         "operationId": "user_update",
-        "description": "Views for User REST",
+        "description": "User management endpoints",
         "parameters": [
           {
             "name": "data",
@@ -2384,7 +2366,7 @@
       },
       "patch": {
         "operationId": "user_partial_update",
-        "description": "Views for User REST",
+        "description": "Update user information",
         "parameters": [
           {
             "name": "data",
@@ -2419,49 +2401,7 @@
           "user"
         ],
         "x-imi-roles": {
-          "admin": "administrator can use this endpoint"
-        }
-      },
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
-          "description": "A unique integer value identifying this user.",
-          "required": true,
-          "type": "integer"
-        }
-      ]
-    },
-    "/user/{id}/disable/": {
-      "post": {
-        "operationId": "user_disable",
-        "description": "Marks as unactive a user",
-        "parameters": [
-          {
-            "name": "fields",
-            "in": "query",
-            "description": "List of fields",
-            "type": "string"
-          },
-          {
-            "name": "expand",
-            "in": "query",
-            "description": "List of nested objects",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
-        },
-        "tags": [
-          "user"
-        ],
-        "x-imi-roles": {
+          "undefined": "missing define which role has access to this endpoint",
           "admin": "administrator can use this endpoint"
         }
       },
@@ -2477,10 +2417,143 @@
     }
   },
   "definitions": {
+    "Login": {
+      "required": [
+        "username",
+        "password"
+      ],
+      "type": "object",
+      "properties": {
+        "username": {
+          "title": "Username",
+          "type": "string",
+          "minLength": 1
+        },
+        "password": {
+          "title": "Password",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "User": {
+      "required": [
+        "username"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "ID",
+          "type": "integer",
+          "readOnly": true
+        },
+        "username": {
+          "title": "Username",
+          "description": "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
+          "type": "string",
+          "pattern": "^[\\w.@+-]+$",
+          "maxLength": 150,
+          "minLength": 1
+        },
+        "email": {
+          "title": "Email address",
+          "type": "string",
+          "format": "email",
+          "maxLength": 254
+        },
+        "first_name": {
+          "title": "First name",
+          "type": "string",
+          "maxLength": 150
+        },
+        "last_name": {
+          "title": "Last name",
+          "type": "string",
+          "maxLength": 150
+        },
+        "department": {
+          "title": "Department",
+          "type": "integer",
+          "x-nullable": true
+        },
+        "department_name": {
+          "title": "Department name",
+          "type": "string",
+          "readOnly": true,
+          "minLength": 1
+        },
+        "is_active": {
+          "title": "Active",
+          "description": "Designates whether this user should be treated as active. Unselect this instead of deleting accounts.",
+          "type": "boolean"
+        },
+        "date_joined": {
+          "title": "Date joined",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "last_login": {
+          "title": "Last login",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true,
+          "x-nullable": true
+        }
+      }
+    },
+    "UserRegistration": {
+      "required": [
+        "username",
+        "password",
+        "password_confirm"
+      ],
+      "type": "object",
+      "properties": {
+        "username": {
+          "title": "Username",
+          "description": "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
+          "type": "string",
+          "pattern": "^[\\w.@+-]+$",
+          "maxLength": 150,
+          "minLength": 1
+        },
+        "email": {
+          "title": "Email address",
+          "type": "string",
+          "format": "email",
+          "maxLength": 254
+        },
+        "password": {
+          "title": "Password",
+          "type": "string",
+          "minLength": 1
+        },
+        "password_confirm": {
+          "title": "Password confirm",
+          "type": "string",
+          "minLength": 1
+        },
+        "first_name": {
+          "title": "First name",
+          "type": "string",
+          "maxLength": 150
+        },
+        "last_name": {
+          "title": "Last name",
+          "type": "string",
+          "maxLength": 150
+        },
+        "department": {
+          "title": "Department",
+          "type": "integer",
+          "x-nullable": true
+        }
+      }
+    },
     "Department": {
       "required": [
-        "name",
-        "num_users"
+        "name"
       ],
       "type": "object",
       "properties": {
@@ -2491,39 +2564,15 @@
         },
         "name": {
           "title": "Name",
-          "description": "The name of the department",
           "type": "string",
-          "maxLength": 512,
+          "maxLength": 255,
           "minLength": 1
-        },
-        "num_users": {
-          "title": "Number of users",
-          "description": "The number of users in the department",
-          "type": "integer",
-          "maximum": 999999997,
-          "minimum": -999999997
         },
         "code": {
           "title": "Code",
-          "description": "The code of the department",
           "type": "string",
-          "readOnly": true,
-          "minLength": 1
-        },
-        "three_percent": {
-          "title": "Three percent",
-          "type": "string",
-          "readOnly": true
-        },
-        "six_percent": {
-          "title": "Six percent",
-          "type": "string",
-          "readOnly": true
-        },
-        "num_weeks_won": {
-          "title": "Num weeks won",
-          "type": "string",
-          "readOnly": true
+          "maxLength": 50,
+          "x-nullable": true
         }
       }
     },
@@ -2624,8 +2673,8 @@
           "title": "Stage number",
           "description": "The stage number this question will appear in.",
           "type": "integer",
-          "maximum": 999999997,
-          "minimum": -999999997,
+          "maximum": 2147483647,
+          "minimum": -2147483648,
           "x-nullable": true
         },
         "image": {
@@ -2735,146 +2784,6 @@
         }
       }
     },
-    "IMIAuthorization": {
-      "required": [
-        "user"
-      ],
-      "type": "object",
-      "properties": {
-        "user": {
-          "title": "User",
-          "type": "string",
-          "minLength": 1
-        },
-        "email": {
-          "title": "Email",
-          "type": "string",
-          "format": "email",
-          "minLength": 1
-        },
-        "iss": {
-          "title": "Iss",
-          "type": "string",
-          "x-nullable": true
-        },
-        "sub": {
-          "title": "Sub",
-          "type": "string",
-          "x-nullable": true
-        },
-        "div": {
-          "title": "Div",
-          "type": "string",
-          "x-nullable": true
-        },
-        "tipusUsuari": {
-          "title": "Tipususuari",
-          "type": "string",
-          "x-nullable": true
-        },
-        "acces": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "minLength": 1
-          }
-        },
-        "exp": {
-          "title": "Exp",
-          "type": "string",
-          "x-nullable": true
-        },
-        "iat": {
-          "title": "Iat",
-          "type": "string",
-          "x-nullable": true
-        },
-        "jti": {
-          "title": "Jti",
-          "type": "string",
-          "x-nullable": true
-        },
-        "typ": {
-          "title": "Typ",
-          "type": "string",
-          "x-nullable": true
-        },
-        "azp": {
-          "title": "Azp",
-          "type": "string",
-          "x-nullable": true
-        },
-        "session_state": {
-          "title": "Session state",
-          "type": "string",
-          "x-nullable": true
-        },
-        "resource_access": {
-          "title": "Resource access",
-          "type": "object",
-          "additionalProperties": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "minLength": 1
-              }
-            }
-          }
-        },
-        "scope": {
-          "title": "Scope",
-          "type": "string",
-          "x-nullable": true
-        },
-        "sid": {
-          "title": "Sid",
-          "type": "string",
-          "x-nullable": true
-        },
-        "displayName": {
-          "title": "Displayname",
-          "type": "string",
-          "x-nullable": true
-        },
-        "givenName": {
-          "title": "Givenname",
-          "type": "string",
-          "x-nullable": true
-        },
-        "departmentNumber": {
-          "title": "Departmentnumber",
-          "type": "string",
-          "x-nullable": true
-        },
-        "divNumber": {
-          "title": "Divnumber",
-          "type": "string",
-          "x-nullable": true
-        },
-        "sn": {
-          "title": "Sn",
-          "type": "string",
-          "x-nullable": true
-        },
-        "department": {
-          "title": "Department",
-          "type": "string",
-          "x-nullable": true
-        },
-        "dstrFlt": {
-          "title": "Dstrflt",
-          "type": "string",
-          "x-nullable": true
-        },
-        "ratDpt": {
-          "title": "Ratdpt",
-          "type": "string",
-          "x-nullable": true
-        }
-      }
-    },
     "Score": {
       "required": [
         "question",
@@ -2891,7 +2800,7 @@
           "title": "Score",
           "type": "integer",
           "maximum": 10,
-          "minimum": -999999997
+          "minimum": -2147483648
         },
         "question": {
           "title": "Question",
@@ -3066,64 +2975,6 @@
           "type": "string",
           "format": "date-time",
           "readOnly": true
-        }
-      }
-    },
-    "User": {
-      "required": [
-        "username"
-      ],
-      "type": "object",
-      "properties": {
-        "id": {
-          "title": "ID",
-          "type": "integer",
-          "readOnly": true
-        },
-        "email": {
-          "title": "Email",
-          "type": "string",
-          "format": "email",
-          "maxLength": 255,
-          "x-nullable": true
-        },
-        "dni": {
-          "title": "Dni",
-          "type": "string",
-          "maxLength": 255,
-          "x-nullable": true
-        },
-        "username": {
-          "title": "Username",
-          "type": "string",
-          "maxLength": 255,
-          "minLength": 1
-        },
-        "date_joined": {
-          "title": "Creation datetime",
-          "type": "string",
-          "format": "date-time",
-          "x-nullable": true
-        },
-        "last_login": {
-          "title": "Last login",
-          "type": "string",
-          "format": "date-time",
-          "x-nullable": true
-        },
-        "is_active": {
-          "title": "Is active",
-          "type": "boolean"
-        },
-        "lopd_accepted": {
-          "title": "Lopd accepted",
-          "description": "Has the user accepted the data protection law?",
-          "type": "boolean"
-        },
-        "department": {
-          "title": "Department",
-          "type": "integer",
-          "x-nullable": true
         }
       }
     }
