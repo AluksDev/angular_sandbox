@@ -13,6 +13,7 @@ interface Options {
   last_login_isnull?: string,
   limit?: number,
   offset?: number,
+  is_active?: boolean
 };
 
 
@@ -27,12 +28,14 @@ export class UserService {
 
   getUsers(options: Options) :Observable<UserResponse> {
 
-    const {limit = 10, offset = 0} = options;
+    const {limit = 10, offset = 0, search='', is_active = null} = options;
 
     return this.http.get<UserResponse>(`${baseUrl}/user`, {
       params:{
         limit,
-        offset
+        offset,
+        search,
+        is_active
       }
     }).pipe(
       map(resp => ({

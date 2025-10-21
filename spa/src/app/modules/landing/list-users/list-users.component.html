@@ -5,6 +5,7 @@
     <div class="flex flex-wrap gap-4 w-full">
       <input
         type="text"
+        [formControl]="searchInputControl"
         class="input min-w-[200px]"
         placeholder="Buscar usuario"
         #txtSearch
@@ -55,7 +56,7 @@
       <tbody>
 
        
-          @for (user of usersResource.value()?.results | userSearch:searchQuery() | onlyActive:onlyActives() ; track user.id) {
+          @for (user of usersResource.value()?.results ; track user.id) {
               <tr class="hover:bg-gray-50">
                   <td class="px-6 py-4 text-center text-gray-800 hidden md:table-cell">{{ user.id }}</td>
                   <td class="px-6 py-4 text-center text-gray-800">{{ user.username }}</td>
