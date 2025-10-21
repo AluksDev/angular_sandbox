@@ -1,0 +1,21 @@
+
+
+
+<section class="flex gap-4">
+
+    @if (currentPage() != 1) {
+        <button 
+        class="btn btn-primary"
+        (click)="increase(-1)"
+        >Página Anterior</button>
+    }
+
+    <!-- TODO que no se vea si es la ultima pagina -->
+
+    <!-- @if (currentPage() != pages()) { -->
+        <button 
+        class="btn btn-primary"
+        (click)="increase(1)"
+        >Siguiente Página</button>
+    <!-- } -->
+</section>
