@@ -12,7 +12,7 @@
     "license": {
       "name": "IMI"
     },
-    "version": "0.0.15"
+    "version": "0.0.16"
   },
   "host": "localhost:8000",
   "schemes": [
@@ -618,6 +618,13 @@
             "type": "string"
           },
           {
+            "name": "is_active",
+            "in": "query",
+            "description": "is_active",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "department_score__department",
             "in": "query",
             "description": "department_score__department",
@@ -628,13 +635,6 @@
             "name": "stage_number",
             "in": "query",
             "description": "stage_number",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "is_active",
-            "in": "query",
-            "description": "is_active",
             "required": false,
             "type": "string"
           },
@@ -762,6 +762,13 @@
             "type": "string"
           },
           {
+            "name": "is_active",
+            "in": "query",
+            "description": "is_active",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "department_score__department",
             "in": "query",
             "description": "department_score__department",
@@ -772,13 +779,6 @@
             "name": "stage_number",
             "in": "query",
             "description": "stage_number",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "is_active",
-            "in": "query",
-            "description": "is_active",
             "required": false,
             "type": "string"
           },
@@ -843,6 +843,13 @@
             "type": "string"
           },
           {
+            "name": "is_active",
+            "in": "query",
+            "description": "is_active",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "department_score__department",
             "in": "query",
             "description": "department_score__department",
@@ -853,13 +860,6 @@
             "name": "stage_number",
             "in": "query",
             "description": "stage_number",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "is_active",
-            "in": "query",
-            "description": "is_active",
             "required": false,
             "type": "string"
           },
