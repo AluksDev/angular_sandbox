@@ -73,7 +73,7 @@ export class AuthService {
       const token = this.storageService.getAccessToken();
 
       if ( !token ) {
-          this.logout();
+          this.clear();
           return of({
             success: false,
             message: 'Token inválido'
@@ -101,7 +101,7 @@ export class AuthService {
   
   login(username: string, password: string): Observable<Response> {
 
-    this.logout();
+    this.clear();
 
     return this.http.post<AuthResponse>(`${baseUrl}/v1/auth/login/`, {
       username: username,
@@ -116,10 +116,14 @@ export class AuthService {
     
   }
 
+  logout(){
+    
+  }
+
   /**
-   * logout the user
+   * Clear the info storaged
    */
-  private logout(){
+  private clear(){
     this.storageService.clearAll();
     this._authStatus.set('not-authenticated');
     this._user.set(null);
@@ -161,7 +165,7 @@ export class AuthService {
       return of(response);
     }
     
-    this.logout();
+    this.clear();
     
     if ( error.status == 401){
 
