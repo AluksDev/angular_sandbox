@@ -9,7 +9,9 @@ import { FormControl } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms'; 
 
-
+/**
+ * User limit in a page
+ */
 const LIMIT = 10;
 
 
@@ -26,6 +28,26 @@ export class ListUsersComponent implements OnInit {
   usersService = inject(UserService);
   paginationService = inject(PaginationService);
   
+  /**
+   * Reactive resource that fetches a paginated list of users from the API.
+   *
+   * - Automatically reacts to changes in:
+   *   - Current page (from `paginationService`)
+   *   - Search query (`searchQuery()`)
+   *   - "Only actives" toggle (`onlyActives()`)
+   *
+   * - Request parameters:
+   *   - `page`: page index used for calculating the offset
+   *   - `search`: Optional search string to filter users
+   *   - `onlyActives`: Boolean flag to fetch only active users if true
+   *
+   * - Loader behavior:
+   *   - Fetches users with `offset` based on current page and a fixed `LIMIT`
+   *   - Includes `is_active: true` when `onlyActives` is enabled
+   *
+   * - This resource can be used to reactively bind to UI elements such as
+   *   pagination controls, search bars, and active filters.
+   */
   usersResource = rxResource({
     request: () => ({ 
       page: this.paginationService.currentPage() - 1,
@@ -57,6 +79,12 @@ export class ListUsersComponent implements OnInit {
   onlyActives = signal(false);
   
   ngOnInit() {
+     /**
+     * Subscribes to search input changes with a 300ms debounce.
+     * Updates the reactive search query used by the usersResource.
+     * 
+     * - Avoids duplicate emissions via `distinctUntilChanged`
+     */
     this.searchInputControl.valueChanges
       .pipe(
         debounceTime(300),

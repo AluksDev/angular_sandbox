@@ -3,6 +3,12 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs';
 
+
+/**
+ * Service responsible for extracting and exposing the current pagination state
+ * from the URL query parameters (specifically the `page` param).
+ * 
+*/
 @Injectable({
   providedIn: 'root'
 })
