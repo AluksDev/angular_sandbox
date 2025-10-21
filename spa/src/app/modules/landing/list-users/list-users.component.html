@@ -1,94 +1,99 @@
 
-<section>
-    <h1 class="text-2xl font-bold my-2">Filtrando por: {{ searchQuery() }}</h1> 
+<section class="flex flex-col w-full gap-6">
+    <h1 class="text-2xl font-bold my-2 ">Filtrando por: {{ searchQuery() }}</h1> 
     <!-- <h1 class="text-2xl font-bold my-2">Ordenando por:</h1> -->
-    <div class="flex flex-wrap gap-4 justify-end w-full">
-        <div class="flex gap-3 flex-1">
-            <input type="text "
-                class="input flex-1"
-                placeholder="Buscar usuario"
-                #txtSearch
-            >
-            <button 
-            class="btn btn-primary"
-            (click)="searchQuery.set(txtSearch.value)"
-            >Buscar</button>
-        </div>
+    <div class="flex flex-wrap gap-4 w-full">
+      <input
+        type="text"
+        class="input min-w-[200px]"
+        placeholder="Buscar usuario"
+        #txtSearch
+      >
+      
+      <button
+        class="btn btn-primary w-auto flex-grow-0"
+        (click)="searchQuery.set(txtSearch.value)">
+        Buscar
+      </button>
 
-        <!-- <button 
-        class="btn btn-secondary"
-        >Ordenar por Acceso</button> -->
+      <button
+        class="btn btn-info  w-auto flex-grow-0"
+        (click)="toggleOnlyActiveValue()">
+        Solo activos
+      </button>
 
-        <button 
-        class="btn btn-info"
-        (click)="toggleOnlyActiveValue()"
-        >Solo activos</button>
-
-        <a class="navigate" routerLink="/">Inicio</a>
-    </div>
-    
-    
-    <div class="overflow-x-auto">
-      <table class="min-w-full bg-white shadow-md rounded-md">
-        <!-- head -->
-        <thead>
-          <tr>
-            <th class="px-6 py-3 text-center text-xl text-gray-700">ID</th>
-            <th class="px-6 py-3 text-center text-xl text-gray-700">USERNAME</th>
-            <th class="px-6 py-3 text-center text-xl text-gray-700">EMAIL</th>
-            <th class="px-6 py-3 text-center text-xl text-gray-700">DEPARTAMENTO</th>
-            <!-- <th class="px-6 py-3 text-center text-xl text-gray-700">ÚLTIMO ACCESO</th> -->
-            <th class="px-6 py-3 text-center text-xl text-gray-700">ESTADO</th>
-          </tr>
-        </thead>
-        <tbody>
-          
-          @if( usersResource.isLoading() ){
-            <div class="flex items-center gap-2">
-              <mat-progress-spinner
-                [diameter]="24"
-                mode="indeterminate"
-                color="primary">
-              </mat-progress-spinner>
-            </div>
-          }
-
-          @else {
-            @for (user of usersResource.value()?.results | userSearch:searchQuery() | onlyActive:onlyActives() ; track user.id) {
-                <tr class="hover:bg-gray-50">
-                    <td class="px-6 py-4 text-gray-800">{{ user.id }}</td>
-                    <td class="px-6 py-4 text-gray-800">{{ user.username }}</td>
-                    <td class="px-6 py-4 text-gray-600">{{ user.email }}</td>
-     
-                    <!-- TODO pendiente el nombre del departamento -->
-                    <td class="px-6 py-4 text-gray-600">Ingeniería</td>
-                    <!-- <td class="px-6 py-4 text-gray-600">{{ user.last_login }}</td> -->
-                    <td class="px-6 py-4">
-                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
-                        [class.bg-green-100]="user.is_active"
-                        [class.bg-red-100]="!user.is_active"
-                        [class.text-green-800]="user.is_active"
-                        [class.text-red-800]="!user.is_active">
-                        Active
-                        </span>
-                    </td>
-                </tr>
-            }
-     
-            @empty {
-             <p>No hay usuarios</p>
-            }
-          }
-          
-    
-        </tbody>
-      </table>
+      <a class="navigate  w-auto flex-grow-0" routerLink="/">
+        Inicio
+      </a>
     </div>
 
+          
+    @if( usersResource.isLoading() ){
+      <div class="flex items-center justify-center gap-2">
+        <mat-progress-spinner
+          [diameter]="24"
+          mode="indeterminate"
+          color="primary">
+        </mat-progress-spinner>
+      </div>
+    }
+
+     @else {
+
+    <table class="min-w-full bg-white shadow-md rounded-md">
+      <!-- head -->
+      <thead>
+        <tr>
+          <th class="px-6 py-3 text-center text-xl text-gray-700 hidden md:table-cell">ID</th>
+          <th class="px-6 py-3 text-center text-xl text-gray-700">USERNAME</th>
+          <th class="px-6 py-3 text-center text-xl text-gray-700">EMAIL</th>
+          <th class="px-6 py-3 text-center text-xl text-gray-700 hidden md:table-cell">DEPARTAMENTO</th>
+          <!-- <th class="px-6 py-3 text-center text-xl text-gray-700 hidden sm:table-cell">ÚLTIMO ACCESO</th> -->
+          <th class="px-6 py-3 text-center text-xl text-gray-700 hidden sm:table-cell">ESTADO</th>
+        </tr>
+      </thead>
+      <tbody>
+
+       
+          @for (user of usersResource.value()?.results | userSearch:searchQuery() | onlyActive:onlyActives() ; track user.id) {
+              <tr class="hover:bg-gray-50">
+                  <td class="px-6 py-4 text-center text-gray-800 hidden md:table-cell">{{ user.id }}</td>
+                  <td class="px-6 py-4 text-center text-gray-800">{{ user.username }}</td>
+                  <td class="px-6 py-4 text-center text-gray-600">{{ user.email }}</td>
+    
+                  <!-- TODO pendiente el nombre del departamento -->
+                    @if(user.departament){
+                    <td class="px-6 py-4 text-center text-gray-600 hidden md:table-cell ">{{user.departament}}</td>
+                    }
+                    @else {
+                    <td class="px-6 py-4 text-center text-gray-600 hidden md:table-cell">Sin asignar</td>
+                    }
+                  <!-- <td class="px-6 py-4 text-center text-gray-600">{{ user.last_login }}</td> -->
+                  <td class="px-6 py-4 text-center hidden sm:table-cell">
+                      <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
+                      [class.bg-green-100]="user.is_active"
+                      [class.bg-red-100]="!user.is_active"
+                      [class.text-green-800]="user.is_active"
+                      [class.text-red-800]="!user.is_active">
+                      Active
+                      </span>
+                  </td>
+              </tr>
+          }
+    
+          @empty {
+            <p>No hay usuarios</p>
+          }
+        
+  
+      </tbody>
+    </table>
     <pagination
         [pages]="usersResource.value()?.total ?? 0"
         [currentPage]="paginationService.currentPage()"
     ></pagination>
+    }
+
 
 </section>
 
