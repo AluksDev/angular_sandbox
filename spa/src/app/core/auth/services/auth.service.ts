@@ -152,11 +152,10 @@ export class AuthService {
    * @returns 
    */
   private handleAuthError( error: any) {
-    
     if ( error.status == 400 ){
       const response: Response = {
         success: false,
-        message: "Usuario o contraseña incorrectos"
+        message: error.error.non_field_errors[0]
       };
       
       return of(response);
