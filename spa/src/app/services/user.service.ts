@@ -35,7 +35,6 @@ export class UserService {
         offset
       }
     }).pipe(
-      delay(500),
       map(resp => ({
         ...resp,
         total: Math.ceil(resp.count / limit)
