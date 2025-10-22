@@ -1,1 +1,18 @@
-<p>profile.component works!</p>,
+
+<div class="flex justify-center items-center w-full"> 
+
+
+    @if (userResource.isLoading()) {
+        <mat-progress-spinner
+            [diameter]="24"
+            mode="indeterminate"
+            color="primary">
+        </mat-progress-spinner>
+    }
+
+    @if (userResource.hasValue()) {
+        <profile-card 
+        [user]="userResource.value()"
+        ></profile-card>
+    }
+</div>
