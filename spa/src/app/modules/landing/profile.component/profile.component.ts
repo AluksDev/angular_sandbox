@@ -7,7 +7,13 @@ import { UserService } from '../user.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
-
+/**
+ * ProfileComponent
+ *
+ * Displays the user's profile information using a reactive data resource.
+ * Fetches user data via UserService and binds it reactively to the template.
+ * Optimized with OnPush change detection.
+ */
 @Component({
   selector: 'profile-page',
   imports: [ProfileCardComponent, MatProgressSpinnerModule],
