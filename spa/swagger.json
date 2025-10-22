@@ -12,7 +12,7 @@
     "license": {
       "name": "IMI"
     },
-    "version": "0.0.15"
+    "version": "0.0.16"
   },
   "host": "localhost:8000",
   "schemes": [
@@ -280,6 +280,47 @@
           "admin": "administrator can use this endpoint"
         }
       },
+      "post": {
+        "operationId": "department_create",
+        "description": "Create a new department",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Department"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Department"
+            }
+          }
+        },
+        "tags": [
+          "department"
+        ],
+        "x-imi-roles": {
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
+        }
+      },
       "parameters": []
     },
     "/department/{id}/": {
@@ -306,6 +347,118 @@
             "schema": {
               "$ref": "#/definitions/Department"
             }
+          }
+        },
+        "tags": [
+          "department"
+        ],
+        "x-imi-roles": {
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
+        }
+      },
+      "put": {
+        "operationId": "department_update",
+        "description": "Update department information (full update)",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Department"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Department"
+            }
+          }
+        },
+        "tags": [
+          "department"
+        ],
+        "x-imi-roles": {
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
+        }
+      },
+      "patch": {
+        "operationId": "department_partial_update",
+        "description": "Update department information (partial update)",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Department"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Department"
+            }
+          }
+        },
+        "tags": [
+          "department"
+        ],
+        "x-imi-roles": {
+          "undefined": "missing define which role has access to this endpoint",
+          "admin": "administrator can use this endpoint"
+        }
+      },
+      "delete": {
+        "operationId": "department_delete",
+        "description": "Delete a department",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields",
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "List of nested objects",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Department deleted successfully"
           }
         },
         "tags": [
@@ -618,16 +771,16 @@
             "type": "string"
           },
           {
-            "name": "department_score__department",
+            "name": "stage_number",
             "in": "query",
-            "description": "department_score__department",
+            "description": "stage_number",
             "required": false,
             "type": "string"
           },
           {
-            "name": "stage_number",
+            "name": "department_score__department",
             "in": "query",
-            "description": "stage_number",
+            "description": "department_score__department",
             "required": false,
             "type": "string"
           },
@@ -762,16 +915,16 @@
             "type": "string"
           },
           {
-            "name": "department_score__department",
+            "name": "stage_number",
             "in": "query",
-            "description": "department_score__department",
+            "description": "stage_number",
             "required": false,
             "type": "string"
           },
           {
-            "name": "stage_number",
+            "name": "department_score__department",
             "in": "query",
-            "description": "stage_number",
+            "description": "department_score__department",
             "required": false,
             "type": "string"
           },
@@ -843,16 +996,16 @@
             "type": "string"
           },
           {
-            "name": "department_score__department",
+            "name": "stage_number",
             "in": "query",
-            "description": "department_score__department",
+            "description": "stage_number",
             "required": false,
             "type": "string"
           },
           {
-            "name": "stage_number",
+            "name": "department_score__department",
             "in": "query",
-            "description": "stage_number",
+            "description": "department_score__department",
             "required": false,
             "type": "string"
           },
@@ -1607,16 +1760,16 @@
             "type": "string"
           },
           {
-            "name": "question",
+            "name": "question__stage_number",
             "in": "query",
-            "description": "question",
+            "description": "question__stage_number",
             "required": false,
             "type": "string"
           },
           {
-            "name": "question__stage_number",
+            "name": "question",
             "in": "query",
-            "description": "question__stage_number",
+            "description": "question",
             "required": false,
             "type": "string"
           },
@@ -1744,16 +1897,16 @@
             "type": "string"
           },
           {
-            "name": "question",
+            "name": "question__stage_number",
             "in": "query",
-            "description": "question",
+            "description": "question__stage_number",
             "required": false,
             "type": "string"
           },
           {
-            "name": "question__stage_number",
+            "name": "question",
             "in": "query",
-            "description": "question__stage_number",
+            "description": "question",
             "required": false,
             "type": "string"
           },
@@ -1812,16 +1965,16 @@
             "type": "string"
           },
           {
-            "name": "question",
+            "name": "question__stage_number",
             "in": "query",
-            "description": "question",
+            "description": "question__stage_number",
             "required": false,
             "type": "string"
           },
           {
-            "name": "question__stage_number",
+            "name": "question",
             "in": "query",
-            "description": "question__stage_number",
+            "description": "question",
             "required": false,
             "type": "string"
           },
@@ -1883,16 +2036,16 @@
             "type": "string"
           },
           {
-            "name": "question",
+            "name": "question__stage_number",
             "in": "query",
-            "description": "question",
+            "description": "question__stage_number",
             "required": false,
             "type": "string"
           },
           {
-            "name": "question__stage_number",
+            "name": "question",
             "in": "query",
-            "description": "question__stage_number",
+            "description": "question",
             "required": false,
             "type": "string"
           },
@@ -1957,16 +2110,16 @@
             "type": "string"
           },
           {
-            "name": "question",
+            "name": "question__stage_number",
             "in": "query",
-            "description": "question",
+            "description": "question__stage_number",
             "required": false,
             "type": "string"
           },
           {
-            "name": "question__stage_number",
+            "name": "question",
             "in": "query",
-            "description": "question__stage_number",
+            "description": "question",
             "required": false,
             "type": "string"
           },
