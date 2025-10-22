@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import {
   FormBuilder,
   FormsModule,
@@ -41,7 +41,7 @@ import { FormUtils } from '@utils/form-utils';
     NgOptimizedImage,
   ],
 })
-export class AuthSignInComponent implements OnInit {
+export class AuthSignInComponent{
   private _activatedRoute = inject(ActivatedRoute);
   private _authService = inject(AuthService);
   private _formBuilder = inject(FormBuilder);
@@ -94,18 +94,18 @@ export class AuthSignInComponent implements OnInit {
   /**
    *  Checks if the user's session has expired by inspecting the URL query parameters.
    */
-  ngOnInit(): void {
+  // ngOnInit(): void {
 
-    const params = this._activatedRoute.snapshot.queryParams;
+  //   const params = this._activatedRoute.snapshot.queryParams;
 
-    if (params['reason'] == 'expired') {
+  //   if (params['reason'] == 'expired') {
       
-      this.handleAlert("Sesion expirada");
-    }
+  //     this.handleAlert("Sesion expirada");
+  //   }
 
     
     
-  }
+  // }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Public methods

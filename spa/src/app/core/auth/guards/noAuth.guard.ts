@@ -2,7 +2,8 @@ import { inject } from '@angular/core';
 import { CanMatchFn, Route, Router, UrlSegment } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { firstValueFrom } from 'rxjs';
-import { StorageService } from '../services/storage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from '@utils/components/dialog.component/dialog.component';
 
 
 /**
@@ -19,14 +20,23 @@ export const NotAuthenticatedGuard: CanMatchFn = async(
 ) => {
     
     const authService = inject(AuthService);
-    const storageService = inject(StorageService);
     const router = inject(Router);
+    const dialog = inject(MatDialog);
 
     const isAuthenticated = await firstValueFrom( authService.checkStatus() );
     
 
     if ( authService.authStatus() == 'expired' ) {
-        router.navigate(['/auth'], { queryParams: { reason: 'expired' } });
+        dialog.open(DialogComponent, {
+            width: '350px',
+            data: {
+            title: '¡Sesión expirada!',
+            success: false,
+            message: 'Tu sesión ha expirado. Por favor inicia sesión nuevamente'
+            }
+        });
+        
+        router.navigate(['/auth']);
         return false;
     }
 
