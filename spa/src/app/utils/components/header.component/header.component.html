@@ -13,8 +13,18 @@
             <span class="username">{{authService.user().username}}</span>
         }
 
-      <button class="logout-btn" (click)="authService.logout" title="Cerrar sesión">
-        <span class="material-icons">logout</span>
+      <button class="logout-btn" (click)="logout()" title="Cerrar sesión">
+        
+        @if (isLoading()) {
+          <mat-progress-spinner
+            [diameter]="24"
+            mode="indeterminate"
+            color="primary">
+          </mat-progress-spinner>
+        }
+        @else {
+          <span class="material-icons">logout</span>
+        }
       </button>
     </div>
   </div>
