@@ -1,1 +1,12 @@
-<p>department-card.component works!</p>,
+<mat-card class="data-card">
+    <mat-card-content class="card-content-material">
+        <mat-icon class="card-icon">{{ department().icon }}</mat-icon>
+        <div class="card-content">
+            <p class="card-title">{{department().name}}</p>
+            <p class="card-subtitle">{{department().code}}</p>
+    
+            <!-- TODO future -->
+            <!-- <p class="card-metric">Usuarios: <span>42</span></p> -->
+        </div>
+    </mat-card-content>
+</mat-card>
