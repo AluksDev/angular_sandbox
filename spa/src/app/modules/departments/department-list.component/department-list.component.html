@@ -1,1 +1,51 @@
-<p>department-list.component works!</p>,
+
+
+<div class="dashboard-container">
+    <header class="dashboard-header">
+        <h1>Listado de departamentos</h1>
+    </header>
+
+    <div class="dashboard-filters">
+        <input [formControl]="searchControl"
+        type="text" id="filter-name" placeholder="🔍 Filtrar por nombre..."        
+        >
+        <button (click)="toggleAscendent()">
+            @if (ascendentShort()) {
+                <span>Ordenar Z-A</span>
+            } @else {
+                <span>Ordenar A-Z</span>
+            }
+            
+            <mat-icon class="text-white">{{ ascendentShort() ? 'arrow_downward' : 'arrow_upward' }}</mat-icon>
+        </button>
+    </div>
+
+    @if (departmentResource.isLoading()) {
+        <div class="flex items-center justify-center gap-2">
+        <mat-progress-spinner
+          [diameter]="24"
+          mode="indeterminate"
+          color="primary">
+        </mat-progress-spinner>
+      </div>
+    }
+
+    @if (departmentResource.hasValue()) {
+        <mat-grid-list [cols]="breakpoint$ | async" rowHeight="150px"  gutterSize="20px" class="cards-grid">
+            @for (department of departmentResource.value().results | alphaShort:ascendentShort(); track department.id) {
+                <mat-grid-tile>
+                    <department-card 
+                    [department]="department"
+                    (click)="navigateToDetails(department.id)"
+                    ></department-card>
+                </mat-grid-tile>
+            }
+
+            @empty {
+                <p>No hay departamentos</p>
+            }
+        </mat-grid-list>
+    }
+    
+
+</div>
