@@ -36,9 +36,14 @@ export const appRoutes: Route[] = [
         loadComponent: () => DashboardPageComponent
       },
 
+      // {
+      //   path: "departments",
+      //   loadComponent: () => DepartmentListComponent
+      // },
+
       {
         path: "departments",
-        loadComponent: () => DepartmentListComponent
+        loadChildren: () => import("@modules/departments/department.routes")
       },
 
       { path: "**", redirectTo: "dashboard" },
