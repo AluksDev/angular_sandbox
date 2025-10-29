@@ -18,6 +18,10 @@
             
             <mat-icon class="text-white">{{ ascendentShort() ? 'arrow_downward' : 'arrow_upward' }}</mat-icon>
         </button>
+
+        <button (click)="openDialog()">
+           Crear departamento
+        </button>
     </div>
 
     @if (departmentResource.isLoading()) {
