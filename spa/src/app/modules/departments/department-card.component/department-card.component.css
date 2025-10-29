@@ -57,3 +57,26 @@
     font-weight: bold;
     color: #333;
 }
+
+.card-actions {
+    margin-left: auto;
+    display: flex;
+    gap: 8px;
+}
+
+.button{
+    background-color: white;
+    border: none;
+}
+
+.button:hover{
+    cursor: pointer;
+}
+
+.delete-button mat-icon {
+    color: #d32f2f;
+}
+
+.edit-button mat-icon {
+    color: #1565c0; 
+}
