@@ -53,16 +53,16 @@ export class DepartmentService {
     * 
     * @throws {Error} If the department name already exists or if there's a database error.
     */
-  create(department: DepartmentCreate): Observable<Department>{
-
-    console.log(department);
-    
+  create(department: DepartmentCreate): Observable<Department>{    
     const { name , code = ''} = department;
 
     return this._httpClient.post<Department>(`${baseUrl}/department/`, {
       name: name,
       code: code
     }).pipe(
+      tap(() => {
+        this.handleRefresh('Departamento creado exitosamente');
+      }),
       catchError((error:any) =>{
         const transformedError = this.handleError(error);
         
@@ -87,11 +87,7 @@ export class DepartmentService {
       code: code
     }).pipe(
       tap(()=> {
-        const currentUrl = this.router.url;
-        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-            this.router.navigateByUrl(currentUrl);
-        });
-        this._notificationService.showSuccess('Departamento actualizado exitosamente');
+        this.handleRefresh('Departamento actualizado exitosamente');
       }),
       catchError((error:any) =>{
         const transformedError = this.handleError(error);
@@ -108,7 +104,26 @@ export class DepartmentService {
    * @returns 
    */
   delete(id: number): Observable<void>{
-    return this._httpClient.delete<void>(`${baseUrl}/department/${id}`);
+    return this._httpClient.delete<void>(`${baseUrl}/department/${id}`).pipe(
+      tap(()=> {
+        this.handleRefresh('Departamento eliminado exitosamente');
+      })
+    );
+  }
+
+  /**
+   * Performs a soft refresh or reload of the current Angular route and displays 
+   * a success notification message to the user.
+   * * @private
+   * @param {string} message The success message to be shown in the notification.
+   * @returns {void}
+   */
+  private handleRefresh( message: string): void{
+    const currentUrl = this.router.url;
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigateByUrl(currentUrl);
+        });
+        this._notificationService.showSuccess(message);
   }
 
   /**
