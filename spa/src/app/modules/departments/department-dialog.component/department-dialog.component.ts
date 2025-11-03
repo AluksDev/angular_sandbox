@@ -29,14 +29,15 @@ export class DepartmentDialogComponent {
 
 
   onSubmit(){
+    
     if (!this.departmentFormRef) {
-        console.error("Referencia al formulario no encontrada.");
-        return;
+      console.error("Referencia al formulario no encontrada.");
+      return;
     }
 
     const form = this.departmentFormRef.departmentForm;
-    form.markAllAsTouched(); 
-
+    form.markAllAsTouched();
+    
     if (form.valid) {
       if(this.data.mode == 'create'){
         this.departmentService.create(form.value).subscribe({
@@ -48,7 +49,7 @@ export class DepartmentDialogComponent {
       else{
         this.departmentService.update( this.data.department.id ,form.value).subscribe({
           error: (err) => {
-            this._notificationService.showError(`Error al crear: ${err.message || 'Error de conexión'}`);
+            this._notificationService.showError(`Error al actualizar: ${err.message || 'Error de conexión'}`);
           }
         });
       }
