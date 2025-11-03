@@ -24,7 +24,7 @@ export class DepartmentFormComponent implements OnInit {
   ngOnInit(){
     this.departmentForm = this.fb.group({
       name: [this.department()?.name ?? '', [Validators.required, Validators.minLength(2) , Validators.maxLength(255) ]],
-      code: [this.department()?.code ?? '', [Validators.required, Validators.maxLength(50), Validators.pattern(ALPHANUMERIC_STRING) ]]
+      code: [this.department()?.code ?? '', [Validators.maxLength(50), Validators.pattern(ALPHANUMERIC_STRING) ]]
     })
     
   }
