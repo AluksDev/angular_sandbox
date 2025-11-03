@@ -119,16 +119,27 @@ class UserView(
 
 
 class DepartmentView(
+    mixins.CreateModelMixin,
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
     viewsets.GenericViewSet
 ):
-    """Department management endpoints"""
+    """Department CRUD endpoints"""
     permission_classes = [IsAuthenticated]
     serializer_class = DepartmentSerializer
     queryset = Department.objects.all()
     filter_backends = [SearchFilter]
     search_fields = ['name', 'code']
+
+    @swagger_auto_schema(
+        request_body=DepartmentSerializer,
+        responses={201: DepartmentSerializer}
+    )
+    def create(self, request, *args, **kwargs):
+        """Create a new department"""
+        return super().create(request, *args, **kwargs)
 
     @swagger_auto_schema(responses={200: DepartmentSerializer(many=True)})
     def list(self, request, *args, **kwargs):
@@ -139,3 +150,24 @@ class DepartmentView(
     def retrieve(self, request, *args, **kwargs):
         """Get department details"""
         return super().retrieve(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        request_body=DepartmentSerializer,
+        responses={200: DepartmentSerializer}
+    )
+    def update(self, request, *args, **kwargs):
+        """Update department information (full update)"""
+        return super().update(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        request_body=DepartmentSerializer,
+        responses={200: DepartmentSerializer}
+    )
+    def partial_update(self, request, *args, **kwargs):
+        """Update department information (partial update)"""
+        return super().partial_update(request, *args, **kwargs)
+
+    @swagger_auto_schema(responses={204: 'Department deleted successfully'})
+    def destroy(self, request, *args, **kwargs):
+        """Delete a department"""
+        return super().destroy(request, *args, **kwargs)
