@@ -9,11 +9,13 @@
       </div>
 
       <!-- Title -->
-      <div i18n class="mt-2 text-4xl font-extrabold leading-tight tracking-tight">Sign in</div>
-      <div class="mt-0.5 flex items-baseline font-medium">
-        <div i18n>Don't have an account?</div>
-        <a i18n class="ml-1 text-primary-500 hover:underline" [routerLink]="['/sign-up']"> Sign up </a>
-      </div>
+       <section class="relative z-0 bg-gray-100/90 rounded p-3">
+         <h2 i18n class="mt-2 text-4xl font-extrabold leading-tight tracking-tigh">Sign in</h2>
+         <div class="mt-0.5 flex items-baseline font-medium">
+           <div i18n>Don't have an account?</div>
+           <a i18n class="ml-1 text-primary-500 hover:underline" routerLink='/auth/sign-up'> Sign up </a>
+         </div>
+       </section>
 
       <!-- Alert -->
       <fuse-alert class="mt-8" [appearance]="'outline'" [showIconInput]="false" [type]="'info'">
@@ -22,7 +24,7 @@
       </fuse-alert>
 
       <!-- Alert -->
-      @if (showAlert) {
+      @if (showAlert()) {
         <fuse-alert
           class="mt-8"
           [appearance]="'outline'"
@@ -35,23 +37,24 @@
       }
 
       <!-- Sign in form -->
-      <form class="mt-8" [formGroup]="signInForm" #signInNgForm="ngForm">
-        <!-- Email field -->
+      <form class="mt-8 relative z-0 bg-gray-100/90 p-3 rounded" 
+      [formGroup]="signInForm" (ngSubmit)="onSubmit()" >
+        <!-- Username field -->
         <mat-form-field class="w-full">
-          <mat-label i18n>Email address</mat-label>
-          <input id="email" matInput [formControlName]="'email'" />
-          @if (signInForm.get('email').hasError('required')) {
-            <mat-error i18n> Email address is required</mat-error>
-          }
-          @if (signInForm.get('email').hasError('email')) {
-            <mat-error i18n> Please enter a valid email address</mat-error>
+          <mat-label i18n>Username</mat-label>
+          <input
+          id="username" matInput formControlName="username" />
+          @if ( formUtils.isNotValidField(signInForm, "username") ) {
+              <span class="text-red-600">
+                  {{formUtils.getFieldError(signInForm, "username")}}
+              </span>
           }
         </mat-form-field>
 
         <!-- Password field -->
         <mat-form-field class="w-full">
           <mat-label i18n>Password</mat-label>
-          <input id="password" matInput type="password" [formControlName]="'password'" #passwordField />
+          <input id="password" matInput type="password" formControlName="password" #passwordField />
           <button
             mat-icon-button
             type="button"
@@ -61,60 +64,62 @@
             matSuffix
           >
             @if (passwordField.type === 'password') {
-              <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:eye'"> </mat-icon>
+              <mat-icon class="icon-size-5" svgIcon='heroicons_solid:eye'> </mat-icon>
             }
             @if (passwordField.type === 'text') {
-              <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:eye-slash'"> </mat-icon>
+              <mat-icon class="icon-size-5" svgIcon='heroicons_solid:eye-slash'> </mat-icon>
             }
           </button>
-          <mat-error i18n> Password is required</mat-error>
+          @if ( formUtils.isNotValidField(signInForm, "password") ) {
+              <span class="text-red-600">
+                  {{formUtils.getFieldError(signInForm, "password")}}
+              </span>
+          }
+
+          
         </mat-form-field>
+
+        @if ( formUtils.allInputsRequired(signInForm) ) {
+            <span class="text-red-600 p-3">
+                Todos los campos son obligatorios
+            </span>
+        }
 
         <!-- Actions -->
         <div class="mt-1.5 inline-flex w-full items-center justify-between">
-          <mat-checkbox i18n class="-ml-2" [color]="'primary'" [formControlName]="'rememberMe'">
+          <!-- <mat-checkbox i18n class="-ml-2" [color]="'primary'" [formControlName]="'rememberMe'">
             Remember me
-          </mat-checkbox>
-          <a i18n class="text-md font-medium text-primary-500 hover:underline" [routerLink]="['/forgot-password']">
+          </mat-checkbox> -->
+          <a i18n class="text-md font-medium text-primary-500 hover:underline" routerLink='/auth/forgot-password'>
             Forgot password?
           </a>
         </div>
+
+        
 
         <!-- Submit button -->
         <button
           class="fuse-mat-button-large mt-6 w-full"
           mat-flat-button
           [color]="'primary'"
-          [disabled]="signInForm.disabled"
-          (click)="signIn()"
-        >
-          @if (!signInForm.disabled) {
-            <span i18n> Sign in </span>
-          }
-          @if (signInForm.disabled) {
-            <mat-progress-spinner [diameter]="24" [mode]="'indeterminate'"> </mat-progress-spinner>
-          }
+          [disabled]="signInForm.invalid"
+        > 
+          <div class="flex items-center gap-2">
+            @if(!isLoading()){   
+              <span>Iniciar sesión</span>
+            }
+            @else {
+              <!-- <div class="flex items-center gap-2"> -->
+                <span>Iniciando sesión</span>
+                <mat-progress-spinner
+                  [diameter]="24"
+                  mode="indeterminate"
+                  color="primary">
+                </mat-progress-spinner>
+              <!-- </div> -->
+            }
+          </div>
         </button>
-
-        <!-- Separator -->
-        <div class="mt-2 flex items-center">
-          <div class="mt-px flex-auto border-t"></div>
-          <div i18n class="text-secondary mx-2">Or continue with</div>
-          <div class="mt-px flex-auto border-t"></div>
-        </div>
-
-        <!-- Single sign-on buttons -->
-        <div class="mt-2 flex items-center space-x-4">
-          <button class="flex-auto" type="button" mat-stroked-button>
-            <mat-icon class="icon-size-5" [svgIcon]="'feather:facebook'"> </mat-icon>
-          </button>
-          <button class="flex-auto" type="button" mat-stroked-button>
-            <mat-icon class="icon-size-5" [svgIcon]="'feather:twitter'"> </mat-icon>
-          </button>
-          <button class="flex-auto" type="button" mat-stroked-button>
-            <mat-icon class="icon-size-5" [svgIcon]="'feather:github'"> </mat-icon>
-          </button>
-        </div>
       </form>
     </div>
   </div>
@@ -153,37 +158,7 @@
         Fuse helps developers to build organized and well coded dashboards full of beautiful and rich modules. Join us
         and start building your application today.
       </div>
-      <div class="mt-2 flex items-center">
-        <div class="flex flex-0 items-center -space-x-1.5">
-          <img
-            class="h-10 w-10 flex-0 rounded-full object-cover ring-4 ring-gray-800 ring-offset-1 ring-offset-gray-800"
-            ngSrc="images/avatars/female-18.jpg"
-            fill=""
-            alt=""
-          />
-          <img
-            class="h-10 w-10 flex-0 rounded-full object-cover ring-4 ring-gray-800 ring-offset-1 ring-offset-gray-800"
-            ngSrc="images/avatars/female-11.jpg"
-            fill=""
-            alt=""
-          />
-          <img
-            class="h-10 w-10 flex-0 rounded-full object-cover ring-4 ring-gray-800 ring-offset-1 ring-offset-gray-800"
-            ngSrc="images/avatars/male-09.jpg"
-            fill=""
-            alt=""
-          />
-          <img
-            class="h-10 w-10 flex-0 rounded-full object-cover ring-4 ring-gray-800 ring-offset-1 ring-offset-gray-800"
-            ngSrc="images/avatars/male-16.jpg"
-            fill=""
-            alt=""
-          />
-        </div>
-        <div i18n class="ml-4 font-medium tracking-tight text-gray-400">
-          More than 17k people joined us, it's your turn
-        </div>
-      </div>
+      
     </div>
   </div>
 </div>

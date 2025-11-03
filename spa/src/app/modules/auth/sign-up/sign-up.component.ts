@@ -16,7 +16,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router, RouterLink } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
-import { AuthService } from 'app/core/auth/auth.service';
+import { AuthService } from '@app/core/auth/services/auth.service';
 import { NgOptimizedImage } from '@angular/common';
 
 @Component({
@@ -98,27 +98,27 @@ export class AuthSignUpComponent implements OnInit {
     this.showAlert = false;
 
     // Sign up
-    this._authService.signUp(this.signUpForm.value).subscribe(
-      () => {
-        // Navigate to the confirmation required page
-        this._router.navigateByUrl('/confirmation-required');
-      },
-      () => {
-        // Re-enable the form
-        this.signUpForm.enable();
+    // this._authService.signUp(this.signUpForm.value).subscribe(
+    //   () => {
+    //     // Navigate to the confirmation required page
+    //     this._router.navigateByUrl('/confirmation-required');
+    //   },
+    //   () => {
+    //     // Re-enable the form
+    //     this.signUpForm.enable();
 
-        // Reset the form
-        this.signUpNgForm.resetForm();
+    //     // Reset the form
+    //     this.signUpNgForm.resetForm();
 
-        // Set the alert
-        this.alert = {
-          type: 'error',
-          message: 'Something went wrong, please try again.',
-        };
+    //     // Set the alert
+    //     this.alert = {
+    //       type: 'error',
+    //       message: 'Something went wrong, please try again.',
+    //     };
 
-        // Show the alert
-        this.showAlert = true;
-      },
-    );
+    //     // Show the alert
+    //     this.showAlert = true;
+    //   },
+    // );
   }
 }
