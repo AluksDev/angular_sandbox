@@ -17,4 +17,5 @@ export interface User {
   /** Has the user accepted the data protection law? */
   lopd_accepted?: boolean;
   department?: number;
+  department_name: string
 }
