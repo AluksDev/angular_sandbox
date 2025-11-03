@@ -1,0 +1,31 @@
+<header class="app-header">
+    <div class="left-section">
+        <span class="app-title">SandBox</span>
+        <nav class="nav-links">
+            <a routerLink="/dashboard" routerLinkActive="active">Inicio</a>
+            <a routerLink="/perfil" routerLinkActive="active">Perfil</a>
+        </nav>
+    </div>
+
+  <div class="right-section">
+    <div class="user-info">
+        @if (authService.authStatus() == 'authenticated') {
+            <span class="username">{{authService.user().username}}</span>
+        }
+
+      <button class="logout-btn" (click)="logout()" title="Cerrar sesión">
+        
+        @if (isLoading()) {
+          <mat-progress-spinner
+            [diameter]="24"
+            mode="indeterminate"
+            color="primary">
+          </mat-progress-spinner>
+        }
+        @else {
+          <span class="material-icons">logout</span>
+        }
+      </button>
+    </div>
+  </div>
+</header>

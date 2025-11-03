@@ -6,7 +6,7 @@ import { LuxonDateAdapter } from "@angular/material-luxon-adapter";
 import { DateAdapter, MAT_DATE_FORMATS } from "@angular/material/core";
 import { MatPaginatorIntl } from "@angular/material/paginator";
 import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
-import { PreloadAllModules, provideRouter, withInMemoryScrolling, withPreloading } from "@angular/router";
+import { PreloadAllModules, provideRouter, withComponentInputBinding, withInMemoryScrolling, withPreloading, withViewTransitions } from "@angular/router";
 import { appRoutes } from "@app/app.routes";
 import { AuthService } from "@app/core/auth/services/auth.service";
 import { provideIcons } from "@app/core/icons/icons.provider";
@@ -84,7 +84,9 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withJsonpSupport()),
     provideHttpClient(withInterceptors([authInterceptor])),
     provideExperimentalZonelessChangeDetection(),
-    provideRouter(appRoutes, withPreloading(PreloadAllModules), withInMemoryScrolling({ scrollPositionRestoration: "enabled" })),
+    provideRouter(appRoutes, withPreloading(PreloadAllModules), withInMemoryScrolling({ scrollPositionRestoration: "enabled" }),
+               withViewTransitions(), withComponentInputBinding() 
+    ),
     AuthService,
 
     {
