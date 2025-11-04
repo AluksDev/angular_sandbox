@@ -89,6 +89,28 @@ export class AuthService {
       )
   }
 
+  /**
+   * 
+   * @returns current user roles
+   */
+
+  getRole():Observable<string[]> {
+      const token = this.storageService.getAccessToken();
+
+      if ( !token ) {
+          this.clear();
+          return of([]);
+      }
+      
+
+      return this.http.get<User>(`${ baseUrl }/v1/auth/me`,{
+      }).pipe(
+          timeout(apiTimeout),
+          map( user => user.roles),
+          catchError((error:any) => of([]))
+      )
+  }
+
 
   /**
    * Login the user

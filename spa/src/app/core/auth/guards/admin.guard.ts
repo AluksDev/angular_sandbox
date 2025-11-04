@@ -11,7 +11,7 @@ export const AdminGuard: CanMatchFn = async(
     const authService = inject(AuthService);
     const router = inject(Router);
 
-    const roles = await firstValueFrom( authService.checkRole() );
+    const roles = await firstValueFrom( authService.getRole() );
 
     if ( !roles.includes('staff')){
         router.navigateByUrl('/');
