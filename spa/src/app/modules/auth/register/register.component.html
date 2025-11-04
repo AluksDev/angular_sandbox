@@ -189,10 +189,11 @@
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Elija departamento</mat-label>
           <mat-select formControlName="department">
-            <mat-option value="1">Ventas</mat-option>
-            <mat-option value="2">Marketing</mat-option>
-            <mat-option value="3">Desarrollo</mat-option>
+            @for (department of departmentResource.value().results; track department) {
+              <mat-option [value]="department.id">{{department.name}}</mat-option>
+            }
           </mat-select>
+
         </mat-form-field>
 
         @if ( formUtils.isNotValidField(chooseDepartment, "department") ) {
