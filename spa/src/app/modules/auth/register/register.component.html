@@ -1,0 +1,239 @@
+<div class="flex flex-col items-center justify-center w-full bg-gray-50 p-4 sm:p-6">
+  <section class="mb-4 p-3 text-center">
+    <h2 i18n class="text-4xl sm:text-5xl font-extrabold leading-tight tracking-tight text-gray-900">
+      Registrar un nuevo usuario
+    </h2>
+  </section>
+
+  @if (showAlert) {
+    <fuse-alert
+      class="mt-4 w-full max-w-lg shadow-lg"
+      [appearance]="'outline'"
+      [showIconInput]="false"
+      [type]="alert.type"
+      [@shake]="alert.type === 'error'"
+    >
+      {{ alert.message }}
+    </fuse-alert>
+  }
+
+  <mat-stepper 
+    class="mt-6 w-full max-w-3xl bg-white p-6 sm:p-10 rounded-xl shadow-2xl border border-gray-100" 
+    linear="true" 
+    #stepper 
+    orientation="horizontal"
+  >
+    <mat-step [stepControl]="personalData">
+      <form [formGroup]="personalData">
+        <ng-template matStepLabel>Datos Personales</ng-template>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2">
+          
+          <mat-form-field appearance="outline" class="w-full md:col-span-2">
+            <mat-label>Username</mat-label>
+            <input matInput formControlName="username">
+          </mat-form-field>
+          @if ( formUtils.isNotValidField(personalData, "username") ) {
+            <span class="text-sm text-red-600 -mt-2 mb-2 md:col-span-2 block">
+                {{formUtils.getFieldError(personalData, "username")}}
+            </span>
+          }
+          
+          <mat-form-field appearance="outline" class="w-full md:col-span-2">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email">
+          </mat-form-field>
+          @if ( formUtils.isNotValidField(personalData, "email") ) {
+            <span class="text-sm text-red-600 -mt-2 mb-2 md:col-span-2 block">
+                {{formUtils.getFieldError(personalData, "email")}}
+            </span>
+          }
+          
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>First name</mat-label>
+            <input matInput formControlName="first_name">
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Last name</mat-label>
+            <input matInput formControlName="last_name">
+          </mat-form-field>
+          
+          <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+              @if ( formUtils.isNotValidField(personalData, "first_name") ) {
+                <span class="text-sm text-red-600 -mt-2 mb-2 block">
+                    {{formUtils.getFieldError(personalData, "first_name")}}
+                </span>
+              }
+              @if ( formUtils.isNotValidField(personalData, "last_name") ) {
+                <span class="text-sm text-red-600 -mt-2 mb-2 block">
+                    {{formUtils.getFieldError(personalData, "last_name")}}
+                </span>
+              }
+          </div>
+        </div>
+        
+        <div class="flex justify-end pt-6">
+          <button matStepperNext
+              class="
+                  px-8 py-3 
+                  text-white text-lg font-semibold
+                  bg-indigo-600 hover:bg-indigo-700 
+                  focus:outline-none focus:ring-4 focus:ring-indigo-300
+                  rounded-full 
+                  transition-all duration-300 ease-in-out
+                  disabled:opacity-50 disabled:cursor-not-allowed
+              "
+              mat-flat-button
+              [disabled]="personalData.invalid"> 
+              Siguiente
+          </button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="passwordForm" label="Contraseña">
+      <form [formGroup]="passwordForm" class="space-y-6">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Contraseña</mat-label>
+          <input matInput formControlName="password" type="password" #passwordField>
+          <button
+            mat-icon-button
+            type="button"
+            (click)="
+              passwordField.type === 'password' ? (passwordField.type = 'text') : (passwordField.type = 'password')
+            "
+            matSuffix
+          >
+          @if (passwordField.type === 'password') {
+            <mat-icon class="icon-size-5" svgIcon='heroicons_solid:eye'> </mat-icon>
+          }
+          @if (passwordField.type === 'text') {
+            <mat-icon class="icon-size-5" svgIcon='heroicons_solid:eye-slash'> </mat-icon>
+          }
+        </button>
+      </mat-form-field>
+      <password-strength [password]="passwordForm.get('password')?.value || ''"></password-strength>
+        @if ( formUtils.isNotValidField(passwordForm, "password") ) {
+          <span class="text-sm text-red-600 -mt-4 block">
+              {{formUtils.getFieldError(passwordForm, "password")}}
+          </span>
+        }
+        
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Confirmar la contraseña</mat-label>
+          <input matInput formControlName="password_confirm" type="password" #confirmPassword>
+          <button
+            mat-icon-button
+            type="button"
+            (click)="
+              confirmPassword.type === 'password' ? (confirmPassword.type = 'text') : (confirmPassword.type = 'password')
+            "
+            matSuffix
+          >
+          @if (confirmPassword.type === 'password') {
+              <mat-icon class="icon-size-5" svgIcon='heroicons_solid:eye'> </mat-icon>
+            }
+            @if (confirmPassword.type === 'text') {
+              <mat-icon class="icon-size-5" svgIcon='heroicons_solid:eye-slash'> </mat-icon>
+            }
+          </button>
+        </mat-form-field>
+        @if ( formUtils.isNotValidField(passwordForm, "password_confirm") ) {
+          <span class="text-sm text-red-600 -mt-4 block">
+              {{formUtils.getFieldError(passwordForm, "password_confirm")}}
+          </span>
+        }
+
+        @if (passwordForm.errors && passwordForm.touched) {
+            <span class="text-sm text-red-600 -mt-4 block">
+            Las contraseñas deben de ser iguales
+          </span>
+
+        }
+        
+        <div class="flex justify-end pt-6">
+          <button matStepperPrevious
+              class="
+                  px-6 py-3 
+                  text-gray-700 hover:text-indigo-600 
+                  bg-gray-100 hover:bg-gray-200 
+                  rounded-full 
+                  transition-colors duration-300
+                  mr-4
+                  font-semibold
+              "
+              mat-button> 
+              Anterior
+          </button>
+          
+          <button matStepperNext
+              class="
+                  px-8 py-3 
+                  text-white text-lg font-semibold
+                  bg-indigo-600 hover:bg-indigo-700 
+                  focus:outline-none focus:ring-4 focus:ring-indigo-300
+                  rounded-full 
+                  transition-all duration-300 ease-in-out
+                  disabled:opacity-50 disabled:cursor-not-allowed
+              "
+              mat-flat-button
+              [disabled]="passwordForm.invalid"> 
+              Siguiente
+          </button>
+        </div>
+      </form>
+    </mat-step>
+    
+    <mat-step [stepControl]="chooseDepartment" label="Departamento">
+      <form [formGroup]="chooseDepartment" class="space-y-6">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Elija departamento</mat-label>
+          <mat-select formControlName="department">
+            <mat-option value="1">Ventas</mat-option>
+            <mat-option value="2">Marketing</mat-option>
+            <mat-option value="3">Desarrollo</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        @if ( formUtils.isNotValidField(chooseDepartment, "department") ) {
+          <span class="text-sm text-red-600 -mt-4 block">
+              {{formUtils.getFieldError(chooseDepartment, "department")}}
+          </span>
+        }
+
+        <div class="flex justify-end pt-6">
+        <button matStepperPrevious
+            class="
+                px-6 py-3 
+                text-gray-700 hover:text-indigo-600 
+                bg-gray-100 hover:bg-gray-200 
+                rounded-full 
+                transition-colors duration-300
+                mr-4
+                font-semibold
+            "
+            mat-button> 
+            Anterior
+        </button>
+        
+        <button 
+            class="
+                px-8 py-3 
+                text-white text-lg font-semibold
+                bg-green-600 hover:bg-green-700 
+                focus:outline-none focus:ring-4 focus:ring-green-300
+                rounded-full 
+                transition-all duration-300 ease-in-out
+                disabled:opacity-50 disabled:cursor-not-allowed
+            "
+            mat-flat-button
+            (click)="signUp()"
+            [disabled]="chooseDepartment.invalid"> 
+            Registrar
+        </button>
+      </div>
+      </form>
+    </mat-step>
+    
+  </mat-stepper>
+</div>
