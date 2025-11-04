@@ -46,6 +46,12 @@ export const appRoutes: Route[] = [
         loadChildren: () => import("@modules/departments/department.routes")
       },
 
+      {
+          path:'register',
+          canActivate: [NotAuthenticatedGuard],
+          loadChildren: () => import('./modules/auth/sign-up/register.routes')
+      },
+
       { path: "**", redirectTo: "dashboard" },
     ],
   },
