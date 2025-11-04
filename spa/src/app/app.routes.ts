@@ -49,7 +49,7 @@ export const appRoutes: Route[] = [
       {
           path:'register',
           canActivate: [NotAuthenticatedGuard],
-          loadChildren: () => import('./modules/auth/sign-up/register.routes')
+          loadChildren: () => import('./modules/auth/register/register.routes')
       },
 
       { path: "**", redirectTo: "dashboard" },
