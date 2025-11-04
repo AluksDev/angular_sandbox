@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { UserResponse } from '@api/defs/User';
 import { environment } from 'environments/environment.hmr';
-import { map, Observable, tap } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 const baseUrl = environment.apiUrl;
 
