@@ -1,9 +1,3 @@
 @if (authService.authStatus() == 'authenticated') {
     <h2>Usuario: {{authService.user().username}}</h2>
 }
-
-<a
-class="navigate"
-routerLink="/list-users"
-[queryParams]="{page: 1}"
->Listado de usuarios</a>

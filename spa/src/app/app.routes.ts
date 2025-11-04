@@ -1,6 +1,7 @@
 import { Route } from "@angular/router";
 import { DashboardPageComponent } from "@modules/landing/dashboard-page/dashboard-page.component";
 import { NotAuthenticatedGuard } from "./core/auth/guards/noAuth.guard";
+import { DepartmentListComponent } from "@modules/departments/department-list.component/department-list.component";
 import { ListUsersComponent } from "@modules/landing/list-users/list-users.component";
 // import { AuthGuard } from "app/core/auth/guards/auth.guard";
 
@@ -35,10 +36,18 @@ export const appRoutes: Route[] = [
         path: "dashboard",
         loadComponent: () => DashboardPageComponent
       },
+
+      {
+        path: "departments",
+        loadChildren: () => import("@modules/departments/department.routes")
+      },
+      
       {
         path: "list-users",
         loadComponent: () => ListUsersComponent
       },
+
+      { path: "**", redirectTo: "dashboard" },
       { path: "**", redirectTo: "home" },
     ],
   },
