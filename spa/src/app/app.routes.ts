@@ -3,6 +3,7 @@ import { DashboardPageComponent } from "@modules/landing/dashboard-page/dashboar
 import { NotAuthenticatedGuard } from "./core/auth/guards/noAuth.guard";
 import { DepartmentListComponent } from "@modules/departments/department-list.component/department-list.component";
 import { ListUsersComponent } from "@modules/landing/list-users/list-users.component";
+import { AdminGuard } from "./core/auth/guards/admin.guard";
 // import { AuthGuard } from "app/core/auth/guards/auth.guard";
 
 // @formatter:off
@@ -44,6 +45,7 @@ export const appRoutes: Route[] = [
       
       {
         path: "list-users",
+        canActivate: [AdminGuard],
         loadComponent: () => ListUsersComponent
       },
 
