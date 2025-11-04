@@ -22,6 +22,16 @@ interface Response {
   message?: string,  
 }
 
+interface UserRegistration {
+  username : string,
+  email: string,
+  password: string,
+  password_confirm: string,
+  first_name: string,
+  last_name: string,
+  department: number
+}
+
 type AuthStatus = 'checking' | 'authenticated' | 'not-authenticated' | 'expired'
 
 /**
@@ -110,6 +120,43 @@ export class AuthService {
       timeout(apiTimeout),
       map( resp => this.handleAuthSuccess(resp)),
       catchError((error:any) => this.handleAuthError(error))
+    );
+
+
+  }
+
+  /**
+   * Register a user
+   * @param data The new user data
+   * @returns 
+   */
+  register(data: UserRegistration): Observable<void> {
+    
+    const {
+      username, 
+      password, 
+      password_confirm, 
+      email, 
+      first_name,
+      last_name,
+      department
+    } = data
+
+    return this.http.post<void>(`${baseUrl}/v1/auth/register/`, {
+      username, 
+      password, 
+      password_confirm, 
+      email, 
+      first_name,
+      last_name,
+      department
+    }).pipe(
+      timeout(apiTimeout),
+
+      //TODO navegar a la pagina de detalles de usuario
+      //TODO mostar error con snackbar
+      // tap((resp) => console.log(resp)),
+      // catchError((error:any) => this.handleAuthError(error))
     );
 
     
