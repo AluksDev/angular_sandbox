@@ -6,6 +6,9 @@ from rest_framework.authtoken.models import Token
 from drf_yasg.utils import swagger_auto_schema
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
+from django.utils import timezone
+from django.contrib.auth.models import Group
+from drf_yasg import openapi
 
 from .models import User, Department
 from .serializers import (
@@ -32,6 +35,10 @@ class AuthView(viewsets.GenericViewSet):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
+
+        # Update last login timestamp
+        user.last_login = timezone.now()
+        user.save(update_fields=['last_login'])
 
         return Response({
             'token': token.key,
@@ -100,7 +107,11 @@ class UserView(
     )
     def create(self, request, *args, **kwargs):
         """Create a new user"""
-        return super().create(request, *args, **kwargs)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        headers = self.get_success_headers(serializer.data)
+        return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED, headers=headers)
 
     @swagger_auto_schema(responses={200: UserSerializer(many=True)})
     def list(self, request, *args, **kwargs):
