@@ -16,7 +16,7 @@ import { DialogComponent } from '@utils/components/dialog.component/dialog.compo
 
 export const NotAuthenticatedGuard: CanMatchFn = async(
     route: Route,
-    segments: UrlSegment[]
+    segments: UrlSegment[],
 ) => {
     
     const authService = inject(AuthService);
@@ -27,6 +27,9 @@ export const NotAuthenticatedGuard: CanMatchFn = async(
     
 
     if ( authService.authStatus() == 'expired' ) {
+        
+        const targetUrl = segments['url'];
+
         dialog.open(DialogComponent, {
             width: '350px',
             data: {
@@ -36,7 +39,11 @@ export const NotAuthenticatedGuard: CanMatchFn = async(
             }
         });
         
-        router.navigate(['/auth']);
+        router.navigate(['/auth'], {
+            queryParams: {
+                returnUrl: targetUrl
+            }
+        });
         return false;
     }
 
