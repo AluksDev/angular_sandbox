@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { UserResponse } from '@api/defs/User';
+import { Router } from '@angular/router';
+import { User, UserResponse } from '@api/defs/User';
 import { environment } from 'environments/environment.hmr';
-import { map, Observable } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 
 const baseUrl = environment.apiUrl;
 
@@ -14,6 +15,7 @@ interface Options {
   limit?: number,
   offset?: number,
   is_active?: boolean
+  department?: number
 };
 
 /**
@@ -29,6 +31,7 @@ interface Options {
 export class UserService {
 
   private http = inject(HttpClient);
+  private router = inject(Router);
 
     /**
    * Fetches a paginated list of users from the API.
@@ -48,20 +51,46 @@ export class UserService {
 
   getUsers(options: Options) :Observable<UserResponse> {
 
-    const {limit = 10, offset = 0, search='', is_active = null} = options;
+    const {limit = 10, offset = 0, search='', is_active = null, department=''} = options;
 
     return this.http.get<UserResponse>(`${baseUrl}/user`, {
       params:{
         limit,
         offset,
         search,
-        is_active
+        is_active,
+        department
       }
     }).pipe(
       map(resp => ({
         ...resp,
         total: Math.ceil(resp.count / limit)
       }))
+    );
+
+  }
+
+  /**
+   * Toggle the field is_active of an user
+   * @param user the user to be edited
+   * @returns 
+   */
+  toggleActive(user: User){
+
+    const {id, username, is_active} = user;
+
+    const new_active = !is_active;
+
+    return this.http.put(`${baseUrl}/user/${id}/`, {
+      username,
+      is_active: new_active
+    }).pipe(
+      tap(() => {
+        const currentUrl = this.router.url;
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigateByUrl(currentUrl);
+        });
+      })
     );
 
   }
