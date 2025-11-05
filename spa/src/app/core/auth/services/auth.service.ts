@@ -91,23 +91,23 @@ export class AuthService {
 
   /**
    * 
-   * @returns current user roles
+   * @returns true if is staff
    */
 
-  getRole():Observable<string[]> {
+  isAdmin():Observable<boolean> {
       const token = this.storageService.getAccessToken();
 
       if ( !token ) {
           this.clear();
-          return of([]);
+          return of(false);
       }
       
 
       return this.http.get<User>(`${ baseUrl }/v1/auth/me`,{
       }).pipe(
           timeout(apiTimeout),
-          map( user => user.roles),
-          catchError((error:any) => of([]))
+          map( user => user.roles.includes('staff')),
+          catchError((error:any) => of(false))
       )
   }
 

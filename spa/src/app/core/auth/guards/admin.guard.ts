@@ -11,10 +11,10 @@ export const AdminGuard: CanMatchFn = async(
     const authService = inject(AuthService);
     const router = inject(Router);
 
-    const roles = await firstValueFrom( authService.getRole() );
+    const isAdmin = await firstValueFrom( authService.isAdmin() );
 
-    if ( !roles.includes('staff')){
-        router.navigateByUrl('/');
+    if ( !isAdmin){
+        router.navigateByUrl('/403');
         return false;
     }
 
