@@ -8,16 +8,32 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormControl } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms'; 
+import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+import { SortByLoginPipe } from '@utils/pipe/login-sort.pipe';
+import { MatIconModule } from '@angular/material/icon';
+import { UsersFiltersComponent, UserStatus } from "./components/users-filters.component/users-filters.component";
+import { UserRowActionsComponent } from "./components/user-row-actions.component/user-row-actions.component";
 
 /**
  * User limit in a page
  */
 const LIMIT = 10;
-
+registerLocaleData(localeEs, 'es'); // Registra el locale 'es'
 
 @Component({
   selector: 'app-list-users',
-  imports: [PaginationComponent, RouterLink, MatProgressSpinnerModule, ReactiveFormsModule],
+  imports: [
+    PaginationComponent,
+    CommonModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
+    ReactiveFormsModule,
+    DatePipe,
+    SortByLoginPipe,
+    UsersFiltersComponent,
+    UserRowActionsComponent
+],
   templateUrl: './list-users.component.html',
   styleUrl: './list-users.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -52,23 +68,32 @@ export class ListUsersComponent implements OnInit {
     request: () => ({ 
       page: this.paginationService.currentPage() - 1,
       search: this.searchQuery(),
-      onlyActives: this.onlyActives()
+      statusFilter: this.currentStatusFilter(),
+      departmentFilter: this.currentDepartmentFilter()
 
     }),
     loader: ({request}) => {
-      
-      if(request.onlyActives){
-        return this.usersService.getUsers({
+        
+      const params: { [key: string]: any } = {
         offset: request.page * LIMIT,
-        search: request.search,
-        is_active: true,
-      });  
+      };
+
+      if (request.search) {
+        params['search'] = request.search;
       }
 
-      return this.usersService.getUsers({
-        offset: request.page * LIMIT,
-        search: request.search
-      });
+      
+      if (request.statusFilter === 'active') {
+        params['is_active'] = true;
+      } else if (request.statusFilter === 'inactive') {
+        params['is_active'] = false;
+      }
+
+      if (request.departmentFilter !== 0) {
+        params['department'] = request.departmentFilter;
+      }
+      
+      return this.usersService.getUsers(params);
     }
   });
   
@@ -76,7 +101,9 @@ export class ListUsersComponent implements OnInit {
 
   totalPages = Math.ceil(this.usersResource.value()?.count / LIMIT);
   searchQuery = signal('');
-  onlyActives = signal(false);
+  lastLogin = signal(false);
+  currentStatusFilter = signal<UserStatus>('todos');
+  currentDepartmentFilter = signal<number>(0);
   
   ngOnInit() {
      /**
@@ -93,9 +120,17 @@ export class ListUsersComponent implements OnInit {
         this.searchQuery.set(value)
       });
   }
-  
-  toggleOnlyActiveValue() {
-    this.onlyActives.update( value => !value );
+
+  toggleLastLoginValue() {
+    this.lastLogin.update( value => !value );
   } 
+
+  handleFilterChange(newStatus: UserStatus): void {
+    this.currentStatusFilter .set(newStatus);
+  }
+
+  handleDepartmentChange(newId: number): void {
+    this.currentDepartmentFilter.set(newId);
+  }
 
 }
