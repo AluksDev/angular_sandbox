@@ -11,8 +11,8 @@
 }
 
 .mat-card-avatar {
-  width: 64px;
-  height: 64px;
+  width: 120px;
+  height: 120px;
 }
 
 .section-title {
@@ -83,8 +83,8 @@ mat-divider {
 .profile-card {
   .avatar-icon {
     font-size: 40px;
-    height: 40px;
-    width: 40px;
+    height: 120px;
+    width: 120px;
     line-height: 40px;
   }
 }
@@ -99,6 +99,7 @@ mat-divider {
   margin-left: auto;
   border-radius: 0.375rem;
   text-align: center;
+  max-height: 50px;
 }
 
 .btn-primary:hover {

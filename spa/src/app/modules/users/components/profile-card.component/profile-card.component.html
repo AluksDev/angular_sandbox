@@ -68,7 +68,7 @@
             <li>
             <mat-icon>login</mat-icon>
             <span class="label">Último Login:</span>
-            <span class="value">{{ user().last_login }}</span>
+            <span class="value">{{ user().last_login | date: 'medium' }}</span>
             </li>
             
         </ul>

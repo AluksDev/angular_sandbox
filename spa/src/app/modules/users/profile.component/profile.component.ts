@@ -2,9 +2,11 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 
 
-import { ProfileCardComponent } from "./components/profile-card.component/profile-card.component";
-import { UserService } from '../user.service';
+
+
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ProfileCardComponent } from '../components/profile-card.component/profile-card.component';
+import { UserService } from '@app/services/user.service';
 
 
 /**

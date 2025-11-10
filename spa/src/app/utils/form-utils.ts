@@ -133,7 +133,7 @@ export class FormUtils {
                 return of(null);
             }
             
-            return userService.getUser({ search: control.value }).pipe(
+            return userService.getUsers({ search: control.value }).pipe(
                 map((resp: UserResponse) => {
                     if (resp.count === 0) {
                         return null;

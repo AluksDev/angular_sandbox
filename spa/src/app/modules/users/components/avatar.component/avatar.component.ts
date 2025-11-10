@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { InitialsPipe } from '../../pipes/intitials.pipe';
+import { InitialsPipe } from '@modules/users/pipes/intitials.pipe';
+
 
 /**
  * UserAvatar Component

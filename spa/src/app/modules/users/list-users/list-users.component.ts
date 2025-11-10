@@ -29,6 +29,7 @@ registerLocaleData(localeEs, 'es'); // Registra el locale 'es'
     MatProgressSpinnerModule,
     MatIconModule,
     ReactiveFormsModule,
+    RouterLink,
     DatePipe,
     SortByLoginPipe,
     UsersFiltersComponent,

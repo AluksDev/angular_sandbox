@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { User, UserResponse } from '@api/defs/User';
 import { environment } from 'environments/environment.hmr';
-import { map, Observable, tap } from 'rxjs';
+import { catchError, map, Observable, of, tap } from 'rxjs';
 
 const baseUrl = environment.apiUrl;
 
@@ -94,5 +94,34 @@ export class UserService {
     );
 
   }
+
+  /**
+   * Fetches the profile information of the currently authenticated user.
+   *
+   * @remarks
+   * This method performs a GET request to the `/v1/auth/me/` endpoint.
+   *
+   * @returns An `Observable<User>` that emits the user's profile
+   * data upon success.
+   */
+  get(): Observable<User> {
+    return this.http.get<User>(`${baseUrl}/v1/auth/me/`, {
+        }).pipe(
+          catchError(error => {return of(null)} )
+        );
+  
+  }
+
+
+  getUserById(id: number): Observable<User> {
+    return this.http.get<User>(`${baseUrl}/user/${id}`);
+  
+  }
+
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<User> {
+    const id = route.params['id'];
+     return this.http.get<User>(`${baseUrl}/user/${id}`);
+  }
+
 
 }

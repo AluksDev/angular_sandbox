@@ -71,7 +71,11 @@
             <tr class="hover:bg-gray-50">
                 <td class="px-6 py-4 text-center text-gray-800 hidden md:table-cell">{{ user.id }}</td>
                 
-                <td class="px-6 py-4 text-center text-gray-800">{{ user.username }}</td>
+                <td class="px-6 py-4 text-center text-gray-800">
+                  <a [routerLink]="['/users', user.id]" class="text-indigo-600 hover:text-indigo-900 font-medium cursor-pointer">
+                    {{ user.username }}
+                  </a>
+                </td>
                 
                 <td class="px-6 py-4 text-center text-gray-600 hidden sm:table-cell">{{ user.email }}</td>
 
