@@ -1,9 +1,20 @@
-import { AbstractControl, FormArray, FormGroup, ValidationErrors } from "@angular/forms";
+import { inject } from "@angular/core";
+import { AbstractControl, AsyncValidator, AsyncValidatorFn, FormGroup, ValidationErrors } from "@angular/forms";
+import { UserResponse } from "@api/defs/User";
+import { UserService } from "@app/services/user.service";
+import { catchError, Observable, of, map, tap } from "rxjs";
 
 
 export class FormUtils {
 
-    // Expresiones regulares
+    // Patterns
+    static emailPattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
+
+    static uppercasePattern = '^(?=.*[A-Z]).+$'; 
+    static numberPattern = '^(?=.*[0-9]).+$'; 
+    static specialPattern = '^(?=.*[^A-Za-z0-9]).+$';
+
+    userService = inject(UserService);
 
     /**
      *  Returns the user-friendly error message
@@ -22,7 +33,26 @@ export class FormUtils {
             case 'min':
                 return `Valor minimo de ${errors['min'].min}`;
             case 'pattern':
-                return `El formato del campo ${fieldName} no es válido.`;
+                if (  errors['pattern'].requiredPattern == FormUtils.emailPattern) {
+                    return 'El correo ingresado no luce como un correo electronico';
+                }
+
+                if (  errors['pattern'].requiredPattern == FormUtils.uppercasePattern) {
+                    return 'Al menos una mayúscula';
+                }
+
+                if (  errors['pattern'].requiredPattern == FormUtils.numberPattern) {
+                    return 'Al menos un número';
+                }
+
+                if (  errors['pattern'].requiredPattern == FormUtils.specialPattern) {
+                    return 'Al menos un carácter especial';
+                }
+
+                return 'Error de patron contra expresion regular';
+            
+            case 'errorName':
+                return `Este ${fieldName} ya está en uso`
 
             default:
                 return 'Erro de validacion no controlado';
@@ -71,11 +101,50 @@ export class FormUtils {
      */
     static allInputsRequired(form: FormGroup){
 
-        return Object.entries(form.controls).every(([key, control]) => {
+        return Object.entries(form.controls).every(([key]) => {
             const isValid = this.isNotValidField(form, key);
             return isValid;
         });
 
+    }
+
+    /**
+     * @description Custom validator function to check if the values of two form controls within a FormGroup are equal.
+     * This is commonly used for password confirmation fields.
+     * @param {string} field1 The name of the first form control
+     * @param {string} field2 The name of the second form control
+     * @returns {(formGroup: AbstractControl) => ValidationErrors | null} A validator function that takes an AbstractControl
+     * and returns null if the fields are equal, or a ValidationErrors object if they are not.
+     */
+    static isFieldOneEqualFieldTwo( field1: string, field2 :string ){
+        return ( formGroup: AbstractControl) => {
+        const field1Value = formGroup.get(field1)?.value;
+        const field2Value = formGroup.get(field2)?.value;
+        
+        return  field1Value == field2Value ? null : { passwordsNotEqual: true};
+        }
+    }
+
+    static uniqueValueValidator(userService: UserService): AsyncValidatorFn {
+    
+        return (control: AbstractControl): Observable<ValidationErrors | null> => {
+            
+            if (!control.value) {
+                return of(null);
+            }
+            
+            return userService.getUser({ search: control.value }).pipe(
+                map((resp: UserResponse) => {
+                    if (resp.count === 0) {
+                        return null;
+                    } else {
+                        return { errorName: true };
+                    }
+                }),
+
+                catchError(() => of(null)) 
+            );
+        };
     }
 
 }

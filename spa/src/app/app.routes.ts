@@ -54,6 +54,12 @@ export const appRoutes: Route[] = [
         loadComponent: () => ListUsersComponent
       },
 
+      {
+          path:'register',
+          canActivate: [NotAuthenticatedGuard],
+          loadChildren: () => import('./modules/auth/register/register.routes')
+      },
+
       { path: "**", redirectTo: "dashboard" },
       { path: "**", redirectTo: "home" },
     ],

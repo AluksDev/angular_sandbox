@@ -1,5 +1,6 @@
 import { Routes } from "@angular/router";
 import { AuthenticatedGuard } from "@app/core/auth/guards/auth.guard";
+import { NotAuthenticatedGuard } from "@app/core/auth/guards/noAuth.guard";
 
 
 
@@ -16,10 +17,6 @@ export const authRoutes: Routes = [
                 loadChildren: () => import('./sign-in/sign-in.routes')
             },
 
-            {
-                path:'sign-up',
-                loadChildren: () => import('./sign-up/sign-up.routes')
-            },
 
             {
                 path:'forgot-password',
