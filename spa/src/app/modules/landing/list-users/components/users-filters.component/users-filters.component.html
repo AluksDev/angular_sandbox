@@ -1,0 +1,21 @@
+
+<div class="flex flex-row gap-1">
+    <mat-form-field  appearance="outline" class="mat-select-small">
+      <mat-select [(ngModel)]="defaultStateValue" (ngModelChange)="onStatusChange($event)">
+        @for (state of states; track state) {
+          <mat-option [value]="state.value">{{state.viewValue}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    
+    @if(departmentResource.hasValue()){
+        <mat-form-field  appearance="outline" class="mat-select-small">
+          <mat-select [(ngModel)]="defaultDepartmentValue" (ngModelChange)="onDepartmentChange($event)">
+            @for (department of departmentResource.value(); track department) {
+              <mat-option [value]="department.id">{{department.name}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+    }
+</div>

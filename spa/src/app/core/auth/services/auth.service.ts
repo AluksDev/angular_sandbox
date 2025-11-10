@@ -89,6 +89,28 @@ export class AuthService {
       )
   }
 
+  /**
+   * 
+   * @returns true if is staff
+   */
+
+  isAdmin():Observable<boolean> {
+      const token = this.storageService.getAccessToken();
+
+      if ( !token ) {
+          this.clear();
+          return of(false);
+      }
+      
+
+      return this.http.get<User>(`${ baseUrl }/v1/auth/me`,{
+      }).pipe(
+          timeout(apiTimeout),
+          map( user => user.roles.includes('staff')),
+          catchError((error:any) => of(false))
+      )
+  }
+
 
   /**
    * Login the user
