@@ -21,6 +21,8 @@ import { FormUtils } from '@utils/form-utils';
 import { MatSelectModule } from '@angular/material/select';
 import { DepartmentService } from '@modules/departments/department.service';
 import { PasswordStrengthComponent } from './components/password-strength.component/password-strength.component';
+import { UserService } from '@app/services/user.service';
+import { FormErrorComponent } from "@utils/components/form-error.component/form-error.component";
 
 @Component({
   selector: 'auth-sign-up',
@@ -39,14 +41,16 @@ import { PasswordStrengthComponent } from './components/password-strength.compon
     MatCheckboxModule,
     MatProgressSpinnerModule,
     MatStepperModule,
-    PasswordStrengthComponent
-  ],
+    PasswordStrengthComponent,
+    FormErrorComponent
+],
 })
 export class AuthSignUpComponent{
   private _authService = inject(AuthService);
   private _router = inject(Router);
   private _formBuilder = inject(FormBuilder);
   departmentService = inject(DepartmentService);
+  userService = inject(UserService);
 
   departmentResource = rxResource({
     loader: ({}) => {
@@ -65,8 +69,8 @@ export class AuthSignUpComponent{
   showAlert = false;
 
   personalData = this._formBuilder.group({
-    username: ['', Validators.required],
-    email: ['', [Validators.required, Validators.pattern(FormUtils.emailPattern)]],
+    username: ['', Validators.required, [FormUtils.uniqueValueValidator(this.userService)]],
+    email: ['', [Validators.required, Validators.pattern(FormUtils.emailPattern)], [FormUtils.uniqueValueValidator(this.userService)]],
     first_name: ['', Validators.required],
     last_name: ['', Validators.required],
 
