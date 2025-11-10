@@ -1,5 +1,8 @@
-import { AbstractControl, FormArray, FormGroup, ValidationErrors } from "@angular/forms";
-import { from } from "rxjs";
+import { inject } from "@angular/core";
+import { AbstractControl, AsyncValidator, AsyncValidatorFn, FormGroup, ValidationErrors } from "@angular/forms";
+import { UserResponse } from "@api/defs/User";
+import { UserService } from "@app/services/user.service";
+import { catchError, Observable, of, map, tap } from "rxjs";
 
 
 export class FormUtils {
@@ -10,6 +13,8 @@ export class FormUtils {
     static uppercasePattern = '^(?=.*[A-Z]).+$'; 
     static numberPattern = '^(?=.*[0-9]).+$'; 
     static specialPattern = '^(?=.*[^A-Za-z0-9]).+$';
+
+    userService = inject(UserService);
 
     /**
      *  Returns the user-friendly error message
@@ -45,7 +50,9 @@ export class FormUtils {
                 }
 
                 return 'Error de patron contra expresion regular';
-
+            
+            case 'errorName':
+                return `Este ${fieldName} ya está en uso`
 
             default:
                 return 'Erro de validacion no controlado';
@@ -116,6 +123,28 @@ export class FormUtils {
         
         return  field1Value == field2Value ? null : { passwordsNotEqual: true};
         }
+    }
+
+    static uniqueValueValidator(userService: UserService): AsyncValidatorFn {
+    
+        return (control: AbstractControl): Observable<ValidationErrors | null> => {
+            
+            if (!control.value) {
+                return of(null);
+            }
+            
+            return userService.getUser({ search: control.value }).pipe(
+                map((resp: UserResponse) => {
+                    if (resp.count === 0) {
+                        return null;
+                    } else {
+                        return { errorName: true };
+                    }
+                }),
+
+                catchError(() => of(null)) 
+            );
+        };
     }
 
 }
