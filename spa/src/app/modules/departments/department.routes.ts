@@ -10,6 +10,7 @@ export const departmnetRoutes: Routes = [
 
     {
         path:'',
+        data: { breadcrumb: 'Department' },
         children: [
             {
                 path:'',
