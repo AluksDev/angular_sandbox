@@ -1,10 +1,9 @@
 import { Route } from "@angular/router";
 import { DashboardPageComponent } from "@modules/landing/dashboard-page/dashboard-page.component";
 import { NotAuthenticatedGuard } from "./core/auth/guards/noAuth.guard";
-import { ProfileComponent } from "@modules/landing/profile.component/profile.component";
-import { DepartmentListComponent } from "@modules/departments/department-list.component/department-list.component";
-import { ListUsersComponent } from "@modules/landing/list-users/list-users.component";
+import { ListUsersComponent } from "@modules/users/list-users/list-users.component";
 import { AdminGuard } from "./core/auth/guards/admin.guard";
+import { ProfileComponent } from "@modules/users/profile.component/profile.component";
 // import { AuthGuard } from "app/core/auth/guards/auth.guard";
 
 // @formatter:off
@@ -36,28 +35,36 @@ export const appRoutes: Route[] = [
     children: [
       {
         path: "dashboard",
-        loadComponent: () => DashboardPageComponent
+        loadComponent: () => DashboardPageComponent,
+        data: { breadcrumb: 'Dashboard' }
       },
       {
         path: "profile",
-        loadComponent: () => ProfileComponent
+        loadComponent: () => ProfileComponent,
+        data: { breadcrumb: 'Profile' }
       },
 
       {
         path: "departments",
         loadChildren: () => import("@modules/departments/department.routes")
       },
-      
+
       {
-        path: "list-users",
-        canActivate: [AdminGuard],
-        loadComponent: () => ListUsersComponent
+        path: "users",
+        loadChildren: () => import("@modules/users/users.routes")
       },
+      
+      // {
+      //   path: "list-users",
+      //   canActivate: [AdminGuard],
+      //   loadComponent: () => ListUsersComponent
+      // },
 
       {
           path:'register',
           canActivate: [NotAuthenticatedGuard],
-          loadChildren: () => import('./modules/auth/register/register.routes')
+          loadChildren: () => import('./modules/auth/register/register.routes'),
+          data: { breadcrumb: 'Register' }
       },
 
       { path: "**", redirectTo: "dashboard" },
