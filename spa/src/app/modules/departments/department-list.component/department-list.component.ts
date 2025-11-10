@@ -10,6 +10,8 @@ import { MatGridList, MatGridTile } from "@angular/material/grid-list";
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { AsyncPipe } from '@angular/common';
 import { MatIcon } from "@angular/material/icon";
+import { MatDialog } from '@angular/material/dialog';
+import { DepartmentDialogComponent } from '../department-dialog.component/department-dialog.component';
 
 
 /**
@@ -36,7 +38,7 @@ export class DepartmentListComponent implements OnInit {
   cols$: Observable<number>;
   
   departmentResource = rxResource({
-    request: () => ({ searchQuery: this.searchQuery() }),
+    request: () => ({ searchQuery: this.searchQuery()}),
     loader: ({request}) => {
       return this.departmentService.getDepartments(request.searchQuery);
     }
@@ -45,7 +47,9 @@ export class DepartmentListComponent implements OnInit {
   searchControl = new FormControl('');
   searchQuery = signal('');
   ascendentShort = signal<boolean>(true);
-  breakpoint$: Observable<number> 
+  breakpoint$: Observable<number>
+  
+  private _dialog = inject(MatDialog);
 
   ngOnInit() {
     this.searchControl.valueChanges
@@ -83,6 +87,15 @@ export class DepartmentListComponent implements OnInit {
 
   toggleAscendent(){
     this.ascendentShort.update(value => !value);
+  }
+
+  openDialog(): void{
+    this._dialog.open(DepartmentDialogComponent, {
+      width: '350px',
+      data: { 
+        mode: 'create',
+      }
+    });
   }
 
 }

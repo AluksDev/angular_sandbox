@@ -7,6 +7,23 @@
     
             <!-- TODO future -->
             <!-- <p class="card-metric">Usuarios: <span>42</span></p> -->
+            
+            <div class="card-actions">
+                
+                <button 
+                    class="button edit-button"
+                    (click)="$event.stopPropagation();onEdit()"
+                    >
+                    <mat-icon>edit</mat-icon> </button>
+                
+                <button 
+                    class="button delete-button"
+                    (click)="$event.stopPropagation(); onDelete(department().id)"
+                    >
+                    <mat-icon>delete</mat-icon> </button>
+                
+            </div>
         </div>
+
     </mat-card-content>
 </mat-card>

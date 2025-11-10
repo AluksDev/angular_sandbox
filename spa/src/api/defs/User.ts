@@ -14,6 +14,9 @@ export interface User {
   email?: string;
   dni?: string;
   username: string;
+
+  first_name?: string,
+  last_name?: string,
   /** format: date-time */
   date_joined?: string;
   /** format: date-time */
@@ -22,4 +25,5 @@ export interface User {
   /** Has the user accepted the data protection law? */
   lopd_accepted?: boolean;
   department?: number;
+  department_name: string
 }

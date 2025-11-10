@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>{{data.mode == 'create' ? 'Crear' : 'Editar'}} departamento</h2>
+
+<mat-dialog-content>
+  <department-form #form [department]="data.department"></department-form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button class="app-button-confirm"
+    [disabled]="form.departmentForm.invalid"
+    (click)="onSubmit()"
+    >
+      {{ data.mode == 'create' ? 'Crear' : 'Guardar Cambios' }}
+    </button>
+  <button class="app-button-cancel" (click)="this.dialogRef.close();" >Cancelar</button>
+</mat-dialog-actions>
