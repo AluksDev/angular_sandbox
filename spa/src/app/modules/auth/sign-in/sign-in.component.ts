@@ -134,7 +134,12 @@ export class AuthSignInComponent{
       this.isLoading.set(false);
 
       if( resp.success) {
-        this._router.navigateByUrl('/dashboard');
+        const params = this._activatedRoute.snapshot.queryParams;
+
+        const returnUrl = params['returnUrl'];
+
+        this._router.navigateByUrl(returnUrl ?? '/dashboard');
+        
         return;
       }
 

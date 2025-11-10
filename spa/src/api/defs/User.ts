@@ -8,15 +8,15 @@ export interface UserResponse {
   results:  User[];
 }
 
+
 export interface User {
   id?: number;
   /** format: email */
   email?: string;
   dni?: string;
   username: string;
-
-  first_name?: string,
-  last_name?: string,
+  first_name: string;
+  last_name:  string;
   /** format: date-time */
   date_joined?: string;
   /** format: date-time */
@@ -25,5 +25,6 @@ export interface User {
   /** Has the user accepted the data protection law? */
   lopd_accepted?: boolean;
   department?: number;
-  department_name: string
+  department_name: string;
+  roles: string[];
 }
