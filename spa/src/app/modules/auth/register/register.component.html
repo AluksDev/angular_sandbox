@@ -29,26 +29,25 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2">
           
+          <div class="md:col-span-2">
           <mat-form-field appearance="outline" class="w-full md:col-span-2">
             <mat-label>Username</mat-label>
             <input matInput formControlName="username">
           </mat-form-field>
-          @if ( formUtils.isNotValidField(personalData, "username") ) {
-            <span class="text-sm text-red-600 -mt-2 mb-2 md:col-span-2 block">
-                {{formUtils.getFieldError(personalData, "username")}}
-            </span>
-          }
+          <form-error [control]="personalData" fieldName="username"></form-error>
+          </div>
+
           
+          <div class="md:col-span-2">
+
           <mat-form-field appearance="outline" class="w-full md:col-span-2">
             <mat-label>Email</mat-label>
             <input matInput formControlName="email">
           </mat-form-field>
-          @if ( formUtils.isNotValidField(personalData, "email") ) {
-            <span class="text-sm text-red-600 -mt-2 mb-2 md:col-span-2 block">
-                {{formUtils.getFieldError(personalData, "email")}}
-            </span>
-          }
-          
+
+          <form-error [control]="personalData" fieldName="email"></form-error>
+          </div>
+
           <mat-form-field appearance="outline" class="w-full">
             <mat-label>First name</mat-label>
             <input matInput formControlName="first_name">
@@ -59,16 +58,8 @@
           </mat-form-field>
           
           <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
-              @if ( formUtils.isNotValidField(personalData, "first_name") ) {
-                <span class="text-sm text-red-600 -mt-2 mb-2 block">
-                    {{formUtils.getFieldError(personalData, "first_name")}}
-                </span>
-              }
-              @if ( formUtils.isNotValidField(personalData, "last_name") ) {
-                <span class="text-sm text-red-600 -mt-2 mb-2 block">
-                    {{formUtils.getFieldError(personalData, "last_name")}}
-                </span>
-              }
+              <form-error [control]="personalData" fieldName="first_name"></form-error>
+              <form-error [control]="personalData" fieldName="last_name"></form-error>
           </div>
         </div>
         
@@ -113,11 +104,8 @@
         </button>
       </mat-form-field>
       <password-strength [password]="passwordForm.get('password')?.value || ''"></password-strength>
-        @if ( formUtils.isNotValidField(passwordForm, "password") ) {
-          <span class="text-sm text-red-600 -mt-4 block">
-              {{formUtils.getFieldError(passwordForm, "password")}}
-          </span>
-        }
+      <form-error class="mt-5" [control]="passwordForm" fieldName="password"></form-error>
+
         
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Confirmar la contraseña</mat-label>
@@ -138,11 +126,9 @@
             }
           </button>
         </mat-form-field>
-        @if ( formUtils.isNotValidField(passwordForm, "password_confirm") ) {
-          <span class="text-sm text-red-600 -mt-4 block">
-              {{formUtils.getFieldError(passwordForm, "password_confirm")}}
-          </span>
-        }
+
+        <form-error class="mt-5" [control]="passwordForm" fieldName="password_confirm"></form-error>
+
 
         @if (passwordForm.errors && passwordForm.touched) {
             <span class="text-sm text-red-600 -mt-4 block">
@@ -189,18 +175,17 @@
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Elija departamento</mat-label>
           <mat-select formControlName="department">
+          @if (departmentResource.hasValue()) {
             @for (department of departmentResource.value().results; track department) {
               <mat-option [value]="department.id">{{department.name}}</mat-option>
             }
+          }
           </mat-select>
 
         </mat-form-field>
 
-        @if ( formUtils.isNotValidField(chooseDepartment, "department") ) {
-          <span class="text-sm text-red-600 -mt-4 block">
-              {{formUtils.getFieldError(chooseDepartment, "department")}}
-          </span>
-        }
+        <form-error class="mt-5" [control]="chooseDepartment" fieldName="department"></form-error>
+        
 
         <div class="flex justify-end pt-6">
         <button matStepperPrevious
