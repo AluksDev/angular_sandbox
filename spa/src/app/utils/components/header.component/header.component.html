@@ -3,8 +3,6 @@
         <span class="app-title">SandBox</span>
         <nav class="nav-links">
             <a routerLink="/dashboard" routerLinkActive="active">Inicio</a>
-            <a routerLink="/perfil" routerLinkActive="active">Perfil</a>
-
             @if (authService.user().roles.includes('staff')) {
               <a routerLink="/list-users" [queryParams]="{page: 1}" routerLinkActive="active">Listar usuarios</a>
             }

@@ -1,6 +1,7 @@
 import { Route } from "@angular/router";
 import { DashboardPageComponent } from "@modules/landing/dashboard-page/dashboard-page.component";
 import { NotAuthenticatedGuard } from "./core/auth/guards/noAuth.guard";
+import { ProfileComponent } from "@modules/landing/profile.component/profile.component";
 import { DepartmentListComponent } from "@modules/departments/department-list.component/department-list.component";
 import { ListUsersComponent } from "@modules/landing/list-users/list-users.component";
 import { AdminGuard } from "./core/auth/guards/admin.guard";
@@ -36,6 +37,10 @@ export const appRoutes: Route[] = [
       {
         path: "dashboard",
         loadComponent: () => DashboardPageComponent
+      },
+      {
+        path: "profile",
+        loadComponent: () => ProfileComponent
       },
 
       {

@@ -9,7 +9,7 @@
         <input [formControl]="searchControl"
         type="text" id="filter-name" placeholder="🔍 Filtrar por nombre..."        
         >
-        <button (click)="toggleAscendent()">
+        <button (click)="toggleAscendent()" class="w-auto">
             @if (ascendentShort()) {
                 <span>Ordenar Z-A</span>
             } @else {
@@ -17,6 +17,10 @@
             }
             
             <mat-icon class="text-white">{{ ascendentShort() ? 'arrow_downward' : 'arrow_upward' }}</mat-icon>
+        </button>
+
+        <button (click)="openDialog()" class="w-auto">
+           Crear departamento
         </button>
     </div>
 
@@ -31,7 +35,7 @@
     }
 
     @if (departmentResource.hasValue()) {
-        <mat-grid-list [cols]="breakpoint$ | async" rowHeight="150px"  gutterSize="20px" class="cards-grid">
+        <mat-grid-list [cols]="breakpoint$ | async" rowHeight="150px"  gutterSize="20px">
             @for (department of departmentResource.value().results | alphaShort:ascendentShort(); track department.id) {
                 <mat-grid-tile>
                     <department-card 

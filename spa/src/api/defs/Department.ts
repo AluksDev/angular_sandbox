@@ -11,6 +11,16 @@ export interface DepartmentBackendItem {
     code: string;
 }
 
+export interface DepartmentCreate {
+  name: string;
+  code?: string;
+}
+
+export interface DepartmentUpdate {
+  name?: string;
+  code?: string;
+}
+
 export interface Department extends DepartmentBackendItem {
   icon: string;
 }
