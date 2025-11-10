@@ -1,0 +1,23 @@
+<nav aria-label="Breadcrumb">
+  <ol class="flex items-center space-x-2 text-sm">
+    @for (breadcrumb of (breadcrumbs$ | async); track $index) {
+      <li class="flex items-center">
+        @if ($index > 0) {
+          <svg class="flex-shrink-0 w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+            <path d="M5.555 17.776l8-16 .898.448-8 16-.898-.448z"/>
+          </svg>
+        }
+        
+        <a 
+          [href]="breadcrumb.url" 
+          [attr.aria-current]="$index === ($length - 1) ? 'page' : null" 
+          [ngClass]="{
+            'ml-2 font-medium text-gray-500 hover:text-gray-700': $index < ($length - 1),
+            'ml-2 font-semibold text-gray-700': $index === ($length - 1)
+          }">
+          {{ breadcrumb.label }}
+        </a>
+      </li>
+    }
+  </ol>
+</nav>
