@@ -21,6 +21,8 @@ export class FormUtils {
                 return `Minimo de ${errors['minlength'].requiredLength} caracteres`;
             case 'min':
                 return `Valor minimo de ${errors['min'].min}`;
+            case 'pattern':
+                return `El formato del campo ${fieldName} no es válido.`;
 
             default:
                 return 'Erro de validacion no controlado';
