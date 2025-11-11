@@ -1,0 +1,33 @@
+<div class="fab-container" [class.active]="isMenuOpen()">
+    
+    <button class="fab-main" (click)="toggleMenu()">
+        @if (!isMenuOpen()) {
+            <mat-icon>add</mat-icon>
+        }
+        @else {
+            <mat-icon>close</mat-icon>
+        }
+    </button>
+
+    <div class="fab-menu">
+        <button class="fab-action" (click)="editar()">
+            <mat-icon>edit</mat-icon>
+            <span class="tooltip">Editar</span>
+        </button>
+        
+        @if( user().username != authService.user().username){
+            @if (user().is_active) {
+                <button class="fab-action" (click)="desactivar()">
+                    <mat-icon>block</mat-icon>
+                    <span class="tooltip">Desactivar</span>
+                </button>
+            }
+            @else {
+                <button class="fab-action" (click)="desactivar()">
+                    <mat-icon>check</mat-icon>
+                    <span class="tooltip">Activar</span>
+                </button>
+            }
+        }
+    </div>
+</div>
