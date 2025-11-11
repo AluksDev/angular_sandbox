@@ -11,7 +11,7 @@
     </a>
 
     <button 
-        title="Desactivar usuario"
+        [title]="user().is_active ? 'Desactivar usuario' : 'Activar usuario'"
         class="bg-transparent border-none text-red-600 hover:text-red-900 p-1 rounded-full cursor-pointer"
         (click)="handleClick()"
         >
