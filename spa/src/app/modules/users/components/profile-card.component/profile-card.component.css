@@ -89,19 +89,29 @@ mat-divider {
   }
 }
 
-.btn-primary {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #2563eb;
-  color: #ffffff;
-  padding: 0rem 0.25rem;
-  margin-left: auto;
-  border-radius: 0.375rem;
-  text-align: center;
-  max-height: 50px;
+.inactive-banner {
+
+    display: flex;             
+    align-items: center;       
+    gap: 12px;                 
+    
+    background-color: #FFF3CD; 
+    color: #856404;            
+    border: 1px solid #FFEEBA; 
+    
+    margin-top: 10px;
+    padding: 12px 20px;        
+    margin-bottom: 20px;       
+    border-radius: 8px;        
+    
+    font-weight: 500;          
+    font-size: 16px;           
+    
+    .mat-icon {
+        font-size: 24px;       
+        height: 24px;
+        width: 24px;
+        
+    }
 }
 
-.btn-primary:hover {
-  background-color: #1d4ed8;
-}
