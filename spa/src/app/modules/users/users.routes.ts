@@ -22,6 +22,7 @@ export const usersRoutes: Routes = [
             },
             {
                 path:':id',
+                canActivate: [AdminGuard],
                 loadComponent: () => UserDetailComponent,
                 data: { breadcrumb: (data: any) => `${data.user.first_name}` }, // dynamic
                 resolve: { user: UserService },
