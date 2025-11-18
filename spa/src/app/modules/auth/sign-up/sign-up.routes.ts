@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AuthSignUpComponent } from '@modules/auth/register/register.component';
+import { AuthSignUpComponent } from 'app/modules/auth/sign-up/sign-up.component';
 
 export default [
   {

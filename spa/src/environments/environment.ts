@@ -5,19 +5,9 @@
 export const environment = {
   production: false,
   hmr: false,
-
-  /**
-   * URL base para las llamadas a la API REST.
-   */
   apiUrl: "/services/sandbox",
   apiRetries: 0,
   apiCacheSize: 1000,
-
-  /**
-   * Tiempo máximo (en milisegundos) que la app esperará respuesta de la API
-   */
-  API_TIMEOUT: 30000,
-  STORAGE_PREFIX: 'trivia_app_',
 };
 
 /*

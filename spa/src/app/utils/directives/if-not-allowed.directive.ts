@@ -1,5 +1,5 @@
 import { Directive, inject, Input, TemplateRef, ViewContainerRef } from '@angular/core';
-import { AuthService } from '@app/core/auth/services/auth.service';
+import { AuthService } from '@app/core/auth/auth.service';
 import { ActionService } from '@app/action.service';
 import { tap } from 'rxjs/operators';
 

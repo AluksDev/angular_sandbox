@@ -1,6 +1,6 @@
 import { Directive, effect, inject, Input, isSignal, signal, Signal, TemplateRef, ViewContainerRef } from "@angular/core";
 import { ActionService } from "@app/action.service";
-import { AuthService } from "@app/core/auth/services/auth.service";
+import { AuthService } from "@app/core/auth/auth.service";
 import { tap } from "rxjs/operators";
 
 @Directive({

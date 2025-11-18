@@ -14,13 +14,11 @@ import { Navigation } from "app/core/navigation/navigation.types";
 import { Subject, takeUntil } from "rxjs";
 import { filter, tap } from "rxjs/operators";
 import { Location } from "@angular/common";
-import { HeaderComponent } from "@utils/components/header.component/header.component";
-import { BreadcrumbComponent } from "@utils/components/breadcrumb/breadcrumb.component";
 @Component({
   selector: "classic-layout",
   templateUrl: "./classic.component.html",
   encapsulation: ViewEncapsulation.None,
-  imports: [CommonModule, MatButtonModule, MatIconModule, RouterOutlet, MatButtonModule, MatIconModule, FuseLoadingBarComponent, HeaderComponent, BreadcrumbComponent],
+  imports: [CommonModule, MatButtonModule, MatIconModule, RouterOutlet, MatButtonModule, MatIconModule, FuseLoadingBarComponent],
 })
 export class ClassicLayoutComponent implements OnInit, OnDestroy {
   private _navigationService = inject(NavigationService);
