@@ -6,7 +6,6 @@
 
 ARG PYTHON_IMAGE=python:3.11.1-slim-bullseye
 
-
 FROM ${PYTHON_IMAGE} as builder
 ENV PYTHONUNBUFFERED 1
 

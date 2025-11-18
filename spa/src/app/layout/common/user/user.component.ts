@@ -6,7 +6,7 @@ import { MatDividerModule } from "@angular/material/divider";
 import { MatIconModule } from "@angular/material/icon";
 import { MatMenuModule } from "@angular/material/menu";
 import { Router } from "@angular/router";
-import { AuthService } from "@app/core/auth/auth.service";
+import { AuthService } from "@app/core/auth/services/auth.service";
 import { FuseConfigService } from "@fuse/services/config";
 import { BCNLoadingBarService } from "@fuse/services/loading-bar";
 import { User } from "app/core/user/user.types";

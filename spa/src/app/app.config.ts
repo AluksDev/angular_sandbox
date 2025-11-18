@@ -6,9 +6,9 @@ import { LuxonDateAdapter } from "@angular/material-luxon-adapter";
 import { DateAdapter, MAT_DATE_FORMATS } from "@angular/material/core";
 import { MatPaginatorIntl } from "@angular/material/paginator";
 import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
-import { PreloadAllModules, provideRouter, withInMemoryScrolling, withPreloading } from "@angular/router";
+import { PreloadAllModules, provideRouter, withComponentInputBinding, withInMemoryScrolling, withPreloading, withViewTransitions } from "@angular/router";
 import { appRoutes } from "@app/app.routes";
-import { AuthService } from "@app/core/auth/auth.service";
+import { AuthService } from "@app/core/auth/services/auth.service";
 import { provideIcons } from "@app/core/icons/icons.provider";
 import { RuntimeConfigService } from "@app/runtime-config.service";
 import { provideFuse } from "@fuse";
@@ -19,7 +19,7 @@ import { FuseThemeService } from "@fuse/services/theme/theme.service"; // Import
 // } from '@angular/platform-browser';
 
 import { LayoutService } from "@utils/layout.service";
-import { authInterceptor } from "./core/auth/auth.interceptor";
+import { authInterceptor } from "./core/auth/interceptor/auth.interceptor";
 import { getCatPaginatorIntl } from "./i18n/cat-paginator-intl";
 
 registerLocaleData(localeCa, "ca-CA"); // Cambia 'ca-CA' a 'ca-ES' si es necesario
@@ -84,7 +84,9 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withJsonpSupport()),
     provideHttpClient(withInterceptors([authInterceptor])),
     provideExperimentalZonelessChangeDetection(),
-    provideRouter(appRoutes, withPreloading(PreloadAllModules), withInMemoryScrolling({ scrollPositionRestoration: "enabled" })),
+    provideRouter(appRoutes, withPreloading(PreloadAllModules), withInMemoryScrolling({ scrollPositionRestoration: "enabled" }),
+               withViewTransitions(), withComponentInputBinding() 
+    ),
     AuthService,
 
     {

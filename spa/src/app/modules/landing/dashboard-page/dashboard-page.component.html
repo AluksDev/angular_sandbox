@@ -1,0 +1,3 @@
+@if (authService.authStatus() == 'authenticated') {
+    <h2>Usuario: {{authService.user().username}}</h2>
+}

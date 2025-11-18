@@ -1,0 +1,31 @@
+<h2 mat-dialog-title class="dialog-warn-title">
+    {{ data.title || 'Confirmación Requerida' }}
+</h2>
+
+<mat-dialog-content>
+    <p>{{ data.message }}</p>
+
+    @if (data.itemName) {
+        <p>
+            Departamento a eliminar: <strong>{{ data.itemName }}</strong>
+        </p>
+    }
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button 
+        mat-button 
+        class="app-button-cancel"
+        (click)="dialogRef.close()">
+        Cancelar
+    </button>
+
+    <button 
+        mat-raised-button 
+        color="warn" 
+        class="app-button-confirm"
+        (click)="delete()">
+        SÍ, ELIMINAR
+    </button>
+</mat-dialog-actions>

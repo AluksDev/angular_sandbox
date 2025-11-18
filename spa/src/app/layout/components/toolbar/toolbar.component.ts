@@ -11,7 +11,7 @@ import { IfAllowedDirective } from '@utils/directives/if-allowed.directive';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { IMIAuthorization } from 'api/model';
-import { AuthService } from '@app/core/auth/auth.service';
+import { AuthService } from '@app/core/auth/services/auth.service';
 import { Router } from '@angular/router';
 import { FuseConfigService } from '@fuse/services/config';
 import { RuntimeConfigService } from '@app/runtime-config.service';
