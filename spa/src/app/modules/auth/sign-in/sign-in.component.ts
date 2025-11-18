@@ -1,8 +1,10 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import {
-  FormBuilder,
   FormsModule,
+  NgForm,
   ReactiveFormsModule,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,14 +16,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
-import { AuthService } from '@app/core/auth/services/auth.service';
+import { AuthService } from 'app/core/auth/auth.service';
 import { NgOptimizedImage } from '@angular/common';
-import { FormUtils } from '@utils/form-utils';
 
-
-/**
- * Component that displays and manages the login form.
- */
 @Component({
   selector: 'auth-sign-in',
   templateUrl: './sign-in.component.html',
@@ -41,127 +38,92 @@ import { FormUtils } from '@utils/form-utils';
     NgOptimizedImage,
   ],
 })
-export class AuthSignInComponent{
+export class AuthSignInComponent implements OnInit {
   private _activatedRoute = inject(ActivatedRoute);
   private _authService = inject(AuthService);
-  private _formBuilder = inject(FormBuilder);
+  private _formBuilder = inject(UntypedFormBuilder);
   private _router = inject(Router);
 
+  @ViewChild('signInNgForm') signInNgForm: NgForm;
 
-  formUtils = FormUtils;
-
-
-  /**
-   * Object representing the alert displayed in the UI.
-   *
-   * @property type - The type of alert shown (`'success'`, `'error'`, `'info'`, etc.).
-   * @property message - The message displayed inside the alert.
-   */
   alert: { type: FuseAlertType; message: string } = {
     type: 'success',
     message: '',
   };
-
-  /**
-   * ReactiveForm to sign in
-   */
-  signInForm = this._formBuilder.group({
-    username: ['', Validators.required],
-    password: ['', Validators.required],
-
-  });
-
-  isLoading = signal<boolean>(false);
-
-  showAlert = signal<boolean>(false);
-
-  disableFormEffect = effect(() => {
-    this.isLoading() ? this.signInForm.disable() : this.signInForm.enable();
-  })
+  signInForm: UntypedFormGroup;
+  showAlert = false;
 
   /** Inserted by Angular inject() migration for backwards compatibility */
-  // constructor(...args: unknown[]);
+  constructor(...args: unknown[]);
 
   /**
    * Constructor
    */
-  // constructor() {}
+  constructor() {}
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
   // -----------------------------------------------------------------------------------------------------
 
   /**
-   *  Checks if the user's session has expired by inspecting the URL query parameters.
+   * On init
    */
-  // ngOnInit(): void {
-
-  //   const params = this._activatedRoute.snapshot.queryParams;
-
-  //   if (params['reason'] == 'expired') {
-      
-  //     this.handleAlert("Sesion expirada");
-  //   }
-
-    
-    
-  // }
+  ngOnInit(): void {
+    // Create the form
+    this.signInForm = this._formBuilder.group({
+      email: ['hughes.brian@company.com', [Validators.required, Validators.email]],
+      password: ['admin', Validators.required],
+      rememberMe: [''],
+    });
+  }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Public methods
   // -----------------------------------------------------------------------------------------------------
 
   /**
-   * Handles the form submission event.
-   * Validates the form data, and if it is valid,
-   * calls the authentication service to attempt a login.
-   * @returns 
+   * Sign in
    */
-
-  onSubmit() {
-
-    this.isLoading.set(true);
-    this.signInForm.markAllAsTouched();
-
-    if ( this.signInForm.invalid) {
-      this.handleAlert("Revise los campos");
+  signIn(): void {
+    // Return if the form is invalid
+    if (this.signInForm.invalid) {
       return;
     }
 
-    const { username= '', password = '' } = this.signInForm.value;
+    // Disable the form
+    this.signInForm.disable();
 
-    this._authService.login(username!, password!).subscribe( (resp) => {
-      this.isLoading.set(false);
+    // Hide the alert
+    this.showAlert = false;
 
-      if( resp.success) {
-        const params = this._activatedRoute.snapshot.queryParams;
+    // Sign in
+    this._authService.signIn(this.signInForm.value).subscribe(
+      () => {
+        // Set the redirect url.
+        // The '/signed-in-redirect' is a fake url to catch the request and redirect the user
+        // to the correct page after a successful sign in. This way, that url can be set via
+        // a routing file and we don't have to touch here.
+        const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || '/signed-in-redirect';
 
-        const returnUrl = params['returnUrl'];
+        // Navigate to the redirect url
+        this._router.navigateByUrl(redirectURL);
+      },
+      () => {
+        // Re-enable the form
+        this.signInForm.enable();
 
-        this._router.navigateByUrl(returnUrl ?? '/dashboard');
-        
-        return;
-      }
+        // Reset the form
+        this.signInNgForm.resetForm();
 
+        // Set the alert
+        this.alert = {
+          type: 'error',
+          message: 'Wrong email or password',
+        };
 
-      this.handleAlert(resp.message);
-    });
+        // Show the alert
+        this.showAlert = true;
+      },
+    );
   }
-
-  /**
-   * Displays an alert with a custom message to the user.
-   * @param error - The text message that will appear on the screen.
-   */
-
-  handleAlert(error: string) {
-    this.showAlert.set(true);
-
-    this.alert.type = 'error';
-    this.alert.message = error;
-
-    setTimeout(() => {
-      this.showAlert.set(false);
-    }, 5000);
-  }
-
 }

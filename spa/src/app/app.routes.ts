@@ -1,24 +1,11 @@
 import { Route } from "@angular/router";
-import { DashboardPageComponent } from "@modules/landing/dashboard-page/dashboard-page.component";
-import { NotAuthenticatedGuard } from "./core/auth/guards/noAuth.guard";
-import { ListUsersComponent } from "@modules/users/list-users/list-users.component";
-import { AdminGuard } from "./core/auth/guards/admin.guard";
-import { ProfileComponent } from "@modules/users/profile.component/profile.component";
-// import { AuthGuard } from "app/core/auth/guards/auth.guard";
+import { AuthGuard } from "app/core/auth/guards/auth.guard";
 
 // @formatter:off
 
 export const appRoutes: Route[] = [
   // Redirect empty path to '/example'
-
-  {
-    path: "auth",
-    loadChildren: () => import('./modules/auth/auth.routes')
-  },
-
-
-
-  { path: "", pathMatch: "full", redirectTo: "dashboard" },
+  { path: "", pathMatch: "full", redirectTo: "home" },
   {
     path: "403",
     loadComponent: () => import("@modules/error403/error403.component").then((m) => m.Error403Component),
@@ -29,45 +16,17 @@ export const appRoutes: Route[] = [
   },
   {
     path: "",
-    canActivate: [NotAuthenticatedGuard],
-    canActivateChild: [NotAuthenticatedGuard],
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     loadComponent: () => import("app/layout/layout.component").then((m) => m.LayoutComponent),
+    resolve: {
+      // initialData: initialDataResolver,
+    },
     children: [
       {
-        path: "dashboard",
-        loadComponent: () => DashboardPageComponent,
-        data: { breadcrumb: 'Dashboard' }
+        path: "home",
+        loadChildren: () => import("app/modules/landing/home/home.routes"),
       },
-      {
-        path: "profile",
-        loadComponent: () => ProfileComponent,
-        data: { breadcrumb: 'Profile' }
-      },
-
-      {
-        path: "departments",
-        loadChildren: () => import("@modules/departments/department.routes")
-      },
-
-      {
-        path: "users",
-        loadChildren: () => import("@modules/users/users.routes")
-      },
-      
-      // {
-      //   path: "list-users",
-      //   canActivate: [AdminGuard],
-      //   loadComponent: () => ListUsersComponent
-      // },
-
-      {
-          path:'register',
-          canActivate: [NotAuthenticatedGuard],
-          loadChildren: () => import('./modules/auth/register/register.routes'),
-          data: { breadcrumb: 'Register' }
-      },
-
-      { path: "**", redirectTo: "dashboard" },
       { path: "**", redirectTo: "home" },
     ],
   },

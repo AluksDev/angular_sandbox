@@ -9,17 +9,11 @@
       </div>
 
       <!-- Title -->
-      <div i18n class="mt-2 text-4xl font-extrabold leading-tight tracking-tight">Sign in</div>
+      <div i18n class="mt-2 text-4xl font-extrabold leading-tight tracking-tight">Sign up</div>
       <div class="mt-0.5 flex items-baseline font-medium">
-        <div i18n>Don't have an account?</div>
-        <a i18n class="ml-1 text-primary-500 hover:underline" [routerLink]="['/sign-up']"> Sign up </a>
+        <div i18n>Already have an account?</div>
+        <a i18n class="ml-1 text-primary-500 hover:underline" [routerLink]="['/sign-in']"> Sign in </a>
       </div>
-
-      <!-- Alert -->
-      <fuse-alert class="mt-8" [appearance]="'outline'" [showIconInput]="false" [type]="'info'">
-        You are browsing <strong i18n>Fuse Demo</strong>. Click on the "Sign in" button to access the Demo and
-        Documentation.
-      </fuse-alert>
 
       <!-- Alert -->
       @if (showAlert) {
@@ -34,16 +28,25 @@
         </fuse-alert>
       }
 
-      <!-- Sign in form -->
-      <form class="mt-8" [formGroup]="signInForm" #signInNgForm="ngForm">
+      <!-- Sign Up form -->
+      <form class="mt-8" [formGroup]="signUpForm" #signUpNgForm="ngForm">
+        <!-- Name field -->
+        <mat-form-field class="w-full">
+          <mat-label i18n>Full name</mat-label>
+          <input id="name" matInput [formControlName]="'name'" />
+          @if (signUpForm.get('name').hasError('required')) {
+            <mat-error i18n> Full name is required</mat-error>
+          }
+        </mat-form-field>
+
         <!-- Email field -->
         <mat-form-field class="w-full">
           <mat-label i18n>Email address</mat-label>
           <input id="email" matInput [formControlName]="'email'" />
-          @if (signInForm.get('email').hasError('required')) {
+          @if (signUpForm.get('email').hasError('required')) {
             <mat-error i18n> Email address is required</mat-error>
           }
-          @if (signInForm.get('email').hasError('email')) {
+          @if (signUpForm.get('email').hasError('email')) {
             <mat-error i18n> Please enter a valid email address</mat-error>
           }
         </mat-form-field>
@@ -70,14 +73,20 @@
           <mat-error i18n> Password is required</mat-error>
         </mat-form-field>
 
-        <!-- Actions -->
-        <div class="mt-1.5 inline-flex w-full items-center justify-between">
-          <mat-checkbox i18n class="-ml-2" [color]="'primary'" [formControlName]="'rememberMe'">
-            Remember me
+        <!-- Company field -->
+        <mat-form-field class="w-full">
+          <mat-label i18n>Company</mat-label>
+          <input id="company-confirm" matInput [formControlName]="'company'" />
+        </mat-form-field>
+
+        <!-- ToS and PP -->
+        <div class="mt-1.5 inline-flex w-full items-end">
+          <mat-checkbox class="-ml-2" [color]="'primary'" [formControlName]="'agreements'">
+            <span i18n>I agree with</span>
+            <a i18n class="ml-1 text-primary-500 hover:underline" [routerLink]="['./']"> Terms </a>
+            <span i18n>and</span>
+            <a i18n class="ml-1 text-primary-500 hover:underline" [routerLink]="['./']"> Privacy Policy </a>
           </mat-checkbox>
-          <a i18n class="text-md font-medium text-primary-500 hover:underline" [routerLink]="['/forgot-password']">
-            Forgot password?
-          </a>
         </div>
 
         <!-- Submit button -->
@@ -85,36 +94,16 @@
           class="fuse-mat-button-large mt-6 w-full"
           mat-flat-button
           [color]="'primary'"
-          [disabled]="signInForm.disabled"
-          (click)="signIn()"
+          [disabled]="signUpForm.disabled"
+          (click)="signUp()"
         >
-          @if (!signInForm.disabled) {
-            <span i18n> Sign in </span>
+          @if (!signUpForm.disabled) {
+            <span i18n> Create your free account </span>
           }
-          @if (signInForm.disabled) {
+          @if (signUpForm.disabled) {
             <mat-progress-spinner [diameter]="24" [mode]="'indeterminate'"> </mat-progress-spinner>
           }
         </button>
-
-        <!-- Separator -->
-        <div class="mt-2 flex items-center">
-          <div class="mt-px flex-auto border-t"></div>
-          <div i18n class="text-secondary mx-2">Or continue with</div>
-          <div class="mt-px flex-auto border-t"></div>
-        </div>
-
-        <!-- Single sign-on buttons -->
-        <div class="mt-2 flex items-center space-x-4">
-          <button class="flex-auto" type="button" mat-stroked-button>
-            <mat-icon class="icon-size-5" [svgIcon]="'feather:facebook'"> </mat-icon>
-          </button>
-          <button class="flex-auto" type="button" mat-stroked-button>
-            <mat-icon class="icon-size-5" [svgIcon]="'feather:twitter'"> </mat-icon>
-          </button>
-          <button class="flex-auto" type="button" mat-stroked-button>
-            <mat-icon class="icon-size-5" [svgIcon]="'feather:github'"> </mat-icon>
-          </button>
-        </div>
       </form>
     </div>
   </div>

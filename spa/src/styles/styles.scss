@@ -796,16 +796,3 @@ ngx-material-timepicker-container {
   border-radius: 0.5rem;     /* Tailwind rounded */
   box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06); /* Tailwind shadow-lg */
 }
-
-.navigate{
-  padding: 0.5rem 1rem;
-  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
-  color: white;
-  border-radius: 0.25rem;
-  text-decoration: none;
-  text-align: center;
-}
-
-.navigate:hover{
-  background-color: rgb(29 78 216 / var(--tw-bg-opacity, 1));
-}

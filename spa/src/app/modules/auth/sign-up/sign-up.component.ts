@@ -8,44 +8,48 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
-import { finalize } from 'rxjs';
 import { NgOptimizedImage } from '@angular/common';
 
 @Component({
-  selector: 'auth-forgot-password',
-  templateUrl: './forgot-password.component.html',
+  selector: 'auth-sign-up',
+  templateUrl: './sign-up.component.html',
   animations: fuseAnimations,
 
   imports: [
+    RouterLink,
     FuseAlertComponent,
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatIconModule,
+    MatCheckboxModule,
     MatProgressSpinnerModule,
-    RouterLink,
     NgOptimizedImage,
   ],
 })
-export class AuthForgotPasswordComponent implements OnInit {
+export class AuthSignUpComponent implements OnInit {
   private _authService = inject(AuthService);
   private _formBuilder = inject(UntypedFormBuilder);
+  private _router = inject(Router);
 
-  @ViewChild('forgotPasswordNgForm') forgotPasswordNgForm: NgForm;
+  @ViewChild('signUpNgForm') signUpNgForm: NgForm;
 
   alert: { type: FuseAlertType; message: string } = {
     type: 'success',
     message: '',
   };
-  forgotPasswordForm: UntypedFormGroup;
+  signUpForm: UntypedFormGroup;
   showAlert = false;
 
   /** Inserted by Angular inject() migration for backwards compatibility */
@@ -65,8 +69,12 @@ export class AuthForgotPasswordComponent implements OnInit {
    */
   ngOnInit(): void {
     // Create the form
-    this.forgotPasswordForm = this._formBuilder.group({
+    this.signUpForm = this._formBuilder.group({
+      name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+      company: [''],
+      agreements: ['', Validators.requiredTrue],
     });
   }
 
@@ -75,50 +83,42 @@ export class AuthForgotPasswordComponent implements OnInit {
   // -----------------------------------------------------------------------------------------------------
 
   /**
-   * Send the reset link
+   * Sign up
    */
-  sendResetLink(): void {
-    // Return if the form is invalid
-    if (this.forgotPasswordForm.invalid) {
+  signUp(): void {
+    // Do nothing if the form is invalid
+    if (this.signUpForm.invalid) {
       return;
     }
 
     // Disable the form
-    this.forgotPasswordForm.disable();
+    this.signUpForm.disable();
 
     // Hide the alert
     this.showAlert = false;
 
-    // Forgot password
-    this._authService
-      .forgotPassword(this.forgotPasswordForm.get('email').value)
-      .pipe(
-        finalize(() => {
-          // Re-enable the form
-          this.forgotPasswordForm.enable();
+    // Sign up
+    this._authService.signUp(this.signUpForm.value).subscribe(
+      () => {
+        // Navigate to the confirmation required page
+        this._router.navigateByUrl('/confirmation-required');
+      },
+      () => {
+        // Re-enable the form
+        this.signUpForm.enable();
 
-          // Reset the form
-          this.forgotPasswordNgForm.resetForm();
+        // Reset the form
+        this.signUpNgForm.resetForm();
 
-          // Show the alert
-          this.showAlert = true;
-        }),
-      )
-      .subscribe(
-        () => {
-          // Set the alert
-          this.alert = {
-            type: 'success',
-            message: "Password reset sent! You'll receive an email if you are registered on our system.",
-          };
-        },
-        () => {
-          // Set the alert
-          this.alert = {
-            type: 'error',
-            message: 'Email does not found! Are you sure you are already a member?',
-          };
-        },
-      );
+        // Set the alert
+        this.alert = {
+          type: 'error',
+          message: 'Something went wrong, please try again.',
+        };
+
+        // Show the alert
+        this.showAlert = true;
+      },
+    );
   }
 }
