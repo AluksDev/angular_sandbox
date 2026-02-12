@@ -46,7 +46,7 @@ class AuthView(viewsets.GenericViewSet):
         }, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(
-        request_body={},
+        request_body=None,
         responses={200: 'Logged out successfully'}
     )
     @action(detail=False, methods=['post'], permission_classes=[IsAuthenticated])
