@@ -3,7 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.authtoken.models import Token
-from drf_yasg.utils import swagger_auto_schema
+from drf_yasg.utils import swagger_auto_schema, no_body
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
 from django.utils import timezone
@@ -46,7 +46,7 @@ class AuthView(viewsets.GenericViewSet):
         }, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(
-        request_body=None,
+        request_body=no_body,
         responses={200: 'Logged out successfully'}
     )
     @action(detail=False, methods=['post'], permission_classes=[IsAuthenticated])
