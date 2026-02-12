@@ -24,6 +24,11 @@ class AuthView(viewsets.GenericViewSet):
     permission_classes = [AllowAny]
     serializer_class = LoginSerializer
 
+    def get_serializer_class(self):
+        if self.action == 'logout':
+            return None
+        return super().get_serializer_class()
+
     @swagger_auto_schema(
         request_body=LoginSerializer,
         responses={200: UserSerializer}
