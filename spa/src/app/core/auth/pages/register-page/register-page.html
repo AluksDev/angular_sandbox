@@ -1,0 +1,49 @@
+<div>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div>
+            <app-form-input-component
+                formControlName="username"
+                label="Username"
+                placeholder="Enter your username"
+                [required]="true"
+                hint="Your unique username"
+                type="text"
+                minLength="2"
+                [control]="registerForm.controls['username']"
+            />
+        </div>
+        <div>
+            <app-form-input-component
+                formControlName="email"
+                label="Email"
+                placeholder="Enter your email"
+                [required]="true"
+                hint="Your email"
+                [maxLength]="50"
+                type="email"
+                [control]="registerForm.controls['email']"
+            />
+        </div>
+        <div>
+            <app-form-input-component
+                formControlName="password"
+                label="Password"
+                placeholder="Enter your password"
+                [required]="true"
+                hint="Your unique password"
+                [maxLength]="50"
+                type="password"
+                [control]="registerForm.controls['password']"
+            />
+        </div>
+        <div>
+            <button mat-flat-button>Register</button>
+        </div>
+    </form>
+
+<pre>
+    {{ registerForm.controls['username'].errors | json}}
+    {{ registerForm.controls['email'].errors | json}}
+    {{ registerForm.controls['password'].errors | json}}
+</pre>
+</div>
