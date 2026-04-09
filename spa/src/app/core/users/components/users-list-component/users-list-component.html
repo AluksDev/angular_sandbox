@@ -1,11 +1,23 @@
 <form [formGroup]="usersForm">
     <app-form-input-component 
-        type="text"
-        label="Search user by name, usernamer email"
-        [required]="false"
-        formControlName="searchTerm"
-        iconName="search"
-        appearance="fill"
+      formControlName="searchTerm"
+      type="text"
+      label="Search user by name, usernamer email"
+      [required]="false"
+      iconName="search"
+      appearance="fill"
+    />
+    <app-form-select-component 
+      formControlName="department"
+      label="Department filter"
+      placeholder="Select a department"
+      [options]="['IT', 'HR', 'Finance', 'Marketing']"
+    />
+    <app-form-select-component 
+      formControlName="status"
+      label="Status filter"
+      placeholder="Select a status"
+      [options]="['Active', 'Inactive']"
     />
 </form>
   

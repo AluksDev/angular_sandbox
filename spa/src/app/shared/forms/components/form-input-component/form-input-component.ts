@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, effect, Injector, input, OnInit } from '@angular/core';
 import { MatError, MatFormField, MatFormFieldModule, MatHint, MatLabel } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
-import { ControlValueAccessor, FormControl, FormControlDirective, FormControlName, FormGroupDirective, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatInput, MatInputModule } from '@angular/material/input';
+import { ControlValueAccessor, FormControl, FormControlDirective, FormControlName, FormGroupDirective, FormsModule, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BaseFormControlAccessor } from '../../utils/control-value-accessor-base';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-form-input-component',
   standalone: true,
-  imports: [MatFormField, MatLabel, MatInput, MatHint, MatError, MatFormFieldModule, ReactiveFormsModule, MatIcon],
+  imports: [MatFormFieldModule, ReactiveFormsModule, MatIcon, MatInputModule, FormsModule],
   templateUrl: './form-input-component.html',
   styleUrls: ['./form-input-component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

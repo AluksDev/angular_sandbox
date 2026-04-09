@@ -1,11 +1,15 @@
-import { JsonPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import {  ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { MatFormField, MatLabel, MatOption, MatSelect } from '@angular/material/select';
+import { ChangeDetectionStrategy, Component, Injector, input, OnInit } from '@angular/core';
+import { FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { BaseFormControlAccessor } from '../../utils/control-value-accessor-base';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { map, Observable, startWith } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-form-select-component',
-  imports: [MatSelect, MatFormField, MatLabel, JsonPipe, MatOption],
+  imports: [ReactiveFormsModule, MatAutocompleteModule, AsyncPipe, MatInputModule, MatFormFieldModule, FormsModule],
   templateUrl: './form-select-component.html',
   styleUrl: './form-select-component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -17,30 +21,26 @@ import { MatFormField, MatLabel, MatOption, MatSelect } from '@angular/material/
     }
   ]
 })
-export class FormSelectComponent implements ControlValueAccessor{
+export class FormSelectComponent extends BaseFormControlAccessor{
   label = input.required<string>();
   options = input.required<string[]>()
   required = input<boolean>();
+  placeholder= input<string>();
 
-  value: any = null;
-  isDisabled = false;
+  formControl: FormControl;
 
-  onChange = (value: any) => {};
-  onTouched = () => {};
+  filteredOptions: Observable<string[]>;
 
-  writeValue(obj: any): void {
-    this.value = obj;
+  ngOnInit() {
+    super.ngOnInit(); 
+    this.filteredOptions = this.formControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value || '')),
+    );
   }
 
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
-  }
-
-  setDisabledState(isDisabled: boolean): void {
-    this.isDisabled = isDisabled;
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.options().filter(option => option.toLowerCase().includes(filterValue));
   }
 }

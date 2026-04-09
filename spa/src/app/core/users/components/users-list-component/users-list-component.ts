@@ -1,16 +1,15 @@
 import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatIcon } from '@angular/material/icon';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import { FormInputComponent } from "@app/shared/forms/components/form-input-component/form-input-component";
 import { debounceTime, Subject, switchMap, takeUntil } from 'rxjs';
 import { UsersService } from '../../services/users.service';
+import { FormSelectComponent } from '@app/shared/forms/components/form-select-component/form-select-component';
 
 @Component({
   selector: 'app-users-list-component',
-  imports: [MatTableModule, NgClass, MatIcon, FormInputComponent, ReactiveFormsModule],
+  imports: [MatTableModule, NgClass, FormInputComponent, ReactiveFormsModule, FormSelectComponent],
   templateUrl: './users-list-component.html',
   styleUrl: './users-list-component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -29,7 +28,9 @@ export class UsersListComponent implements OnInit {
 
   fb = inject(FormBuilder);
   usersForm = this.fb.group({
-    searchTerm: ['']
+    searchTerm: [''],
+    department: [''],
+    status: ['']
   })
 
   searchResult = new Subject<any>();
