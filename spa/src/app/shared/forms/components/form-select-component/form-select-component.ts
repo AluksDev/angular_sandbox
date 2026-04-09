@@ -6,10 +6,11 @@ import { map, Observable, startWith } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-form-select-component',
-  imports: [ReactiveFormsModule, MatAutocompleteModule, AsyncPipe, MatInputModule, MatFormFieldModule, FormsModule],
+  imports: [ReactiveFormsModule, MatAutocompleteModule, AsyncPipe, MatInputModule, MatFormFieldModule, FormsModule, MatSelectModule],
   templateUrl: './form-select-component.html',
   styleUrl: './form-select-component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -26,6 +27,7 @@ export class FormSelectComponent extends BaseFormControlAccessor{
   options = input.required<string[]>()
   required = input<boolean>();
   placeholder= input<string>();
+  searchable = input<boolean>();
 
   formControl: FormControl;
 

@@ -1,4 +1,5 @@
-<form [formGroup]="usersForm">
+<form [formGroup]="usersForm" class="flex justify-between items-center">
+  <div class="flex-1">
     <app-form-input-component 
       formControlName="searchTerm"
       type="text"
@@ -7,22 +8,26 @@
       iconName="search"
       appearance="fill"
     />
-    <app-form-select-component 
-      formControlName="department"
-      label="Department filter"
-      placeholder="Select a department"
-      [options]="['IT', 'HR', 'Finance', 'Marketing']"
-    />
-    <app-form-select-component 
-      formControlName="status"
-      label="Status filter"
-      placeholder="Select a status"
-      [options]="['Active', 'Inactive']"
-    />
+    </div>
+    <div class="flex justify-between items-center">
+      <app-form-select-component 
+        formControlName="department"
+        label="Department filter"
+        placeholder="Select a department"
+        [options]="['IT', 'HR', 'Finance', 'Marketing']"
+        [searchable]="true"
+      />
+      <app-form-select-component 
+        formControlName="status"
+        label="Status filter"
+        placeholder="Select a status"
+        [options]="['Active', 'Inactive']"
+      />
+    </div>
 </form>
   
 
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full">
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full overflow-auto">
 
   <!-- Avatar -->
   <ng-container matColumnDef="avatar">
