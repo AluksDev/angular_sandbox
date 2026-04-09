@@ -9,13 +9,13 @@
     >
       <mat-autocomplete #auto="matAutocomplete">
         @for (option of filteredOptions | async; track option) {
-          <mat-option [value]="option">{{option}}</mat-option>
+          <mat-option [value]="isObject(option) ? option.id : option.toLowerCase()">{{ isObject(option) ? option.name : option }}</mat-option>
         }
       </mat-autocomplete>
     } @else {
-      <mat-select>
+      <mat-select [formControl]="formControl">
       @for (option of filteredOptions | async; track option) {
-          <mat-option [value]="option">{{option}}</mat-option>
+          <mat-option [value]="isObject(option) ? option.id : option.toLowerCase()">{{ isObject(option) ? option.name : option }}</mat-option>
         }
       </mat-select>
     }

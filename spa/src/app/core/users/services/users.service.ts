@@ -1,25 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { User } from '@app/shared/interfaces/user.interface';
 import { Observable, of } from 'rxjs';
-
-interface User {
-  id: number;
-  fullName: string;
-  username: string;
-  email: string;
-  department: string;
-  status: 'active' | 'inactive';
-}
-
 interface Options {
     searchTerm?: string,
     department?: number,
-    is_active?: boolean,
+    status?: string,
     limit?: number,
     offset?: number
 }
 
-const MOCK_DATA: User[] = [
+const MOCK_USERS_DATA: User[] = [
   { id: 1, fullName: 'Juan Pérez', username: 'jperez', email: 'juan.perez@example.com', department: 'IT', status: 'active' },
   { id: 2, fullName: 'María García', username: 'mgarcia', email: 'maria.garcia@example.com', department: 'HR', status: 'inactive' },
   { id: 3, fullName: 'Carlos López', username: 'clopez', email: 'carlos.lopez@example.com', department: 'Finance', status: 'active' },
@@ -71,13 +62,15 @@ const MOCK_DATA: User[] = [
   { id: 49, fullName: 'Javier Castro', username: 'jcastro2', email: 'javier.castro2@example.com', department: 'Marketing', status: 'active' },
   { id: 50, fullName: 'Laura Vargas', username: 'lvargas', email: 'laura.vargas@example.com', department: 'Sales', status: 'inactive' }
 ];
+
 @Injectable({providedIn: 'root'})
 export class UsersService {
     private http = inject(HttpClient);
 
-    getUsers(options: Options): Observable<any>{
-        const {searchTerm, department, is_active, limit , offset } = options;
-        let filteredUsers = MOCK_DATA;
+    getUsers(options: Options): Observable<User[]>{
+        console.log(options)
+        const {searchTerm, department, status, limit , offset } = options;
+        let filteredUsers = MOCK_USERS_DATA;
 
         if (searchTerm){
             let term = searchTerm.toLowerCase();
@@ -89,5 +82,4 @@ export class UsersService {
         }
         return of(filteredUsers);
     }
-    
 }

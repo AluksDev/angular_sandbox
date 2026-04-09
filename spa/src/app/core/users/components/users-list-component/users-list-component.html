@@ -10,13 +10,16 @@
     />
     </div>
     <div class="flex justify-between items-center">
-      <app-form-select-component 
-        formControlName="department"
-        label="Department filter"
-        placeholder="Select a department"
-        [options]="['IT', 'HR', 'Finance', 'Marketing']"
-        [searchable]="true"
-      />
+      @if (departments$ | async; as departments) {
+        <app-form-select-component 
+          formControlName="department"
+          label="Department filter"
+          placeholder="Select a department"
+          [options]="departments"
+          [searchable]="true"
+        />
+      }
+      
       <app-form-select-component 
         formControlName="status"
         label="Status filter"
@@ -27,7 +30,7 @@
 </form>
   
 
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full overflow-auto">
+<table mat-table [dataSource]="userDataSource" class="mat-elevation-z8 w-full overflow-auto">
 
   <!-- Avatar -->
   <ng-container matColumnDef="avatar">

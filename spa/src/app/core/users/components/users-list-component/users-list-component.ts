@@ -1,15 +1,17 @@
-import { NgClass } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { AsyncPipe, NgClass } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import { FormInputComponent } from "@app/shared/forms/components/form-input-component/form-input-component";
-import { debounceTime, Subject, switchMap, takeUntil } from 'rxjs';
+import { debounceTime, Observable, Subject, switchMap, takeUntil } from 'rxjs';
 import { UsersService } from '../../services/users.service';
 import { FormSelectComponent } from '@app/shared/forms/components/form-select-component/form-select-component';
+import { Department } from '@app/shared/interfaces/department.interface';
+import { DepartmentsService } from '@app/core/departments/departments.service';
 
 @Component({
   selector: 'app-users-list-component',
-  imports: [MatTableModule, NgClass, FormInputComponent, ReactiveFormsModule, FormSelectComponent],
+  imports: [MatTableModule, NgClass, FormInputComponent, ReactiveFormsModule, FormSelectComponent, AsyncPipe],
   templateUrl: './users-list-component.html',
   styleUrl: './users-list-component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -24,41 +26,39 @@ export class UsersListComponent implements OnInit {
     'status',
     'actions'
   ];  
-  dataSource = new MatTableDataSource([]);
+  userDataSource = new MatTableDataSource([]);
+  departments$: Observable<Department[]>;
+  departmentsNames: string[];
 
   fb = inject(FormBuilder);
   usersForm = this.fb.group({
     searchTerm: [''],
-    department: [''],
-    status: ['']
+    department: [null as number | null],
+    status: [''],
+    limit: [10],
+    offset: 0
   })
 
-  searchResult = new Subject<any>();
   private destroy = new Subject<void>();
+
   usersService = inject(UsersService);
+  departmentService = inject(DepartmentsService);
 
   ngOnInit() {
-    this.usersForm.controls['searchTerm']?.valueChanges
+    this.departments$ = this.departmentService.getDepartments();
+    this.usersForm.valueChanges
     .pipe(
       debounceTime(300),
-      switchMap((searchTerm)=> this.usersService.getUsers({ searchTerm })),
+      switchMap((options)=> this.usersService.getUsers(options)),
       takeUntil(this.destroy)
     )
     .subscribe(results => {
-      this.dataSource.data = results;
+      this.userDataSource.data = results;
     })
   }
 
   getInitials(fullName: string): string{
     const initials = fullName.split(' ').map((name) => name[0]);
     return initials.join('');
-  }
-
-  searchTimer:any;
-  searchUser(value: string) {
-    clearTimeout(this.searchTimer);
-    this.searchTimer = setTimeout(()=>{
-      this.dataSource.filter = value.trim().toLowerCase();
-    }, 300)
   }
  }
