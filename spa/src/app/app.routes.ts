@@ -1,5 +1,6 @@
 import { Route } from "@angular/router";
 import { AuthGuard } from "app/core/auth/guards/auth.guard";
+import { UsersListPage } from "./core/users/pages/users-list-page/users-list-page";
 
 // @formatter:off
 
@@ -7,6 +8,10 @@ export const appRoutes: Route[] = [
   {
     path: 'auth',
     loadChildren: () => import('./core/auth/auth.routes')
+  },
+  {
+    path: 'users',
+    component: UsersListPage
   },
   // Redirect empty path to '/example'
   { path: "", pathMatch: "full", redirectTo: "home" },

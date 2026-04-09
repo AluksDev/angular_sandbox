@@ -1,25 +1,24 @@
-<div class="flex h-full w-full flex-col items-center justify-center">
-  <div class="w-full max-w-3xl">
-    <div class="prose prose-sm mx-auto max-w-none">
-      <img class="w-20" src="images/logo/logo.svg" alt="Logo image" i18n-alt />
-      <h1 i18n>Landing Module</h1>
-      <p i18n>
-        This can be the landing or the welcome page of your application. If you have an SSR (Server Side Rendering)
-        setup, or if you don't need to have Search engine visibility and optimizations, you can even use this page as
-        your primary landing page.
-      </p>
-      <p i18n>
-        This is a separate "module", it has its own directory and routing setup and also it's completely separated from
-        the actual application. This is also a simple example of a multiple applications setup that uses the same
-        codebase. You can have different entry points and essentially have different applications within the same
-        codebase.
-      </p>
-    </div>
-    <div>
-      <a class="mt-8" mat-flat-button [color]="'primary'" [routerLink]="'/dashboards/project'">
-        <span i18n>Launch the App</span>
-        <mat-icon class="ml-2 icon-size-5" [svgIcon]="'heroicons_mini:arrow-long-right'"> </mat-icon>
+<div class="w-full h-full flex flex-col justify-center items-center gap-6">
+  <h1>Home Page</h1>
+  <div class="flex w-full h-full">
+      <a routerLink="/users" class="group relative flex-1 flex items-center justify-center bg-white border-r border-gray-100 transition-all duration-500 hover:bg-blue-50">
+          <div class="text-center">
+              <div class="mb-4 inline-flex items-center justify-center w-20 h-20 bg-blue-100 text-blue-600 rounded-full">
+                  <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              </div>
+              <h2 class="text-3xl font-bold text-gray-800">User Management</h2>
+              <p class="text-gray-500 mt-2">Manage permissions, roles, and profiles.</p>
+          </div>
       </a>
-    </div>
+
+      <a href="/departments" class="group relative flex-1 flex items-center justify-center bg-white transition-all duration-500 hover:bg-teal-50">
+          <div class="text-center">
+              <div class="mb-4 inline-flex items-center justify-center w-20 h-20 bg-teal-100 text-teal-600 rounded-full">
+                  <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              </div>
+              <h2 class="text-3xl font-bold text-gray-800">Departments</h2>
+              <p class="text-gray-500 mt-2">Organize teams and office structures.</p>
+          </div>
+      </a>
   </div>
 </div>

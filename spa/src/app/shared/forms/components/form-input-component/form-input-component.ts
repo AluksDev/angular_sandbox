@@ -3,11 +3,12 @@ import { MatError, MatFormField, MatFormFieldModule, MatHint, MatLabel } from '@
 import { MatInput } from '@angular/material/input';
 import { ControlValueAccessor, FormControl, FormControlDirective, FormControlName, FormGroupDirective, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BaseFormControlAccessor } from '../../utils/control-value-accessor-base';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-form-input-component',
   standalone: true,
-  imports: [MatFormField, MatLabel, MatInput, MatHint, MatError, MatFormFieldModule, ReactiveFormsModule],
+  imports: [MatFormField, MatLabel, MatInput, MatHint, MatError, MatFormFieldModule, ReactiveFormsModule, MatIcon],
   templateUrl: './form-input-component.html',
   styleUrls: ['./form-input-component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -27,6 +28,8 @@ export class FormInputComponent extends BaseFormControlAccessor {
   hint = input<string>();
   minLength = input<number>();
   maxLength = input<number>();
+  iconName = input<string>();
+  appearance= input<string>('outline')
 
   formControl: FormControl;
 
