@@ -9,7 +9,6 @@
                 hint="Your unique username"
                 type="text"
                 minLength="2"
-                [control]="registerForm.controls['username']"
             />
         </div>
         <div>
@@ -21,7 +20,6 @@
                 hint="Your email"
                 [maxLength]="50"
                 type="email"
-                [control]="registerForm.controls['email']"
             />
         </div>
         <div>
@@ -33,7 +31,6 @@
                 hint="Your unique password"
                 [maxLength]="50"
                 type="password"
-                [control]="registerForm.controls['password']"
             />
         </div>
         <div>
@@ -42,8 +39,13 @@
     </form>
 
 <pre>
+    <p>isvalid?</p>
+    {{ registerForm.valid }}
+    <p>Username errors</p>
     {{ registerForm.controls['username'].errors | json}}
+    <p>email errors</p>
     {{ registerForm.controls['email'].errors | json}}
+    <p>password errors</p>
     {{ registerForm.controls['password'].errors | json}}
 </pre>
 </div>

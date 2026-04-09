@@ -1,5 +1,5 @@
 import { registerLocaleData } from "@angular/common";
-import { provideHttpClient, withInterceptors, withJsonpSupport } from "@angular/common/http";
+import { provideHttpClient, withFetch, withInterceptors, withJsonpSupport } from "@angular/common/http";
 import localeCa from "@angular/common/locales/ca";
 import { ApplicationConfig, LOCALE_ID, provideExperimentalZonelessChangeDetection } from "@angular/core";
 import { LuxonDateAdapter } from "@angular/material-luxon-adapter";
@@ -31,6 +31,7 @@ export const appConfig: ApplicationConfig = {
     FuseThemeService,
     LayoutService,
     RuntimeConfigService,
+    provideHttpClient(withFetch()),
     {
       provide: LOCALE_ID,
       useValue: "ca-CA",

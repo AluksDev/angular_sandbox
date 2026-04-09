@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, Optional, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, Injector, input, OnInit } from '@angular/core';
 import { MatError, MatFormField, MatFormFieldModule, MatHint, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ControlValueAccessor, FormControl, FormControlDirective, FormControlName, FormGroupDirective, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { BaseFormControlAccessor } from '../../utils/control-value-accessor-base';
 
 @Component({
   selector: 'app-form-input-component',
@@ -10,32 +11,22 @@ import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, NgControl, Reacti
   templateUrl: './form-input-component.html',
   styleUrls: ['./form-input-component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: FormInputComponent,
-      multi: true
-    }
-  ]
 })
-export class FormInputComponent implements ControlValueAccessor {
+export class FormInputComponent extends BaseFormControlAccessor {
   label = input.required<string>();
   type = input.required<string>();
+  required = input.required<boolean>();
   placeholder = input<string>();
   hint = input<string>();
-  required = input.required<boolean>();
   minLength = input<number>();
   maxLength = input<number>();
-  control = input.required<FormControl | null>();
 
+  formControl: FormControl;
 
-  value: string = '';
-  disabled: boolean = false;
-  isValid= signal<boolean>(false)
-
-  constructor(){
+  constructor(injector: Injector){
+    super(injector);
     effect(() => {
-      if (!this.control()) return;
+      if (!this.formControl) return;
       const validators = [];
       if (this.required()) {
         validators.push(Validators.required);
@@ -49,43 +40,14 @@ export class FormInputComponent implements ControlValueAccessor {
       if (this.type() === 'email'){
         validators.push(Validators.email)
       }
-      this.control()!.setValidators(validators);
-      this.control()!.updateValueAndValidity();
+      this.formControl!.setValidators(validators);
+      this.formControl!.updateValueAndValidity();
     })
   }
 
-  private onChange = (v: any) => {};
-  private onTouched = () => {};
-
-
-  writeValue(value: any): void {
-    this.value = value ?? '';
-  }
-
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
-  }
-
-  setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
-  }
-
-  onInputChange(event: any): void {
-    this.value = event.target.value;
-    this.onChange(this.value);
-  }
-
-  onBlur(): void {
-    this.onTouched();
-  }
-
   getErrorMessage(): string | null{
-    if (!this.control().errors) return null;
-    const errors = this.control().errors ?? {};
+    if (!this.formControl.errors) return null;
+    const errors = this.formControl.errors ?? {};
     for (const key of Object.keys(errors)){
       switch (key) {
         case 'required':

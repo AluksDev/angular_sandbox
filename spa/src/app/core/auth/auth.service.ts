@@ -11,8 +11,25 @@ import { RuntimeConfigService } from "../../runtime-config.service";
   providedIn: "platform",
 })
 export class AuthService {
-  private router = inject(Router);
   private http = inject(HttpClient);
+  
+  registerUser(){
+    console.log('Register user');
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+  private router = inject(Router);
   private snackBar = inject(MatSnackBar);
   private config = inject(RuntimeConfigService);
   public whoami$: Observable<any>;
