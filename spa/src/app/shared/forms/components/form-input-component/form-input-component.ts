@@ -11,6 +11,13 @@ import { BaseFormControlAccessor } from '../../utils/control-value-accessor-base
   templateUrl: './form-input-component.html',
   styleUrls: ['./form-input-component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: FormInputComponent,
+      multi: true
+    }
+  ]
 })
 export class FormInputComponent extends BaseFormControlAccessor {
   label = input.required<string>();

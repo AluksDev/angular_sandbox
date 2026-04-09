@@ -1,21 +1,14 @@
 import { Directive, Injector } from '@angular/core';
-import { ControlValueAccessor, FormControl, FormControlDirective, FormControlName, FormGroupDirective, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
+import { ControlValueAccessor, FormControl, FormControlDirective, FormControlName, FormGroupDirective, NgControl } from '@angular/forms';
 
-@Directive({
-    providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: BaseFormControlAccessor,
-      multi: true
-    }
-  ]
-})
+@Directive()
 export abstract class BaseFormControlAccessor implements ControlValueAccessor {
     formControl: FormControl;
     
     constructor(private injector: Injector){}
     ngOnInit() {
         const ngControl = this.injector.get(NgControl);
+        if (!ngControl) return;
         if (ngControl instanceof FormControlName) {
             this.formControl = this.injector
                 .get(FormGroupDirective)
