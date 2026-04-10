@@ -10,11 +10,13 @@ import { Department } from '@app/shared/interfaces/department.interface';
 import { DepartmentsService } from '@app/core/departments/departments.service';
 import { User } from '@app/shared/interfaces/user.interface';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import {  MatSort, MatSortModule, Sort } from '@angular/material/sort';
+import {  MatSortModule, Sort } from '@angular/material/sort';
+import {MatChipsModule} from '@angular/material/chips';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-users-list-component',
-  imports: [MatTableModule, NgClass, FormInputComponent, ReactiveFormsModule, FormSelectComponent, AsyncPipe, MatPaginatorModule, MatSortModule],
+  imports: [MatTableModule, NgClass, FormInputComponent, ReactiveFormsModule, FormSelectComponent, AsyncPipe, MatPaginatorModule, MatSortModule, MatChipsModule],
   templateUrl: './users-list-component.html',
   styleUrl: './users-list-component.scss',
 })
@@ -39,6 +41,20 @@ export class UsersListComponent implements OnInit {
     status: [''],
   })
 
+  formValue = toSignal(this.usersForm.valueChanges, {
+    initialValue: this.usersForm.value
+  });
+  
+  activeFilters = computed(() => {
+    const { searchTerm, status, department } = this.formValue();
+
+    return [
+      searchTerm && { label: `Search: ${searchTerm}`, key: 'searchTerm' },
+      status && { label: status, key: 'status' },
+      department && { label: `Department: ${this.departmentMap[department]}`, key: 'department' }
+    ].filter(Boolean);
+  });
+
   private destroy = new Subject<void>();
 
   usersService = inject(UsersService);
@@ -46,7 +62,6 @@ export class UsersListComponent implements OnInit {
   totalUsers: number = 0;
   offset: number = 0;
   limit: number = 10;
-
   ngOnInit() {
     this.userDataSource = new MatTableDataSource<User>();
 
@@ -57,10 +72,10 @@ export class UsersListComponent implements OnInit {
       )
     });
 
-    this.usersService.getUsers({...this.usersForm.value, limit: this.limit, offset: this.offset}).subscribe(results => {
-      this.userDataSource.data = results.data;
-      this.totalUsers = results.total;
-    });
+    // this.usersService.getUsers({...this.usersForm.value, limit: this.limit, offset: this.offset}).subscribe(results => {
+    //   this.userDataSource.data = results.data;
+    //   this.totalUsers = results.total;
+    // });
 
     this.usersForm.valueChanges
     .pipe(
@@ -72,6 +87,7 @@ export class UsersListComponent implements OnInit {
           }
         }),
       debounceTime(300),
+      startWith(this.usersForm.value), 
       switchMap((options)=> this.usersService.getUsers({...options, limit: this.limit, offset: this.offset})),
       takeUntil(this.destroy)
     )
@@ -111,5 +127,15 @@ export class UsersListComponent implements OnInit {
       this.userDataSource.data = results.data;
       this.totalUsers = results.total;
     })
+  }
+
+  removeFilter(filter: string){
+     if (filter === 'status') {
+      this.usersForm.patchValue({ status: '' });
+    } else if (filter === 'department') {
+      this.usersForm.patchValue({ department: null });
+    } else if (filter === 'searchTerm') {
+      this.usersForm.patchValue({ searchTerm: '' });
+    }
   }
  }

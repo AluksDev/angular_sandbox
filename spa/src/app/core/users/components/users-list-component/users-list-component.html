@@ -24,11 +24,15 @@
         formControlName="status"
         label="Status filter"
         placeholder="Select a status"
-        [options]="['', 'Active', 'Inactive']"
+        [options]="['Active', 'Inactive']"
       />
     </div>
 </form>
-  
+<mat-chip-set class="my-2">
+  @for (filter of activeFilters(); track filter){
+    <mat-chip (click)="removeFilter(filter.key)" class="border border-solid cursor-pointer">{{ filter.label }}</mat-chip>
+  }
+</mat-chip-set>
 @if (userDataSource.data.length !== 0){
   <table mat-table [dataSource]="userDataSource" matSort class="mat-elevation-z8 w-full overflow-auto" (matSortChange)="sortColumn($event)">
 

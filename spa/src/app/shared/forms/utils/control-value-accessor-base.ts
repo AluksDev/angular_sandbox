@@ -23,9 +23,7 @@ export abstract class BaseFormControlAccessor implements ControlValueAccessor {
     protected onTouched = () => {};
     
     writeValue(value: any): void {
-        if (this.formControl) {
-            this.formControl.setValue(value ?? '', { emitEvent: false });
-        }
+       this.onChange(value)
     }
 
     registerOnChange(fn: any): void {
@@ -34,11 +32,5 @@ export abstract class BaseFormControlAccessor implements ControlValueAccessor {
 
     registerOnTouched(fn: any): void {
         this.onTouched = fn;
-    }
-
-    setDisabledState(isDisabled: boolean): void {
-        if (this.formControl) {
-            isDisabled ? this.formControl.disable() : this.formControl.enable();
-        }
     }
 }

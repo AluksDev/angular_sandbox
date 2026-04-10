@@ -15,7 +15,7 @@
       }
     </mat-autocomplete>
   } @else {
-    <mat-select [formControl]="formControl">
+    <mat-select [formControl]="formControl" [placeholder]="placeholder() ?? 'Pick One'">
       @for (option of filteredOptions | async; track option.id || option) {
         <mat-option [value]="option.id ? option.id : option.toLowerCase()">
           {{ option.name || option }}

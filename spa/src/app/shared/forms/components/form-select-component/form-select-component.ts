@@ -31,14 +31,18 @@ export class FormSelectComponent extends BaseFormControlAccessor{
 
   formControl: FormControl;
 
-  filteredOptions: Observable<string[]>;
+  filteredOptions: Observable<any[]>;
 
   ngOnInit() {
   super.ngOnInit();
 
+  if (!this.formControl) {
+    console.error('FormControl not initialized');
+    return;
+  }
   if (this.searchable()) {
     this.filteredOptions = this.formControl.valueChanges.pipe(
-      startWith(''),
+      startWith(this.formControl.value),
       map(value => {
         const displayValue = this.isObject(value) ? value.name : value;
         return this.searchFilter(displayValue || '');
