@@ -34,28 +34,40 @@ export class FormSelectComponent extends BaseFormControlAccessor{
   filteredOptions: Observable<string[]>;
 
   ngOnInit() {
-    super.ngOnInit();
+  super.ngOnInit();
 
-    if (this.searchable()) {
-      this.filteredOptions = this.formControl.valueChanges.pipe(
-        startWith(''),
-        map(value => this.searchFilter(value || ''))
-      );
-    } else {
-      this.filteredOptions = of(this.options());
-    }
+  if (this.searchable()) {
+    this.filteredOptions = this.formControl.valueChanges.pipe(
+      startWith(''),
+      map(value => {
+        const displayValue = this.isObject(value) ? value.name : value;
+        return this.searchFilter(displayValue || '');
+      })
+    );
+  } else {
+    this.filteredOptions = of(this.options());
   }
+}
 
-  private searchFilter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-    return this.options().filter(option => {
-      if (typeof(option) === 'string'){
-        return option.toLowerCase().includes(filterValue)
-      } else if (typeof(option) === 'object' && option.name){
-        return option.name.toLowerCase().includes(filterValue)
-      }
-      return false;
-    });
+private searchFilter(value: string): string[] {
+  const filterValue = String(value).toLowerCase();
+  return this.options().filter(option => {
+    if (option.name) {
+      return option.name.toLowerCase().includes(filterValue);
+    }
+    return false;
+  });
+}
+
+  displayWith(value: any): string {
+    if (!value) return '';
+    
+    if (typeof value === 'number' || typeof value === 'string') {
+      const option = this.options().find(opt => opt.id === value);
+      return option?.name || '';
+    }
+    
+    return value;
   }
 
   isObject(value: any): boolean {

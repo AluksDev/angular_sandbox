@@ -7,16 +7,20 @@
       [placeholder]="placeholder() ?? 'Pick One'"
       [matAutocomplete]="auto"
     >
-      <mat-autocomplete #auto="matAutocomplete">
-        @for (option of filteredOptions | async; track option) {
-          <mat-option [value]="isObject(option) ? option.id : option.toLowerCase()">{{ isObject(option) ? option.name : option }}</mat-option>
-        }
-      </mat-autocomplete>
-    } @else {
-      <mat-select [formControl]="formControl">
-      @for (option of filteredOptions | async; track option) {
-          <mat-option [value]="isObject(option) ? option.id : option.toLowerCase()">{{ isObject(option) ? option.name : option }}</mat-option>
-        }
-      </mat-select>
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayWith.bind(this)">
+      @for (option of filteredOptions | async; track option.id || option) {
+        <mat-option [value]="option.id ? option.id : option.toLowerCase()">
+          {{ option.name || option }}
+        </mat-option>
+      }
+    </mat-autocomplete>
+  } @else {
+    <mat-select [formControl]="formControl">
+      @for (option of filteredOptions | async; track option.id || option) {
+        <mat-option [value]="option.id ? option.id : option.toLowerCase()">
+          {{ option.name || option }}
+        </mat-option>
+      }
+    </mat-select>
     }
   </mat-form-field>

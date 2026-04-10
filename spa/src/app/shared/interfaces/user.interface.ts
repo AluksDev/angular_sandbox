@@ -3,6 +3,6 @@ export interface User {
   fullName: string;
   username: string;
   email: string;
-  department: string;
+  department: number;
   status: 'active' | 'inactive';
 }
