@@ -1,0 +1,35 @@
+<form [formGroup]="filterForm" class="flex justify-between items-center">
+  <div class="flex-1">
+    <app-form-input-component 
+      formControlName="searchTerm"
+      type="text"
+      label="Search user by name, usernamer email"
+      [required]="false"
+      iconName="search"
+      appearance="fill"
+    />
+    </div>
+    <div class="flex justify-between items-center">
+      @if (departments$() | async; as departments) {
+        <app-form-select-component 
+          formControlName="department"
+          label="Department filter"
+          placeholder="Select a department"
+          [options]="departments"
+          [searchable]="true"
+        />
+      }
+      
+      <app-form-select-component 
+        formControlName="status"
+        label="Status filter"
+        placeholder="Select a status"
+        [options]="['Active', 'Inactive']"
+      />
+    </div>
+</form>
+<mat-chip-set class="my-2">
+  @for (filter of activeFilters(); track filter.key){
+    <mat-chip (click)="removeFilter(filter.key)" class="border border-solid cursor-pointer">{{ filter.label }}</mat-chip>
+  }
+</mat-chip-set>

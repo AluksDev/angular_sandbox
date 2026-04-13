@@ -31,8 +31,6 @@ export class FormInputComponent extends BaseFormControlAccessor {
   iconName = input<string>();
   appearance= input<string>('outline')
 
-  formControl: FormControl;
-
   constructor(injector: Injector){
     super(injector);
     effect(() => {

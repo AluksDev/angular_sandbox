@@ -29,8 +29,6 @@ export class FormSelectComponent extends BaseFormControlAccessor{
   placeholder= input<string>();
   searchable = input<boolean>();
 
-  formControl: FormControl;
-
   filteredOptions: Observable<any[]>;
 
   ngOnInit() {

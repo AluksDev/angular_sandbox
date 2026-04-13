@@ -1,113 +1,89 @@
-<form [formGroup]="usersForm" class="flex justify-between items-center">
-  <div class="flex-1">
-    <app-form-input-component 
-      formControlName="searchTerm"
-      type="text"
-      label="Search user by name, usernamer email"
-      [required]="false"
-      iconName="search"
-      appearance="fill"
-    />
-    </div>
-    <div class="flex justify-between items-center">
-      @if (departments$ | async; as departments) {
-        <app-form-select-component 
-          formControlName="department"
-          label="Department filter"
-          placeholder="Select a department"
-          [options]="departments"
-          [searchable]="true"
-        />
-      }
-      
-      <app-form-select-component 
-        formControlName="status"
-        label="Status filter"
-        placeholder="Select a status"
-        [options]="['Active', 'Inactive']"
-      />
-    </div>
-</form>
-<mat-chip-set class="my-2">
-  @for (filter of activeFilters(); track filter){
-    <mat-chip (click)="removeFilter(filter.key)" class="border border-solid cursor-pointer">{{ filter.label }}</mat-chip>
-  }
-</mat-chip-set>
-@if (userDataSource.data.length !== 0){
-  <table mat-table [dataSource]="userDataSource" matSort class="mat-elevation-z8 w-full overflow-auto" (matSortChange)="sortColumn($event)">
+@if (dataSource().data.length !== 0) {
+  <table 
+    mat-table 
+    [dataSource]="dataSource()" 
+    matSort 
+    class="mat-elevation-z8 w-full overflow-auto" 
+    (matSortChange)="onSortChange($event)"
+  >
+    <!-- Avatar -->
+    <ng-container matColumnDef="avatar">
+      <th mat-header-cell *matHeaderCellDef> </th>
+      <td mat-cell *matCellDef="let element">
+        <div class="w-10 h-10 rounded-full bg-gray-400 text-white flex items-center justify-center">
+          {{ getInitials(element.fullName) }}
+        </div>
+      </td>
+    </ng-container>
 
-  <!-- Avatar -->
-  <ng-container matColumnDef="avatar">
-    <th mat-header-cell *matHeaderCellDef> </th>
-    <td mat-cell *matCellDef="let element">
-      <div class="w-10 h-10 rounded-full bg-gray-400 text-white flex items-center justify-center">
-        {{ getInitials(element.fullName) }}
-      </div>
-    </td>
-  </ng-container>
+    <!-- Full Name -->
+    <ng-container matColumnDef="fullName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Full Name </th>
+      <td mat-cell *matCellDef="let element"> {{ element.fullName }} </td>
+    </ng-container>
 
-  <!-- Full Name -->
-  <ng-container matColumnDef="fullName">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Full Name </th>
-    <td mat-cell *matCellDef="let element"> {{ element.fullName }} </td>
-  </ng-container>
+    <!-- Username -->
+    <ng-container matColumnDef="username">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Username </th>
+      <td mat-cell *matCellDef="let element"> {{ element.username }} </td>
+    </ng-container>
 
-  <!-- Username -->
-  <ng-container matColumnDef="username">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Username </th>
-    <td mat-cell *matCellDef="let element"> {{ element.username }} </td>
-  </ng-container>
+    <!-- Email -->
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+      <td mat-cell *matCellDef="let element"> {{ element.email }} </td>
+    </ng-container>
 
-  <!-- Email -->
-  <ng-container matColumnDef="email">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
-    <td mat-cell *matCellDef="let element"> {{ element.email }} </td>
-  </ng-container>
+    <!-- Department -->
+    <ng-container matColumnDef="department">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Department </th>
+      <td mat-cell *matCellDef="let element"> 
+        {{ departmentMap()[element.department] }} 
+      </td>
+    </ng-container>
 
-  <!-- Department -->
-  <ng-container matColumnDef="department">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Department </th>
-    <td mat-cell *matCellDef="let element"> {{ departmentMap[element.department] }} </td>
-  </ng-container>
+    <!-- Status -->
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+      <td mat-cell *matCellDef="let element">
+        <span
+          class="px-2 py-1 rounded text-white text-sm"
+          [ngClass]="{
+            'bg-green-500': element.status === 'active',
+            'bg-red-500': element.status === 'inactive'
+          }"
+        >
+          {{ element.status }}
+        </span>
+      </td>
+    </ng-container>
 
-  <!-- Status -->
-  <ng-container matColumnDef="status">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-    <td mat-cell *matCellDef="let element">
-      <span
-        class="px-2 py-1 rounded text-white text-sm"
-        [ngClass]="{
-          'bg-green-500': element.status === 'active',
-          'bg-red-500': element.status === 'inactive'
-        }"
-      >
-        {{ element.status }}
-      </span>
-    </td>
-  </ng-container>
+    <!-- Actions -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-button color="primary">Details</button>
+        <button mat-button color="accent">Edit</button>
+        <button mat-button color="warn">Deactivate</button>
+      </td>
+    </ng-container>
 
-  <!-- Actions -->
-  <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef> Actions </th>
-    <td mat-cell *matCellDef="let element">
-      <button mat-button color="primary">Details</button>
-      <button mat-button color="accent">Edit</button>
-      <button mat-button color="warn">Deactivate</button>
-    </td>
-  </ng-container>
+    <!-- Rows -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr 
+      mat-row 
+      *matRowDef="let row; columns: displayedColumns;" 
+      [ngClass]="{'opacity-60': row.status === 'inactive'}"
+    ></tr>
+  </table>
 
-  <!-- Rows -->
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
-<mat-paginator 
-  [length]="totalUsers"
-  [pageSizeOptions]="[10, 25, 50, 100]"
-  showFirstLastButtons
-  aria-label="Select page of periodic elements"
-  (page)="onPageChange($event)"
->
-</mat-paginator>
+  <mat-paginator 
+    [length]="totalUsers()"
+    [pageSizeOptions]="[10, 25, 50, 100]"
+    showFirstLastButtons
+    aria-label="Select page of periodic elements"
+    (page)="onPageChange($event)"
+  />
 } @else {
-  <p class="flex justify-center items center text-3xl">No users found</p>
+  <p class="flex justify-center items-center text-3xl">No users found</p>
 }

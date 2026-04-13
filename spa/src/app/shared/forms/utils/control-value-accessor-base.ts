@@ -19,18 +19,24 @@ export abstract class BaseFormControlAccessor implements ControlValueAccessor {
         }
     }
     
-    protected onChange = (v: any) => {};
-    protected onTouched = () => {};
-    
-    writeValue(value: any): void {
-       this.onChange(value)
+    value: string;
+    isDisabled: boolean;
+    onChange: (value: string) => void;
+    onTouched: () => void;
+
+    writeValue(value: any) {
+        this.value = value || '';
     }
 
-    registerOnChange(fn: any): void {
+    registerOnChange(fn: any) {
         this.onChange = fn;
     }
 
-    registerOnTouched(fn: any): void {
+    registerOnTouched(fn: any) {
         this.onTouched = fn;
+    }
+
+    setDisabledState(isDisabled: boolean) {
+        this.isDisabled = isDisabled;
     }
 }
