@@ -1,48 +1,71 @@
 import { Route } from "@angular/router";
-import { AuthGuard } from "app/core/auth/guards/auth.guard";
+import { authGuard } from "app/core/auth/guards/auth.guard";
 import { UsersListPage } from "./core/users/pages/users-list-page/users-list-page";
-import { TableComponent } from "./shared/table-component/table-component";
-import { TableTestPage } from "./shared/table-component/table-test-page/table-test-page";
-
-// @formatter:off
+import { LandingHomeComponent } from "@modules/landing/home/home.component";
 
 export const appRoutes: Route[] = [
   {
-    path: 'tabletest',
-    component: TableTestPage
-  },
-  {
-    path: 'auth',
-    loadChildren: () => import('./core/auth/auth.routes')
-  },
-  {
-    path: 'users',
-    component: UsersListPage
-  },
-  // Redirect empty path to '/example'
-  { path: "", pathMatch: "full", redirectTo: "home" },
-  {
-    path: "403",
-    loadComponent: () => import("@modules/error403/error403.component").then((m) => m.Error403Component),
-  },
-  {
-    path: "404",
-    loadComponent: () => import("@modules/error403/error403.component").then((m) => m.Error403Component),
+    path: "auth",
+    loadChildren: () => import("./core/auth/auth.routes"),
   },
   {
     path: "",
-    // canActivate: [AuthGuard],
-    // canActivateChild: [AuthGuard],
-    loadComponent: () => import("app/layout/layout.component").then((m) => m.LayoutComponent),
-    resolve: {
-      // initialData: initialDataResolver,
-    },
+    redirectTo: "home",
+    pathMatch: "full",
+  },
+  {
+    path: "",
+    canActivateChild: [authGuard],
     children: [
       {
         path: "home",
-        loadChildren: () => import("app/modules/landing/home/home.routes"),
+        component: LandingHomeComponent,
       },
-      { path: "**", redirectTo: "home" },
+      {
+        path: "users",
+        component: UsersListPage,
+      },
     ],
   },
+  {
+    path: "**",
+    redirectTo: "home",
+  },
 ];
+
+// export const appRoutes: Route[] = [
+//   {
+//     path: 'auth',
+//     loadChildren: () => import('./core/auth/auth.routes')
+//   },
+//   {
+//     path: 'users',
+//     component: UsersListPage
+//   },
+//   // Redirect empty path to '/example'
+//   { path: "", pathMatch: "full", redirectTo: "home" },
+//   {
+//     path: "403",
+//     loadComponent: () => import("@modules/error403/error403.component").then((m) => m.Error403Component),
+//   },
+//   {
+//     path: "404",
+//     loadComponent: () => import("@modules/error403/error403.component").then((m) => m.Error403Component),
+//   },
+//   {
+//     path: "",
+//     // canActivate: [AuthGuard],
+//     // canActivateChild: [AuthGuard],
+//     loadComponent: () => import("app/layout/layout.component").then((m) => m.LayoutComponent),
+//     resolve: {
+//       // initialData: initialDataResolver,
+//     },
+//     children: [
+//       {
+//         path: "home",
+//         loadChildren: () => import("app/modules/landing/home/home.routes"),
+//       },
+//       { path: "**", redirectTo: "home" },
+//     ],
+//   },
+// ];

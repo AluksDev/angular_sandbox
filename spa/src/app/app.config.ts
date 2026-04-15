@@ -31,7 +31,7 @@ export const appConfig: ApplicationConfig = {
     FuseThemeService,
     LayoutService,
     RuntimeConfigService,
-    provideHttpClient(withFetch()),
+    provideHttpClient(withFetch(), withInterceptors([authInterceptor]), withJsonpSupport()),
     {
       provide: LOCALE_ID,
       useValue: "ca-CA",
@@ -82,8 +82,6 @@ export const appConfig: ApplicationConfig = {
       },
     }),
     provideAnimationsAsync(),
-    provideHttpClient(withJsonpSupport()),
-    provideHttpClient(withInterceptors([authInterceptor])),
     provideExperimentalZonelessChangeDetection(),
     provideRouter(appRoutes, withPreloading(PreloadAllModules), withInMemoryScrolling({ scrollPositionRestoration: "enabled" })),
     AuthService,
