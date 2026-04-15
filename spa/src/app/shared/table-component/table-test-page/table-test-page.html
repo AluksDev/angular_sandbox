@@ -1,0 +1,7 @@
+<app-table-component 
+ [dataSource]="dataSource"
+ [columns]="displayedColumns"
+ [actions]="actions"
+ (sortChange)="sortColumns($event)"
+ (pageChange)="changePage($event)"
+/>

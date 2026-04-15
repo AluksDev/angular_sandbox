@@ -1,0 +1,94 @@
+@if (loading()){
+  <div class="skeleton-table">
+    <div class="skeleton-row skeleton-header">
+      <div class="skeleton-cell"><div class="skeleton-bar w-60"></div></div>
+      <div class="skeleton-cell"><div class="skeleton-bar w-60"></div></div>
+      <div class="skeleton-cell"><div class="skeleton-bar w-60"></div></div>
+    </div>
+
+    <div class="skeleton-row">
+      <div class="skeleton-cell"><div class="skeleton-bar"></div></div>
+      <div class="skeleton-cell"><div class="skeleton-bar w-40"></div></div>
+      <div class="skeleton-cell"><div class="skeleton-bar"></div></div>
+    </div>
+    <div class="skeleton-row">
+      <div class="skeleton-cell"><div class="skeleton-bar w-40"></div></div>
+      <div class="skeleton-cell"><div class="skeleton-bar"></div></div>
+      <div class="skeleton-cell"><div class="skeleton-bar w-60"></div></div>
+    </div>
+    <div class="skeleton-row">
+      <div class="skeleton-cell"><div class="skeleton-bar"></div></div>
+      <div class="skeleton-cell"><div class="skeleton-bar w-40"></div></div>
+      <div class="skeleton-cell"><div class="skeleton-bar"></div></div>
+    </div>
+  </div>
+} @else {
+  @if (totalElements() === 0){
+    <div>
+      <p>{{ emptyMessage() }}</p>
+    </div>
+  } @else {
+    <form [formGroup]="searchForm" class="mt-2">
+      <app-form-input-component 
+        formControlName="searchTerm"
+        [required]="false"
+        label="Search"
+        type="text"
+      />
+    </form>
+    <table 
+      mat-table 
+      [dataSource]="dataSource()" 
+      matSort 
+      class="mat-elevation-z8 w-full overflow-auto" 
+      (matSortChange)="onSortChange($event)"
+    >
+    @for (column of columns(); track column.key){
+        <ng-container [matColumnDef]="column.key">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="!column.sortable">
+                {{ column.label }}
+            </th>
+            <td mat-cell *matCellDef="let element">
+            <div>
+                {{ element[column.key] }}
+            </div>
+            </td>
+        </ng-container>
+    }
+      @if (actions()?.length) {
+        <ng-container matColumnDef="actions">
+
+          <th mat-header-cell *matHeaderCellDef>
+            Actions
+          </th>
+
+          <td mat-cell *matCellDef="let element" class="py-1">
+
+            @for (action of actions(); track action.key) {
+              <button (click)="onActionClick(action.key, element)" mat-stroked-button [ngClass]="action.color ? action.color + '-btn' : null" class="mx-2">
+                {{ action.label }}
+              </button>
+            }
+
+          </td>
+
+        </ng-container>
+      }
+    <!-- Rows -->
+    <tr mat-header-row *matHeaderRowDef="columnsNames()"></tr>
+    <tr
+        (click)="onRowClick(row)"
+        [class.clickable]="clickableRow()"
+        mat-row 
+        *matRowDef="let row; columns: columnsNames()" 
+    ></tr>
+    </table>
+    <mat-paginator 
+        [length]="totalElements() ?? 0"
+        [pageSizeOptions]="[10, 25, 50, 100]"
+        showFirstLastButtons
+        aria-label="Select table page"
+        (page)="onPageChange($event)"
+    />
+  }
+}

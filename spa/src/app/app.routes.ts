@@ -1,10 +1,16 @@
 import { Route } from "@angular/router";
 import { AuthGuard } from "app/core/auth/guards/auth.guard";
 import { UsersListPage } from "./core/users/pages/users-list-page/users-list-page";
+import { TableComponent } from "./shared/table-component/table-component";
+import { TableTestPage } from "./shared/table-component/table-test-page/table-test-page";
 
 // @formatter:off
 
 export const appRoutes: Route[] = [
+  {
+    path: 'tabletest',
+    component: TableTestPage
+  },
   {
     path: 'auth',
     loadChildren: () => import('./core/auth/auth.routes')
