@@ -1,13 +1,68 @@
-import { ChangeDetectionStrategy, Component} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal} from '@angular/core';
+import { FormInputComponent } from "@app/shared/forms/components/form-input-component/form-input-component";
+import { FormBuilder, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { MatButtonModule } from '@angular/material/button';
+import { AuthService } from '../../auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { finalize } from 'rxjs';
+import { Router, RouterLink } from "@angular/router";
 
 
 @Component({
   selector: 'app-login-page',
-  imports: [],
+  imports: [FormInputComponent, FormsModule, ReactiveFormsModule, MatButtonModule, MatProgressSpinnerModule, RouterLink],
   templateUrl: './login-page.html',
   styleUrl: './login-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginPage {
+  _snackBar = inject(MatSnackBar);
+  authService = inject(AuthService);
+  fb = inject(FormBuilder);
+  loginForm = this.fb.group({
+    username: [''],
+    password: ['']
+  })
 
+  isLoading = signal<boolean>(false);
+  router = inject(Router);
+
+  onSubmit() {
+    this.loginForm.markAsTouched();
+    if (this.loginForm.invalid) {
+      this._snackBar.open('Form invalid', 'Close', {
+          duration: 3000
+        });
+      return;
+    };
+    const data = this.loginForm.getRawValue();
+    this.isLoading.set(true);
+    this.authService.loginUser(data).pipe(
+      finalize(()=> this.isLoading.set(false))
+    ).subscribe({
+      next: () => {
+        this._snackBar.open('Login Successful', 'Close', {
+          duration: 3000
+        });
+        this.router.navigate(['/home']);
+      },
+      error: (err) => {
+        console.error("Error", err);
+        this._snackBar.open(this.getErrorMessage(err), 'Close', {
+          duration: 3000
+        });
+        this.loginForm.reset();
+      },
+    })
+  }
+  getErrorMessage(error: any): string{
+    if (error.status === 400){
+      return 'Invalid username or password';
+    }
+    if (error.status === 0){
+      return 'Connection error - check your network';
+    }
+    return 'Login failed. Please try again.';
+  }
  }

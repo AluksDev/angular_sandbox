@@ -1,0 +1,85 @@
+<section
+  class="h-full w-full flex items-center justify-center bg-gray-50"
+  role="main"
+  aria-label="Login page"
+>
+  <div class="w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+
+    <div class="text-center mb-8">
+      <h1 class="text-3xl font-bold text-gray-800 tracking-tight">
+        Welcome Back
+      </h1>
+      <p class="text-gray-500 mt-2">
+        Please enter your details to sign in
+      </p>
+    </div>
+
+    @if (isLoading()) {
+      <div
+        class="flex justify-center py-10"
+        role="status"
+        aria-live="polite"
+        aria-label="Loading login"
+      >
+        <mat-spinner diameter="50"></mat-spinner>
+      </div>
+    } @else {
+
+      <form
+        [formGroup]="loginForm"
+        class="flex flex-col gap-5"
+        (ngSubmit)="onSubmit()"
+        aria-label="Login form"
+      >
+
+        <div class="space-y-4">
+
+          <app-form-input-component
+            class="w-full"
+            [autofocus]="true"
+            formControlName="username"
+            [required]="true"
+            type="text"
+            label="Username"
+            minLength="2"
+            aria-label="Username"
+          />
+
+          <app-form-input-component
+            class="w-full"
+            formControlName="password"
+            [required]="true"
+            type="password"
+            label="Password"
+            minLength="8"
+            aria-label="Password"
+          />
+
+        </div>
+
+        <button
+          type="submit"
+          mat-flat-button
+          color="primary"
+          class="w-full !h-12 !text-base !rounded-lg mt-4 shadow-md transition-all hover:shadow-lg"
+          [disabled]="loginForm.invalid"
+          aria-label="Sign in to your account"
+        >
+          Sign In
+        </button>
+
+        <p class="text-center text-sm text-gray-400 mt-6">
+          Don't have an account?
+          <a
+            routerLink="/auth/register"
+            class="text-blue-600 cursor-pointer hover:underline font-medium"
+            aria-label="Go to registration page"
+          >
+            Register now
+          </a>
+        </p>
+
+      </form>
+    }
+  </div>
+</section>

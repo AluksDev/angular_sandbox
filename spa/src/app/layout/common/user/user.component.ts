@@ -23,7 +23,7 @@ import { defaultNavigation } from "../../../core/navigation/navigationMap";
 
   imports: [MatButtonModule, MatMenuModule, MatIconModule, MatDividerModule, CommonModule, MatButtonModule, MatIconModule, MatMenuModule, NgOptimizedImage],
 })
-export class UserComponent implements OnInit, OnDestroy {
+export class UserComponent implements OnDestroy {
   private _changeDetectorRef = inject(ChangeDetectorRef);
   private _bcnConfigService = inject(FuseConfigService);
   private _bcnLoadingBarService = inject(BCNLoadingBarService);
@@ -95,30 +95,30 @@ export class UserComponent implements OnInit, OnDestroy {
   /**
    * On init
    */
-  ngOnInit(): void {
-    // Subscribe to user changes
-    this.imiAuthInfo$ = this.auth.whoami$;
-    // this.auth.currentUser$.pipe(takeUntil(this._unsubscribeAll)).subscribe((user: User) => {
-    //   this.user = user;
+  // ngOnInit(): void {
+  //   // Subscribe to user changes
+  //   this.imiAuthInfo$ = this.auth.whoami$;
+  //   // this.auth.currentUser$.pipe(takeUntil(this._unsubscribeAll)).subscribe((user: User) => {
+  //   //   this.user = user;
 
-    //   // Mark for check
-    //   this._changeDetectorRef.markForCheck();
-    // });
+  //   //   // Mark for check
+  //   //   this._changeDetectorRef.markForCheck();
+  //   // });
 
-    // Subscribe to the BCN loading bar service
-    this._bcnLoadingBarService.visible?.pipe(takeUntil(this._unsubscribeAll)).subscribe((visible) => {
-      this.showLoadingBar = visible;
-    });
+  //   // Subscribe to the BCN loading bar service
+  //   this._bcnLoadingBarService.visible?.pipe(takeUntil(this._unsubscribeAll)).subscribe((visible) => {
+  //     this.showLoadingBar = visible;
+  //   });
 
-    // Subscribe to the config changes
-    this._bcnConfigService?.config?.pipe(takeUntil(this._unsubscribeAll)).subscribe((settings) => {
-      this.horizontalNavbar = settings.layout.navbar.position === "top";
-      this.rightNavbar = settings.layout.navbar.position === "right";
-      this.hiddenNavbar = settings.layout.navbar.hidden === true;
-    });
+  //   // Subscribe to the config changes
+  //   this._bcnConfigService?.config?.pipe(takeUntil(this._unsubscribeAll)).subscribe((settings) => {
+  //     this.horizontalNavbar = settings.layout.navbar.position === "top";
+  //     this.rightNavbar = settings.layout.navbar.position === "right";
+  //     this.hiddenNavbar = settings.layout.navbar.hidden === true;
+  //   });
 
-    this.getAuthData();
-  }
+  //   this.getAuthData();
+  // }
 
   /**
    * On destroy
@@ -136,12 +136,12 @@ export class UserComponent implements OnInit, OnDestroy {
   /**
    * Obtain logged user info
    */
-  getAuthData(): void {
-    this.imiAuthInfo$ = this.auth.whoami$;
-  }
+  // getAuthData(): void {
+  //   this.imiAuthInfo$ = this.auth.whoami$;
+  // }
 
-  setRole(rol: string): void {
-    this.auth.setRole(rol);
-    this._router.navigateByUrl("welcome");
-  }
+  // setRole(rol: string): void {
+  //   this.auth.setRole(rol);
+  //   this._router.navigateByUrl("welcome");
+  // }
 }

@@ -8,11 +8,11 @@ import { UsersService } from '../../services/users.service';
 import { FormSelectComponent } from '@app/shared/forms/components/form-select-component/form-select-component';
 import { Department } from '@app/shared/interfaces/department.interface';
 import { DepartmentsService } from '@app/core/departments/departments.service';
-import { User } from '@app/shared/interfaces/user.interface';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import {  MatSortModule, Sort } from '@angular/material/sort';
 import {MatChipsModule} from '@angular/material/chips';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { User } from '@api/DTOs/user.interface';
 
 @Component({
   selector: 'app-users-list-component',

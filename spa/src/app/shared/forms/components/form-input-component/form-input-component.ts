@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, Injector, input, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, effect, ElementRef, Injector, input, OnInit, ViewChild } from '@angular/core';
 import { MatError, MatFormField, MatFormFieldModule, MatHint, MatLabel } from '@angular/material/form-field';
 import { MatInput, MatInputModule } from '@angular/material/input';
 import { ControlValueAccessor, FormControl, FormControlDirective, FormControlName, FormGroupDirective, FormsModule, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -20,7 +20,7 @@ import { MatIcon } from '@angular/material/icon';
     }
   ]
 })
-export class FormInputComponent extends BaseFormControlAccessor {
+export class FormInputComponent extends BaseFormControlAccessor implements AfterViewInit {
   label = input.required<string>();
   type = input.required<string>();
   required = input.required<boolean>();
@@ -30,6 +30,10 @@ export class FormInputComponent extends BaseFormControlAccessor {
   maxLength = input<number>();
   iconName = input<string>();
   appearance= input<string>('outline')
+  autofocus = input<boolean>(false);
+
+  @ViewChild('inputElement') inputElement!: ElementRef;
+
 
   constructor(injector: Injector){
     super(injector);
@@ -51,6 +55,12 @@ export class FormInputComponent extends BaseFormControlAccessor {
       this.formControl!.setValidators(validators);
       this.formControl!.updateValueAndValidity();
     })
+  }
+
+  ngAfterViewInit(): void {
+    if (this.autofocus()){
+      this.inputElement.nativeElement.focus();
+    }
   }
 
   getErrorMessage(): string | null{

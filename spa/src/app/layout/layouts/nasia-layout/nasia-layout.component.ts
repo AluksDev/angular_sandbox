@@ -20,7 +20,7 @@ import { filter, takeUntil } from "rxjs/operators";
   encapsulation: ViewEncapsulation.None,
   imports: [NgClass, GlobalSpinnerComponent, ContentComponent, FuseVerticalNavigationComponent, MatIconModule, MatButtonModule, UserComponent],
 })
-export class NasiaLayoutComponent implements OnInit, OnDestroy {
+export class NasiaLayoutComponent implements  OnDestroy {
   navigation: any;
 
   folded = false;
@@ -45,25 +45,25 @@ export class NasiaLayoutComponent implements OnInit, OnDestroy {
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
   // -----------------------------------------------------------------------------------------------------
-  ngOnInit(): void {
-    // Subscribe to media changes
-    this._fuseMediaWatcherService.onMediaChange$.pipe(takeUntil(this._unsubscribeAll)).subscribe(({ matchingAliases }) => {
-      // Check if the screen is small
-      this.isScreenSmall = !matchingAliases.includes("md");
-    });
+  // ngOnInit(): void {
+  //   // Subscribe to media changes
+  //   this._fuseMediaWatcherService.onMediaChange$.pipe(takeUntil(this._unsubscribeAll)).subscribe(({ matchingAliases }) => {
+  //     // Check if the screen is small
+  //     this.isScreenSmall = !matchingAliases.includes("md");
+  //   });
 
-    // Get current navigation
-    this._bcnNavigationService.onNavigationChanged.pipe(filter((value) => value !== null)).subscribe(() => {
-      this.navigation.forEach((item) => {
-        if (!!item.meta.requiredServices) {
-          this._authService.isAllowed(item.meta.requiredServices).subscribe((value) => {
-            item.hidden = () => !value;
-          });
-        }
-      });
-      this.navigation = this._bcnNavigationService.getCurrentNavigation();
-    });
-  }
+  //   // Get current navigation
+  //   this._bcnNavigationService.onNavigationChanged.pipe(filter((value) => value !== null)).subscribe(() => {
+  //     this.navigation.forEach((item) => {
+  //       if (!!item.meta.requiredServices) {
+  //         this._authService.isAllowed(item.meta.requiredServices).subscribe((value) => {
+  //           item.hidden = () => !value;
+  //         });
+  //       }
+  //     });
+  //     this.navigation = this._bcnNavigationService.getCurrentNavigation();
+  //   });
+  // }
 
   toggleNavigation(name: string): void {
     // Get the navigation
