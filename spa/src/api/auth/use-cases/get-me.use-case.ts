@@ -1,15 +1,15 @@
 import { inject, Injectable } from "@angular/core";
-import { Observable, tap } from "rxjs";
+import { Observable } from "rxjs";
 import { AuthRepository } from "../repository/auth.repository";
 import { User } from "../DTOs/user.interface";
 
 @Injectable({
   providedIn: "root",
 })
-export class LoginUseCase {
+export class GetMeUseCase {
   private authRepository = inject(AuthRepository);
 
-  execute(body: any): Observable<{token: string; user: User}> {
-    return this.authRepository.login(body);
+  execute(): Observable<User> {
+    return this.authRepository.getMe();
   }
 }

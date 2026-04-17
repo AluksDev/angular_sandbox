@@ -1,26 +1,75 @@
-import { NgClass, NgOptimizedImage } from "@angular/common";
-import { Component, inject, OnDestroy, OnInit, ViewEncapsulation } from "@angular/core";
+import { NgClass, NgIf, AsyncPipe } from "@angular/common";
+import { Component, inject, OnDestroy, signal, ViewEncapsulation } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { AuthService } from "@app/core/auth/auth.service";
 import { defaultNavigation } from "@app/core/navigation/navigationMap";
 import { FuseNavigationService, FuseVerticalNavigationComponent } from "@fuse/components/navigation";
 import { FuseMediaWatcherService } from "@fuse/services/media-watcher";
-import { UserComponent } from "@layout/common/user/user.component";
 import { ContentComponent } from "@layout/components/content/content.component";
 import { GlobalSpinnerComponent } from "@layout/components/global-spinner/global-spinner.component";
 import { LayoutService } from "@utils/layout.service";
-import { Subject } from "rxjs";
-import { filter, takeUntil } from "rxjs/operators";
+import { finalize, Subject } from "rxjs";
+import { UserSidebarSnippetComponent } from "@app/core/user/components/user-sidebar-snippet-component/user-sidebar-snippet-component";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { Router } from "@angular/router";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
   selector: "nasia-layout",
   templateUrl: "./nasia-layout.component.html",
   styleUrls: ["./nasia-layout.component.scss"],
   encapsulation: ViewEncapsulation.None,
-  imports: [NgClass, GlobalSpinnerComponent, ContentComponent, FuseVerticalNavigationComponent, MatIconModule, MatButtonModule, UserComponent],
+  imports: [NgClass, GlobalSpinnerComponent, ContentComponent, FuseVerticalNavigationComponent, MatIconModule, MatButtonModule, UserSidebarSnippetComponent, NgIf, AsyncPipe, MatProgressSpinnerModule],
 })
 export class NasiaLayoutComponent implements  OnDestroy {
+  authService = inject(AuthService);
+  user$ = this.authService.currentUser$;
+  loading = signal<boolean>(false);
+  router = inject(Router);
+  private _snackBar = inject(MatSnackBar);
+
+  onUserAction(action: string){
+    switch (action){
+      case 'logout':
+        this.logout();
+        break;
+    }
+  }
+
+  logout(){
+    this.loading.set(true);
+    this.authService.logout()
+    .pipe(
+      finalize(()=> this.loading.set(false))
+    )
+    .subscribe({
+      next: ((res) => {
+        this.openSnackBar(res.detail, 'Close');
+        this.router.navigate(['/auth/login']);
+      }),
+      error: ()=>{
+        this.openSnackBar('Something went wrong', 'Close');
+      }
+    })
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 3000
+    });
+  }
+
+
+
+
+
+
+
+
+
+
+
   navigation: any;
 
   folded = false;
