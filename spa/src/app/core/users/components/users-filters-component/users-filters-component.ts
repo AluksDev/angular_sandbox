@@ -3,9 +3,9 @@ import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit, ou
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatChipsModule } from '@angular/material/chips';
+import { Department } from '@api/departments/DTOs/department.interface';
 import { FormInputComponent } from '@app/shared/forms/components/form-input-component/form-input-component';
 import { FormSelectComponent } from '@app/shared/forms/components/form-select-component/form-select-component';
-import { Department } from '@app/shared/interfaces/department.interface';
 import { debounceTime, Observable, startWith, switchMap, tap } from 'rxjs';
 
 type FilterValues = {

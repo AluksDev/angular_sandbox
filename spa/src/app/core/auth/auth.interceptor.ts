@@ -4,21 +4,17 @@ import { catchError, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 
 export function authInterceptor(request: HttpRequest<unknown>, next: HttpHandlerFn) {
-
   const router = inject(Router);
-
   const token = localStorage.getItem('token');
-
   let authReq = request;
 
   if (token) {
     authReq = request.clone({
       setHeaders: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Token ${token}`
       }
     });
   }
-
   return next(authReq).pipe(
     catchError((error: HttpErrorResponse) => {
 

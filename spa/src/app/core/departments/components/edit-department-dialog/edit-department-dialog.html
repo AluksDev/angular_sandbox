@@ -1,0 +1,32 @@
+<form [formGroup]="editDepForm" class="flex flex-col my-6 mx-4 gap-4" (ngSubmit)="onSubmit()">
+    @if (loading()) {
+        <mat-spinner></mat-spinner>
+    } @else {
+        <h2>Edit department: {{ dep.name }}</h2>
+        <app-form-input-component 
+            formControlName="name"
+            label="Department name"
+            [required]="true"
+            type="text"
+            minLength="2"
+            maxLength="255"
+        />
+        <app-form-input-component 
+            formControlName="code"
+            label="Department code"
+            [required]="false"
+            type="text"
+            maxLength="50"
+        />
+        <div class="flex justify-end items-center gap-2">
+            <button type="button" mat-stroked-button (click)="closeModal()">Close</button>
+            <button
+                mat-flat-button
+                type="submit" 
+                [disabled]="this.editDepForm.invalid || !this.editDepForm.dirty"
+            >
+                Update department
+            </button>
+        </div>
+    }
+</form>

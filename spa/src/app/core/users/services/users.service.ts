@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { User } from '@api/DTOs/user.interface';
+import { User } from '@api/auth/DTOs/user.interface';
 import { filter } from 'lodash';
 import { Observable, of } from 'rxjs';
 interface Options {

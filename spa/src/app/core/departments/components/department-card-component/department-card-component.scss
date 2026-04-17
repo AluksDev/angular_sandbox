@@ -1,0 +1,25 @@
+:host {
+  display: block;
+  .card-icon-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: 50%;
+    background-color: red;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+  .card-icon-container.edit{
+    background-color: #f59e0b;
+  }
+  .card-icon-container.delete{
+    background-color: #ef4444;
+  }
+  .mat-icon{
+    color: white;
+  }
+  .card-icon-container:hover{
+    transform: scale(1.1);
+  }
+}

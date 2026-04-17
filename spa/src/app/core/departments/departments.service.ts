@@ -1,30 +1,34 @@
-import { Injectable } from '@angular/core';
-import { Department } from '@app/shared/interfaces/department.interface';
-import { Observable, of } from 'rxjs';
-
-const MOCK_DEPARTMENTS: Department[] = [
-  { id: 1, name: 'Information Technology', code: 'IT' },
-  { id: 2, name: 'Human Resources', code: 'HR' },
-  { id: 3, name: 'Finance', code: 'FIN' },
-  { id: 4, name: 'Marketing', code: 'MKT' },
-  { id: 5, name: 'Sales', code: 'SAL' },
-  { id: 6, name: 'Customer Support', code: 'CS' },
-  { id: 7, name: 'Legal', code: 'LEG' },
-  { id: 8, name: 'Operations', code: 'OPS' },
-  { id: 9, name: 'Research and Development', code: 'R&D' },
-  { id: 10, name: 'Administration', code: 'ADM' },
-  { id: 11, name: 'Logistics', code: 'LOG' },
-  { id: 12, name: 'Procurement', code: 'PRC' },
-  { id: 13, name: 'Quality Assurance', code: 'QA' },
-  { id: 14, name: 'Business Intelligence', code: 'BI' },
-  { id: 15, name: 'Product Management', code: 'PM' }
-];
+import { inject, Injectable } from '@angular/core';
+import { CreateDepartment, Department } from '@api/departments/DTOs/department.interface';
+import { AddDepartmentUseCase } from '@api/departments/use-cases/add-department.use-case';
+import { DeleteDepartmentByIdUseCase } from '@api/departments/use-cases/delete-department-by-id.use-case';
+import { GetDepartmentsUseCase } from '@api/departments/use-cases/get-departments.use-case';
+import { UpdateDepartmentUseCase } from '@api/departments/use-cases/update-department.use-case';
+import { ApiPaginatedResponse } from '@api/shared/DTOs/api-paginated-response.interface';
+import { Observable } from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class DepartmentsService {
-    getDepartments(): Observable<any> {
-        const departments = MOCK_DEPARTMENTS;
-        return of(departments);
+    getDepartmentsUseCase = inject(GetDepartmentsUseCase);
+    addDepartmentUseCase = inject(AddDepartmentUseCase);
+    deleteDepartmentByIdUseCase = inject(DeleteDepartmentByIdUseCase);
+    updateDepartmentUseCase = inject(UpdateDepartmentUseCase);
+
+
+    getDepartments(): Observable<ApiPaginatedResponse<Department>> {
+        return this.getDepartmentsUseCase.execute();
+    }
+
+    addDepartment(newDep: CreateDepartment): Observable<Department>{
+        return this.addDepartmentUseCase.execute(newDep);
+    }
+
+    deleteDepartmentById(id: number): Observable<void>{
+        return this.deleteDepartmentByIdUseCase.execute(id);
+    }
+
+    updateDepartment(dep: Department): Observable<Department>{
+        return this.updateDepartmentUseCase.execute(dep);
     }
     
 }

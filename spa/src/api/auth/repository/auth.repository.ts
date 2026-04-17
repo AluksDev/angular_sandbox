@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { APILoginResponse } from "@api/DTOs/user.interface";
+import { APILoginResponse } from "../DTOs/user.interface";
 
 @Injectable({
   providedIn: "root",
