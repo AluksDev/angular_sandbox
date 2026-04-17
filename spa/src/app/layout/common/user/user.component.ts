@@ -9,7 +9,6 @@ import { Router } from "@angular/router";
 import { AuthService } from "@app/core/auth/auth.service";
 import { FuseConfigService } from "@fuse/services/config";
 import { BCNLoadingBarService } from "@fuse/services/loading-bar";
-import { User } from "app/core/user/user.types";
 import { Observable, Subject, takeUntil } from "rxjs";
 
 import { defaultNavigation } from "../../../core/navigation/navigationMap";
@@ -41,7 +40,6 @@ export class UserComponent implements OnDestroy {
   rightNavbar: boolean;
   hiddenNavbar: boolean;
   showAvatar = input(true);
-  user: User;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 

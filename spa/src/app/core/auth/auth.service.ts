@@ -1,21 +1,62 @@
 import { inject, Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { BehaviorSubject, Observable, tap } from "rxjs";
+import { APILoginResponse, APILogoutResponse, User } from "@api/auth/DTOs/user.interface";
 import { LoginUseCase } from "@api/auth/use-cases/login.use-case";
-import { APILoginResponse } from "@api/auth/DTOs/user.interface";
+import { GetMeUseCase } from "@api/auth/use-cases/get-me.use-case";
+import { LogoutUseCase } from "@api/auth/use-cases/logout.use-case";
+
 
 @Injectable({
   providedIn: "platform",
 })
 export class AuthService {
-  private loginUseCase = inject(LoginUseCase);
+  constructor(){
+    if(this.isAuthenticated()){
+      this.getMe().subscribe((user) => {
+        this.currentUserSubject.next(user);
+      }
+      )
+    }
+  }
 
-  loginUser(body: any): Observable<APILoginResponse> {
-    return this.loginUseCase.execute(body);
+  private currentUserSubject = new BehaviorSubject<any | null>(null);
+  public currentUser$ = this.currentUserSubject.asObservable();
+
+  isAuthenticated(): boolean {
+    return !!this.getAccessToken();
   }
 
   getAccessToken(): string | null {
     return localStorage.getItem("token");
   }
+
+
+  private loginUseCase = inject(LoginUseCase);
+  loginUser(body: any): Observable<{token: string; user: User}> {
+    return this.loginUseCase.execute(body).pipe(
+      tap((response) => {
+              localStorage.setItem("token", response.token);
+              this.currentUserSubject.next(response.user);
+          })
+    );
+  }
+
+  private getMeUseCase = inject(GetMeUseCase);
+  getMe(): Observable<User> {
+    return this.getMeUseCase.execute();
+  }
+
+  private logoutUseCase = inject(LogoutUseCase);
+  logout(): Observable<APILogoutResponse> {
+    return this.logoutUseCase.execute().pipe(
+      tap(()=>{
+        localStorage.removeItem("token");
+        this.currentUserSubject.next(null)
+      })
+    );
+  }
+
+
   
   registerUser(){
     console.log('Register user');
