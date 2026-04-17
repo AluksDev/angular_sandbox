@@ -2,6 +2,7 @@ import { Route } from "@angular/router";
 import { authGuard } from "app/core/auth/guards/auth.guard";
 import { UsersListPage } from "./core/users/pages/users-list-page/users-list-page";
 import { LandingHomeComponent } from "@modules/landing/home/home.component";
+import { DepartmentsPage } from "./core/departments/pages/departments-page/departments-page";
 
 export const appRoutes: Route[] = [
   {
@@ -25,6 +26,10 @@ export const appRoutes: Route[] = [
         path: "users",
         component: UsersListPage,
       },
+      {
+        path: 'departments',
+        component: DepartmentsPage
+      }
     ],
   },
   {

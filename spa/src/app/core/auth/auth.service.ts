@@ -1,12 +1,7 @@
 import { inject, Injectable } from "@angular/core";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { Router } from "@angular/router";
-import { Observable, of, ReplaySubject } from "rxjs";
-
-import { RuntimeConfigService } from "../../runtime-config.service";
-// import { User } from "@api/defs/User";
-import { APILoginResponse } from "@api/DTOs/user.interface";
-import { LoginUseCase } from "@api/use-cases/login.use-case";
+import { Observable } from "rxjs";
+import { LoginUseCase } from "@api/auth/use-cases/login.use-case";
+import { APILoginResponse } from "@api/auth/DTOs/user.interface";
 
 @Injectable({
   providedIn: "platform",

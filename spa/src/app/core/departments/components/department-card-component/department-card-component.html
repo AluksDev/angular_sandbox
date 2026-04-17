@@ -1,0 +1,29 @@
+<div class="max-w-xs bg-white rounded-2xl border border-gray-100 shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group">
+    <div class="p-6 flex flex-col items-center text-center">
+        
+        <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="Stack-de-iconos-aqui" />
+            </svg>
+        </div>
+
+        <h3 class="text-xl font-bold text-gray-800 tracking-tight mb-1">
+            {{ department().name }}
+        </h3>
+
+        <span class="px-3 py-1 bg-gray-100 text-gray-500 text-xs font-semibold uppercase tracking-wider rounded-full">
+            {{ department().code }}
+        </span>
+        
+    </div>
+    
+    <div class="h-1.5 w-full bg-gradient-to-r from-blue-500 to-indigo-600"></div>
+    <div class="flex justify-center items-center gap-6 py-2">
+        <div class="card-icon-container edit" (click)="onActionClick('edit')">
+            <mat-icon aria-hidden="false" aria-label="Edit icon" fontIcon="edit"></mat-icon>
+        </div>
+        <div class="card-icon-container delete" (click)="onActionClick('delete')">
+            <mat-icon aria-hidden="false" aria-label="Delete icon" fontIcon="delete"></mat-icon>
+        </div>
+    </div>
+</div>

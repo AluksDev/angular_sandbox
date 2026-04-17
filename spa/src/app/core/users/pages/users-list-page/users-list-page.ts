@@ -5,10 +5,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { UsersService } from '../../services/users.service';
 import { DepartmentsService } from '@app/core/departments/departments.service';
 import { Observable, of, Subject } from 'rxjs';
-import { Department } from '@app/shared/interfaces/department.interface';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
-import { User } from '@api/DTOs/user.interface';
+import { User } from '@api/auth/DTOs/user.interface';
+import { Department } from '@api/departments/DTOs/department.interface';
 
 
 type FilterValues = {
@@ -45,12 +45,12 @@ export class UsersListPage {
   
   private destroy = new Subject<void>();
   
-  ngOnInit() {
-    this.departmentService.getDepartments().subscribe(deps => {
-      this.departments$.set(of(deps));
-      this.departmentMap.set(Object.fromEntries(deps.map(d => [d.id, d.name])));
-    });
-  }
+  // ngOnInit() {
+  //   this.departmentService.getDepartments().subscribe(deps => {
+  //     this.departments$.set(of(deps));
+  //     this.departmentMap.set(Object.fromEntries(deps.map(d => [d.id, d.name])));
+  //   });
+  // }
   
   // Called from filters component
   onFilterChange(filters: FilterValues) {

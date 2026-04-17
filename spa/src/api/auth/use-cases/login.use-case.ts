@@ -1,7 +1,7 @@
 import { inject, Injectable } from "@angular/core";
-import { map, Observable, tap } from "rxjs";
+import { Observable, tap } from "rxjs";
 import { AuthRepository } from "../repository/auth.repository";
-import { APILoginResponse, User } from "@api/DTOs/user.interface";
+import { APILoginResponse } from "../DTOs/user.interface";
 
 @Injectable({
   providedIn: "root",

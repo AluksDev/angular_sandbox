@@ -1,0 +1,49 @@
+:host {
+  display: block;
+  
+  .dialog-container {
+    padding: 0; /* Let internal divs handle spacing */
+    overflow: hidden;
+    border-radius: 12px; /* Modern rounded corners */
+  }
+
+  .dialog-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px 24px;
+    gap: 1rem;
+  }
+
+  .dialog-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .dialog-body {
+    padding: 0 24px 24px 24px;
+    color: #5f6368; /* Softer gray for body text */
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px; /* Space between buttons */
+    padding: 16px 24px;
+    background-color: #f8f9fa; /* Subtle contrast for the footer */
+  }
+
+  .status-icon {
+    font-size: 24px;
+    height: 24px;
+    width: 24px;
+  }
+
+  .mat-icon{
+    color: #f59e0b;
+  }
+}
