@@ -1,15 +1,20 @@
 import { Route } from "@angular/router";
 import { authGuard } from "app/core/auth/guards/auth.guard";
 import { UsersListPage } from "./core/users/pages/users-list-page/users-list-page";
-import { LandingHomeComponent } from "@modules/landing/home/home.component";
 import { DepartmentsPage } from "./features/departments/pages/departments-page/departments-page";
 import { UserProfilePage } from "./features/user/pages/user-profile-page/user-profile-page";
 import { DashboardPage } from "./features/dashboard/pages/dashboard-page/dashboard-page";
+import { adminGuard } from "./core/auth/guards/admin.guard";
 
 export const appRoutes: Route[] = [
   {
     path: "auth",
     loadChildren: () => import("./core/auth/auth.routes"),
+  },
+  {
+    path: "admin",
+    canMatch: [adminGuard],
+    loadChildren: () => import("./features/admin/admin.routes"),
   },
   {
     path: "",
