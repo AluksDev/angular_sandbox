@@ -11,7 +11,7 @@ export const appRoutes: Route[] = [
   },
   {
     path: "",
-    redirectTo: "home",
+    redirectTo: "users",
     pathMatch: "full",
   },
   {
