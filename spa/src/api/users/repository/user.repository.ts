@@ -6,7 +6,7 @@ import { APIUser, User } from '../DTOs/user.interace';
 @Injectable({providedIn: 'root'})
 export class UserRepository {
     http = inject(HttpClient);
-    assignDepartmentToCurrentUser(user:User, departmentId: number): Observable<APIUser>{
+    assignDepartmentToCurrentUser(user:APIUser, departmentId: number): Observable<APIUser>{
         const { id, username } = user;
         return this.http.patch<APIUser>(`/services/sandbox/user/${id}/`, {
             username: username,

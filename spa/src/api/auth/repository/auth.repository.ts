@@ -10,11 +10,11 @@ import { APIUser, User } from "@api/users/DTOs/user.interace";
 export class AuthRepository {
   private http = inject(HttpClient);
 
-  login(body: any): Observable<{token: string; user: User}> {
+  login(body: any): Observable<{token: string; user: APIUser}> {
     return this.http.post<APILoginResponse>("/services/sandbox/auth/login/", body).pipe(
       map((res) =>( {
         token: res.token,
-        user: mapApiUserToUser(res.user)
+        user: res.user
       }))
     );
   }
@@ -27,11 +27,11 @@ export class AuthRepository {
     return this.http.post<APILogoutResponse>("/services/sandbox/auth/logout/", {});
   }
 
-  register(body: ApiUserRegister): Observable<{token: string; user: User}> {
+  register(body: ApiUserRegister): Observable<{token: string; user: APIUser}> {
     return this.http.post<APILoginResponse>("/services/sandbox/auth/register/", body).pipe(
       map((res) =>( {
         token: res.token,
-        user: mapApiUserToUser(res.user)
+        user: res.user
       }))
     );
   }

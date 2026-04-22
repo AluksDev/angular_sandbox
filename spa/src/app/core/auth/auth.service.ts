@@ -5,7 +5,7 @@ import { LoginUseCase } from "@api/auth/use-cases/login.use-case";
 import { GetMeUseCase } from "@api/auth/use-cases/get-me.use-case";
 import { LogoutUseCase } from "@api/auth/use-cases/logout.use-case";
 import { RegistertUseCase } from "@api/auth/use-cases/register.use-case";
-import { User } from "@api/users/DTOs/user.interace";
+import { APIUser, User } from "@api/users/DTOs/user.interace";
 
 
 @Injectable({
@@ -21,10 +21,10 @@ export class AuthService {
     }
   }
 
-  private currentUserSubject = new BehaviorSubject<User | null>(null);
+  private currentUserSubject = new BehaviorSubject<APIUser | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  setCurrentUser(user: User) {
+  setCurrentUser(user: APIUser) {
     this.currentUserSubject.next(user);
   }
 
@@ -38,7 +38,7 @@ export class AuthService {
 
 
   private loginUseCase = inject(LoginUseCase);
-  loginUser(body: any): Observable<{token: string; user: User}> {
+  loginUser(body: any): Observable<{token: string; user: APIUser}> {
     return this.loginUseCase.execute(body).pipe(
       tap((response) => {
               localStorage.setItem("token", response.token);
@@ -63,7 +63,7 @@ export class AuthService {
   }
 
   registerUseCase = inject(RegistertUseCase)
-  registerUser(data: ApiUserRegister): Observable<{token: string; user: User}>{
+  registerUser(data: ApiUserRegister): Observable<{token: string; user: APIUser}>{
     return this.registerUseCase.execute(data).pipe(
       tap((response) => {
               localStorage.setItem("token", response.token);

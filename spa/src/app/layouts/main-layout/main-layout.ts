@@ -5,9 +5,10 @@ import { FuseNavigationItem, FuseVerticalNavigationComponent } from '@fuse/compo
 import { CdkTableModule } from "@angular/cdk/table";
 import { UserSidebarSnippetComponent } from "@app/core/user/components/user-sidebar-snippet-component/user-sidebar-snippet-component";
 import { AuthService } from '@app/core/auth/auth.service';
-import { finalize } from 'rxjs';
+import { finalize, map } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AsyncPipe, NgIf } from '@angular/common';
+import { mapApiUserToUser } from '@app/core/user/user.mapper';
 
 @Component({
   selector: 'app-main-layout',
@@ -34,7 +35,12 @@ export class MainLayout {
   ]
 
   authService = inject(AuthService);
-  user$ = this.authService.currentUser$;
+  user$ = this.authService.currentUser$.pipe(
+    map(user => {
+      if (!user) return null;
+      return mapApiUserToUser(user)
+    })
+  );
   router = inject(Router);
   loading = signal<boolean>(false);
   _snackBar = inject(MatSnackBar);
