@@ -19,10 +19,8 @@ export class AuthRepository {
     );
   }
 
-  getMe(): Observable<User> {
-    return this.http.get<APIUser>("/services/sandbox/auth/me/").pipe(
-      map((apiUser)=> mapApiUserToUser(apiUser))
-    )
+  getMe(): Observable<APIUser> {
+    return this.http.get<APIUser>("/services/sandbox/auth/me/");
   }
 
   logout(): Observable<APILogoutResponse>{

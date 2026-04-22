@@ -15,8 +15,13 @@ export class DepartmentsRepository {
       "/services/sandbox/department/",
     );
   }
+
+  getDepartmentById(depId: number): Observable<Department>{
+    return this.http.get<Department>(`/services/sandbox/department/${depId}/`);
+  }
+
   addDepartment(newDep: CreateDepartment): Observable<Department>{
-    return this.http.post<Department>("/services/sandbox/department/", newDep)
+    return this.http.post<Department>("/services/sandbox/department/", newDep);
   }
 
   deleteDepartmentById(id: number): Observable<void> {

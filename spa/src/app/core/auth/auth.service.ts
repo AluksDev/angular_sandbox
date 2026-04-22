@@ -48,7 +48,7 @@ export class AuthService {
   }
 
   private getMeUseCase = inject(GetMeUseCase);
-  getMe(): Observable<User> {
+  getMe(): Observable<APIUser> {
     return this.getMeUseCase.execute();
   }
 
