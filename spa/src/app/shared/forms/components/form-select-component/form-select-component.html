@@ -1,4 +1,4 @@
-<mat-form-field>
+<mat-form-field [appearance]="appearance()" class="w-full py-1 px-2">
     <mat-label>{{ label() }}</mat-label>
     @if (searchable()){
     <input type="text"
@@ -7,20 +7,22 @@
       [placeholder]="placeholder() ?? 'Pick One'"
       [matAutocomplete]="auto"
     >
-      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayWith.bind(this)">
-      @for (option of filteredOptions | async; track option.id || option) {
-        <mat-option [value]="option.id ? option.id : option.toLowerCase()">
-          {{ option.name || option }}
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayWith">
+      @for (option of filteredOptions | async; track option.value) {
+        <mat-option [value]="option.value">
+          {{ option.label }}
         </mat-option>
       }
     </mat-autocomplete>
   } @else {
-    <mat-select [formControl]="formControl" [placeholder]="placeholder() ?? 'Pick One'">
-      @for (option of filteredOptions | async; track option.id || option) {
-        <mat-option [value]="option.id ? option.id : option.toLowerCase()">
-          {{ option.name || option }}
-        </mat-option>
+    @if (formControl && options()) {
+        <mat-select [formControl]="formControl" [placeholder]="placeholder() ?? 'Pick One'">
+            @for (option of options(); track option.value) {
+            <mat-option [value]="option.value">
+              {{ option.label }}
+            </mat-option>
+          }
+        </mat-select>
       }
-    </mat-select>
     }
   </mat-form-field>

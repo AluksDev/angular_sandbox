@@ -19,12 +19,3 @@ export interface APIUser {
   last_login: string | null;
   roles: string[];
 }
-
-export interface APILoginResponse {
-  token: string,
-  user: APIUser
-}
-
-export interface APILogoutResponse {
-  detail: string
-}

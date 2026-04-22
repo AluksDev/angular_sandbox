@@ -1,9 +1,11 @@
 import { inject, Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, tap } from "rxjs";
-import { APILoginResponse, APILogoutResponse, User } from "@api/auth/DTOs/user.interface";
+import { APILogoutResponse, ApiUserRegister } from "@api/auth/DTOs/auth.interface";
 import { LoginUseCase } from "@api/auth/use-cases/login.use-case";
 import { GetMeUseCase } from "@api/auth/use-cases/get-me.use-case";
 import { LogoutUseCase } from "@api/auth/use-cases/logout.use-case";
+import { RegistertUseCase } from "@api/auth/use-cases/register.use-case";
+import { User } from "@api/users/DTOs/user.interace";
 
 
 @Injectable({
@@ -13,14 +15,18 @@ export class AuthService {
   constructor(){
     if(this.isAuthenticated()){
       this.getMe().subscribe((user) => {
-        this.currentUserSubject.next(user);
+        this.setCurrentUser(user);
       }
       )
     }
   }
 
-  private currentUserSubject = new BehaviorSubject<any | null>(null);
+  private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
+
+  setCurrentUser(user: User) {
+    this.currentUserSubject.next(user);
+  }
 
   isAuthenticated(): boolean {
     return !!this.getAccessToken();
@@ -56,10 +62,14 @@ export class AuthService {
     );
   }
 
-
-  
-  registerUser(){
-    console.log('Register user');
+  registerUseCase = inject(RegistertUseCase)
+  registerUser(data: ApiUserRegister): Observable<{token: string; user: User}>{
+    return this.registerUseCase.execute(data).pipe(
+      tap((response) => {
+              localStorage.setItem("token", response.token);
+              this.currentUserSubject.next(response.user);
+          })
+    );
   }
 
 
