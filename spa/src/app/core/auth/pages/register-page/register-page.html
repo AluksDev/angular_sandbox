@@ -1,51 +1,106 @@
-<div>
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-        <div>
-            <app-form-input-component
-                formControlName="username"
-                label="Username"
-                placeholder="Enter your username"
-                [required]="true"
-                hint="Your unique username"
-                type="text"
-                minLength="2"
-            />
-        </div>
-        <div>
-            <app-form-input-component
-                formControlName="email"
-                label="Email"
-                placeholder="Enter your email"
-                [required]="true"
-                hint="Your email"
-                [maxLength]="50"
-                type="email"
-            />
-        </div>
-        <div>
-            <app-form-input-component
-                formControlName="password"
-                label="Password"
-                placeholder="Enter your password"
-                [required]="true"
-                hint="Your unique password"
-                [maxLength]="50"
-                type="password"
-            />
-        </div>
-        <div>
-            <button mat-flat-button>Register</button>
-        </div>
-    </form>
+@if (loading()) {
+  <div class="fixed inset-0 flex justify-center items-center bg-black/20 z-50">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+}
+<section
+  class="h-full w-full flex items-center justify-center bg-gray-50"
+  role="main"
+  aria-label="Login page"
+>
+  <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
 
-<pre>
-    <p>isvalid?</p>
-    {{ registerForm.valid }}
-    <p>Username errors</p>
-    {{ registerForm.controls['username'].errors | json}}
-    <p>email errors</p>
-    {{ registerForm.controls['email'].errors | json}}
-    <p>password errors</p>
-    {{ registerForm.controls['password'].errors | json}}
-</pre>
-</div>
+    <div class="text-center mb-8">
+      <h1 class="text-3xl font-bold text-gray-800 tracking-tight">
+        Welcome
+      </h1>
+      <p class="text-gray-500 mt-2">
+        Please follow the steps to register
+      </p>
+    </div>
+      <form [formGroup]="registerForm">
+        <mat-stepper formArrayName="formArray" linear #stepper>
+            <mat-step formGroupName="0" [stepControl]="formArray.get([0])" label="Fill up your details">
+                <app-form-input-component 
+                    formControlName="username"
+                    label="Username"
+                    placeholder="Enter username"
+                    [required]="true"
+                    type="text"
+                />
+                <app-form-input-component 
+                    formControlName="email"
+                    label="Email"
+                    placeholder="Enter email"
+                    [required]="false"
+                    type="email"
+                />
+                <app-form-input-component 
+                    formControlName="first_name"
+                    label="First name"
+                    placeholder="Enter first name"
+                    [required]="false"
+                    type="text"
+                />
+                <app-form-input-component 
+                    formControlName="last_name"
+                    label="Last name"
+                    placeholder="Enter last name"
+                    [required]="false"
+                    type="text"
+                />
+                <div>
+                    <button mat-button matStepperNext type="button">Next</button>
+                </div>
+            </mat-step>
+            <mat-step formGroupName="1" [stepControl]="formArray.get([1])" label="Create your password">
+                <app-form-input-component 
+                    formControlName="password"
+                    label="Password"
+                    placeholder=""
+                    [required]="true"
+                    type="password"
+                    minLength=8
+                    [pswStrengthCheck]="true"
+                    hint="Minimum 8 characters long, at least one uppercase letter, one number, and one special character."
+                    [validPattern]="passwordPattern"
+                />
+                <app-form-input-component 
+                    formControlName="password_confirm"
+                    label="Confirm password"
+                    placeholder=""
+                    [required]="true"
+                    type="password"
+                />
+                @if (formArray.at(1).errors?.['passwordMismatch'] && formArray.at(1)?.controls['password_confirm'].dirty){
+                    <div class="text-red-600 font-medium text-sm my-4">
+                        Passwords do not match
+                    </div>
+                }
+                <div>
+                    <button mat-button matStepperPrevious type="button">Back</button>
+                    @if (!hasRegistered()){
+                        <button mat-button type="button" (click)="registerUser()">Register</button>
+                    } @else {
+                        <button mat-button type="button" matStepperNext>Next</button>
+                    }
+                </div>
+            </mat-step>
+            <mat-step formGroupName="2" [stepControl]="formArray.get([2])" label="Select your department">
+                <app-form-select-component 
+                    formControlName="department"
+                    label="Department"
+                    placeholder="Select department"
+                    [required]="false"
+                    [options]="departmentOptions()"
+                />
+                <div>
+                    <button mat-button matStepperPrevious type="button">Back</button>
+                    <button mat-button type="button" (click)="assignDepartment()">Assign Department</button>
+                    <a mat-button type="button" [routerLink]="['/']" >Close</a>
+                </div>
+            </mat-step>
+        </mat-stepper>
+    </form>
+    </div>
+</section>

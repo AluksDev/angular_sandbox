@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { ApiPaginatedResponse } from "@api/shared/DTOs/api-paginated-response.interface";
-import { Observable, of } from "rxjs";
+import { Observable } from "rxjs";
 import { CreateDepartment, Department } from "../DTOs/department.interface";
 
 @Injectable({

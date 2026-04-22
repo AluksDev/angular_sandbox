@@ -1,7 +1,6 @@
 import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { DepartmentsRepository } from "../repository/departments.repository";
-import { ApiPaginatedResponse } from "@api/shared/DTOs/api-paginated-response.interface";
 import { CreateDepartment, Department } from "../DTOs/department.interface";
 
 @Injectable({
