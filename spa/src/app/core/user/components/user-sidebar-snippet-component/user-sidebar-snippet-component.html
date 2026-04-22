@@ -25,6 +25,10 @@
   </div>
 </div>
 <mat-menu #userMenu="matMenu" yPosition="above">
+  <button mat-menu-item (click)="onAction('account')">
+    <mat-icon>person</mat-icon>
+    <span>Account</span>
+  </button>
   <button mat-menu-item (click)="onAction('logout')">
     <mat-icon>logout</mat-icon>
     <span>Logout</span>

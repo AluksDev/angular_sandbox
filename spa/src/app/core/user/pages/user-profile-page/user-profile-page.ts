@@ -3,7 +3,7 @@ import { ProfileCardComponent } from "../../components/profile-card-component/pr
 import { AvatarComponent } from "../../components/avatar-component/avatar-component";
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '@app/core/auth/auth.service';
-import { combineLatest, map, of, switchMap } from 'rxjs';
+import { combineLatest, map, of, switchMap, tap } from 'rxjs';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { DepartmentsService } from '@app/core/departments/departments.service';
 
@@ -23,7 +23,7 @@ export class UserProfilePage {
     this.user$,
     this.user$.pipe(
       switchMap((user) => {
-        if (!user) return of(null);
+        if (!user || !user.department) return of(null);
         return this.departmentService.getDepartmentById(user.department);
       })
     )

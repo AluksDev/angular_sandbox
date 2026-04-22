@@ -49,6 +49,10 @@ export class MainLayout {
     switch(action){
       case 'logout':
         this.logout();
+        break;
+      case 'account':
+        this.router.navigate(['/account']);
+        break;
     }
   }
 
