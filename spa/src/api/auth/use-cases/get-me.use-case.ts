@@ -9,7 +9,7 @@ import { User } from "@api/users/DTOs/user.interace";
 export class GetMeUseCase {
   private authRepository = inject(AuthRepository);
 
-  execute(): Observable<User> {
+  execute(): Observable<APIUser> {
     return this.authRepository.getMe();
   }
 }

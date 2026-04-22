@@ -1,0 +1,78 @@
+@let data = (allData$ | async);
+
+@if (data) {  
+    @if (!data.user.is_active) {
+        <div class="w-full text-white text-3xl md:text-6xl text-center bg-red-500 py-6">
+            This account is inactive
+        </div>
+    }
+
+      <div class="grid grid-cols-1 md:grid-cols-2 mt-8 gap-8 md:gap-20 
+                  justify-items-stretch items-stretch 
+                  max-w-4xl mx-auto px-4">        
+        <app-avatar-component 
+            [initials]="data.userAvatarDetails.initials"
+            [color]="data.userAvatarDetails.color"
+        />
+        
+        <app-profile-card-component 
+            title="Department"
+            [cardDetails]="data.department"
+        />
+        
+        <app-profile-card-component 
+            title="Personal info"
+            [cardDetails]="data.userDetails"
+        />
+        
+        <app-profile-card-component 
+            title="Account status"
+            [cardDetails]="data.userStatus"
+        />
+    </div>
+
+    <div class="flex justify-center items-center my-16">
+        <button class="w-40" mat-flat-button>Edit Profile</button>
+    </div>
+} @else {
+    <div class="p-8 bg-gray-50 min-h-screen">
+      <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 animate-pulse">
+        
+        <div class="flex justify-center items-center">
+          <div class="w-32 h-32 bg-gray-300 rounded-full"></div>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-fit">
+          <div class="h-5 w-32 bg-gray-300 rounded mb-6"></div> 
+          <div class="space-y-4">
+            <div class="flex justify-between border-b pb-2">
+              <div class="h-4 w-16 bg-gray-200 rounded"></div>
+              <div class="h-4 w-12 bg-gray-200 rounded"></div>
+            </div>
+            <div class="flex justify-between border-b pb-2">
+              <div class="h-4 w-16 bg-gray-200 rounded"></div>
+              <div class="h-4 w-12 bg-gray-200 rounded"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+          <div class="h-5 w-40 bg-gray-300 rounded mb-6"></div> 
+          <div class="space-y-6">
+             <div class="h-4 w-full bg-gray-200 rounded"></div>
+             <div class="h-4 w-full bg-gray-200 rounded"></div>
+             <div class="h-4 w-full bg-gray-200 rounded"></div>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-fit">
+          <div class="h-5 w-36 bg-gray-300 rounded mb-6"></div>
+          <div class="space-y-6">
+            <div class="h-4 w-full bg-gray-200 rounded"></div>
+            <div class="h-4 w-full bg-gray-200 rounded"></div>
+          </div>
+        </div>
+
+      </div>
+  </div>
+}

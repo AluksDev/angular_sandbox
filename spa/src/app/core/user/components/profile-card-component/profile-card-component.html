@@ -1,0 +1,23 @@
+<mat-card appearance="filled" class="p-1 rounded-md shadow-sm">
+    <mat-card-header class="flex justify-start items-center ml-1 px-0 py-2">
+        <mat-icon class="text-gray-600">{{ iconName() }}</mat-icon>
+        <h3 class="m-0 ml-2 text-lg md:text-xl font-bold">{{ title() }}</h3>
+    </mat-card-header>
+
+    <mat-card-content class="bg-white rounded-md p-4">
+        @for (detail of cardDetails(); track detail.title){
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-16 py-4 md:py-6">
+                <div class="font-semibold text-gray-500 sm:text-gray-900 text-sm md:text-base">
+                    {{ detail.title }}
+                </div>
+                <div class="text-base break-words">
+                    {{ detail.details }}
+                </div>
+            </div>
+            
+            @if (!$last) {
+                <mat-divider></mat-divider>
+            }
+        }
+    </mat-card-content>
+</mat-card>

@@ -1,6 +1,7 @@
 import { APIUser, User } from "@api/users/DTOs/user.interace";
 
 export function mapApiUserToUser(apiUser: APIUser): User{
+    console.log(apiUser)
     const fullName = `${apiUser.first_name} ${apiUser.last_name}`.trim();
 
     return {
