@@ -6,7 +6,7 @@ import { FormInputComponent } from "@app/shared/forms/components/form-input-comp
 import { debounceTime, Observable, of, startWith, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { UsersService } from '../../services/users.service';
 import { FormSelectComponent } from '@app/shared/forms/components/form-select-component/form-select-component';
-import { DepartmentsService } from '@app/core/departments/departments.service';
+import { DepartmentsService } from '@app/features/departments/departments.service';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import {  MatSortModule, Sort } from '@angular/material/sort';
 import {MatChipsModule} from '@angular/material/chips';

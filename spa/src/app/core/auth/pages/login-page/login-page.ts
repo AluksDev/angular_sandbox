@@ -45,7 +45,7 @@ export class LoginPage {
         this._snackBar.open('Login Successful', 'Close', {
           duration: 3000
         });
-        this.router.navigate(['/users']);
+        this.router.navigate(['/']);
       },
       error: (err) => {
         console.error("Error", err);

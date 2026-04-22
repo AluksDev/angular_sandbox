@@ -3,7 +3,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { RouterLink } from "@angular/router";
-import { UserCreateDialogComponent } from '@app/core/admin/components/user-create-dialog-component/user-create-dialog-component';
+import { UserCreateDialogComponent } from '@app/features/admin/components/user-create-dialog-component/user-create-dialog-component';
 
 @Component({
   selector: 'landing-home',
@@ -22,8 +22,5 @@ import { UserCreateDialogComponent } from '@app/core/admin/components/user-creat
   `]
 })
 export class LandingHomeComponent {
-  private dialog = inject(MatDialog);
-  openCreateUserDialog() {
-    const dialogRef = this.dialog.open(UserCreateDialogComponent);
-  }
+  
 }

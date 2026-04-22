@@ -5,13 +5,13 @@ import { FormInputComponent } from '@app/shared/forms/components/form-input-comp
 import { AuthService } from '../../auth.service';
 import { FormSelectComponent } from "@app/shared/forms/components/form-select-component/form-select-component";
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
-import { DepartmentsService } from '@app/core/departments/departments.service';
+import { DepartmentsService } from '@app/features/departments/departments.service';
 import { Department } from '@api/departments/DTOs/department.interface';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { finalize, switchMap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterLink } from "@angular/router";
-import { UserService } from '@app/core/user/user.service';
+import { UserService } from '@app/features/user/user.service';
 
 @Component({
   selector: 'app-register-page',

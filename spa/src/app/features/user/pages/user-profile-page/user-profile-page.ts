@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '@app/core/auth/auth.service';
 import { combineLatest, map, of, switchMap, tap } from 'rxjs';
 import { AsyncPipe, NgIf } from '@angular/common';
-import { DepartmentsService } from '@app/core/departments/departments.service';
+import { DepartmentsService } from '@app/features/departments/departments.service';
 
 @Component({
   selector: 'app-user-profile-page',

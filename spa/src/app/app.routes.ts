@@ -2,8 +2,9 @@ import { Route } from "@angular/router";
 import { authGuard } from "app/core/auth/guards/auth.guard";
 import { UsersListPage } from "./core/users/pages/users-list-page/users-list-page";
 import { LandingHomeComponent } from "@modules/landing/home/home.component";
-import { DepartmentsPage } from "./core/departments/pages/departments-page/departments-page";
-import { UserProfilePage } from "./core/user/pages/user-profile-page/user-profile-page";
+import { DepartmentsPage } from "./features/departments/pages/departments-page/departments-page";
+import { UserProfilePage } from "./features/user/pages/user-profile-page/user-profile-page";
+import { DashboardPage } from "./features/dashboard/pages/dashboard-page/dashboard-page";
 
 export const appRoutes: Route[] = [
   {
@@ -12,16 +13,11 @@ export const appRoutes: Route[] = [
   },
   {
     path: "",
-    redirectTo: "users",
-    pathMatch: "full",
-  },
-  {
-    path: "",
     canActivateChild: [authGuard],
     children: [
       {
-        path: "home",
-        component: LandingHomeComponent,
+        path: "",
+        component: DashboardPage,
       },
       {
         path: "users",
@@ -39,7 +35,7 @@ export const appRoutes: Route[] = [
   },
   {
     path: "**",
-    redirectTo: "home",
+    redirectTo: "",
   },
 ];
 

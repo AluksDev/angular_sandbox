@@ -1,18 +1,18 @@
 import {Component, inject, signal} from '@angular/core';
 import {MatSidenavModule} from '@angular/material/sidenav';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet, RouterLink } from '@angular/router';
 import { FuseNavigationItem, FuseVerticalNavigationComponent } from '@fuse/components/navigation';
 import { CdkTableModule } from "@angular/cdk/table";
-import { UserSidebarSnippetComponent } from "@app/core/user/components/user-sidebar-snippet-component/user-sidebar-snippet-component";
+import { UserSidebarSnippetComponent } from "@app/features/user/components/user-sidebar-snippet-component/user-sidebar-snippet-component";
 import { AuthService } from '@app/core/auth/auth.service';
 import { finalize, map } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AsyncPipe, NgIf } from '@angular/common';
-import { mapApiUserToUser } from '@app/core/user/user.mapper';
+import { mapApiUserToUser } from '@app/features/user/user.mapper';
 
 @Component({
   selector: 'app-main-layout',
-  imports: [MatSidenavModule, FuseVerticalNavigationComponent, RouterOutlet, CdkTableModule, UserSidebarSnippetComponent, AsyncPipe, NgIf],
+  imports: [MatSidenavModule, FuseVerticalNavigationComponent, RouterOutlet, CdkTableModule, UserSidebarSnippetComponent, AsyncPipe, NgIf, RouterLink],
   templateUrl: './main-layout.html',
   styleUrl: './main-layout.scss',
 })
