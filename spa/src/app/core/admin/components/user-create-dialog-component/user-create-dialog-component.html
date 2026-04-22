@@ -1,0 +1,51 @@
+<h2 mat-dialog-title>Create User</h2>
+<mat-dialog-content>
+  <form [formGroup]="createUser" class="flex flex-wrap gap-4 pt-4">
+    <div class="flex flex-col gap-4">
+        <app-form-input-component 
+            formControlName="username"
+            type="text"
+            [required]="true"
+            label="Username"
+            placeholder="Insert username"
+        />
+        <app-form-input-component 
+            formControlName="email"
+            type="email"
+            [required]="true"
+            label="Email"
+            placeholder="Insert email"
+        />
+        <app-form-input-component 
+            formControlName="password"
+            type="password"
+            [required]="true"
+            label="Password"
+            placeholder="Insert password"
+        />
+    </div>
+    <div class="flex flex-col gap-4">
+        <app-form-input-component 
+            formControlName="firstName"
+            type="text"
+            [required]="true"
+            label="First name"
+            placeholder="Insert first name"
+        />
+        <app-form-input-component 
+            formControlName="lastName"
+            type="text"
+            [required]="true"
+            label="Last name"
+            placeholder="Insert last name"
+        />
+        <p>Department</p>
+        <p>Role</p>
+    </div>
+    
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions class="flex justify-end items-center gap-2">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-flat-button>Create User</button>
+</mat-dialog-actions>
