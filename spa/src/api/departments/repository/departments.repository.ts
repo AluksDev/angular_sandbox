@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { ApiPaginatedResponse } from "@api/shared/DTOs/api-paginated-response.interface";
-import { Observable, of } from "rxjs";
+import { Observable } from "rxjs";
 import { CreateDepartment, Department } from "../DTOs/department.interface";
 
 @Injectable({
@@ -15,8 +15,13 @@ export class DepartmentsRepository {
       "/services/sandbox/department/",
     );
   }
+
+  getDepartmentById(depId: number): Observable<Department>{
+    return this.http.get<Department>(`/services/sandbox/department/${depId}/`);
+  }
+
   addDepartment(newDep: CreateDepartment): Observable<Department>{
-    return this.http.post<Department>("/services/sandbox/department/", newDep)
+    return this.http.post<Department>("/services/sandbox/department/", newDep);
   }
 
   deleteDepartmentById(id: number): Observable<void> {

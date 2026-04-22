@@ -2,7 +2,7 @@ import { JsonPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { User } from '@api/auth/DTOs/user.interface';
+import { User } from '@api/users/DTOs/user.interace';
 
 @Component({
   selector: 'app-user-sidebar-snippet-component',

@@ -7,8 +7,8 @@ import { DepartmentsService } from '@app/core/departments/departments.service';
 import { Observable, of, Subject } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
-import { User } from '@api/auth/DTOs/user.interface';
 import { Department } from '@api/departments/DTOs/department.interface';
+import { User } from '@api/users/DTOs/user.interace';
 
 
 type FilterValues = {

@@ -11,7 +11,7 @@ import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/p
 import {  MatSortModule, Sort } from '@angular/material/sort';
 import {MatChipsModule} from '@angular/material/chips';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { User } from '@api/auth/DTOs/user.interface';
+import { User } from '@api/users/DTOs/user.interace';
 
 @Component({
   selector: 'app-users-list-component',

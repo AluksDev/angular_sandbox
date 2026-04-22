@@ -1,7 +1,7 @@
 import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { AuthRepository } from "../repository/auth.repository";
-import { User } from "../DTOs/user.interface";
+import { APIUser, User } from "@api/users/DTOs/user.interace";
 
 @Injectable({
   providedIn: "root",
@@ -9,7 +9,7 @@ import { User } from "../DTOs/user.interface";
 export class GetMeUseCase {
   private authRepository = inject(AuthRepository);
 
-  execute(): Observable<User> {
+  execute(): Observable<APIUser> {
     return this.authRepository.getMe();
   }
 }
