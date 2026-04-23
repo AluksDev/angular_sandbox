@@ -3,7 +3,7 @@ import { CanActivateChildFn, CanActivateFn, CanMatchFn, Router } from "@angular/
 import { AuthService } from "../auth.service";
 import { map } from "rxjs";
 
-export const adminGuard: CanActivateChildFn = () => {
+export const adminGuard: CanActivateFn = () => {
     const authService = inject(AuthService);
     const router = inject(Router);
 

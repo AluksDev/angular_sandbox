@@ -16,7 +16,6 @@ export const appRoutes: Route[] = [
   {
     path: "admin",
     canActivate: [adminGuard],
-    canActivateChild: [adminGuard],
     loadChildren: () => import("./features/admin/admin.routes"),
   },
   {
