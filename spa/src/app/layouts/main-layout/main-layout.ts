@@ -35,6 +35,7 @@ export class MainLayout {
     }
   ]
   private _fuseNavigationService = inject(FuseNavigationService);
+  sideBarOpened = signal<boolean>(true);
 
   toggleNavigation(name: string): void {
     // Get the navigation
@@ -43,8 +44,7 @@ export class MainLayout {
     if (navigation) {
       // Toggle the opened status
       navigation.toggle();
-      console.log(navigation.opened())
-
+      this.sideBarOpened.set(navigation.opened());
     }
   }
 

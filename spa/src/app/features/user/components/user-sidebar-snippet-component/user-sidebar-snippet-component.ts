@@ -12,6 +12,7 @@ import { User } from '@api/users/DTOs/user.interace';
 })
 export class UserSidebarSnippetComponent {
   user = input.required<User>();
+  fullSnippet = input<boolean>();
   action = output<string>();
 
   onAction(action: string){
