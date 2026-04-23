@@ -19,3 +19,14 @@ export interface APIUser {
   last_login: string | null;
   roles: string[];
 }
+
+export interface CreateUser {
+  username: string;
+  email: string;
+  password: string;
+  password_confirm: string;
+  first_name: string;
+  last_name: string;
+  department: number;
+  roles: string[];
+}
