@@ -41,8 +41,20 @@
             label="Last name"
             placeholder="Insert last name"
         />
-        <p>Department</p>
-        <p>Role</p>
+        @let departments = (departments$ | async);
+        <app-form-select-component 
+            formControlName="department"
+            label="Select department"
+            [options]="departments"
+            placeholder="Pick one department"
+        />
+        <app-form-select-component 
+            formControlName="role"
+            label="Select role"
+            [options]="[{value: 'admin', label: 'Admin'}, {value: 'user', label: 'User'}]"
+            placeholder="Pick one role"
+            [required]="true"
+        />
     </div>
   </form>
 </mat-dialog-content>
