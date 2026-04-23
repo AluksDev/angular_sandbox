@@ -6,6 +6,7 @@ import { UserProfilePage } from "./features/user/pages/user-profile-page/user-pr
 import { DashboardPage } from "./features/dashboard/pages/dashboard-page/dashboard-page";
 import { adminGuard } from "./core/auth/guards/admin.guard";
 import { noAuthGuard } from "./core/auth/guards/noAuth.guard";
+import { Forbidden403Page } from "./features/errors/pages/forbidden-403-page/forbidden-403-page";
 
 export const appRoutes: Route[] = [
   {
@@ -14,8 +15,13 @@ export const appRoutes: Route[] = [
   },
   {
     path: "admin",
-    canMatch: [adminGuard],
+    canActivate: [adminGuard],
+    canActivateChild: [adminGuard],
     loadChildren: () => import("./features/admin/admin.routes"),
+  },
+  {
+    path: '403',
+    component: Forbidden403Page
   },
   {
     path: "",

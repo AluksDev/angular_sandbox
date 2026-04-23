@@ -25,6 +25,10 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<APIUser | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
+  get currentUserSnapshot(): APIUser | null {
+    return this.currentUserSubject.value;
+  }
+
   setCurrentUser(user: APIUser) {
     this.currentUserSubject.next(user);
   }

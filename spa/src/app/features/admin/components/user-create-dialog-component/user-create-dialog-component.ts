@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { FormInputComponent } from "@app/shared/forms/components/form-input-component/form-input-component";
 import { PasswordGeneratorComponent } from "@app/shared/components/password-generator-component/password-generator-component";
 import { DepartmentsService } from '@app/features/departments/departments.service';
@@ -10,6 +10,9 @@ import { AsyncPipe, JsonPipe } from '@angular/common';
 import { map } from 'rxjs';
 import { CustomValidators } from '@app/shared/forms/custom-validators';
 import { MatError } from "@angular/material/form-field";
+import { UserService } from '@app/features/user/user.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-create-dialog-component',
@@ -28,8 +31,12 @@ import { MatError } from "@angular/material/form-field";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserCreateDialogComponent { 
+  dialogRef = inject(MatDialogRef<UserCreateDialogComponent>)
   departmentService = inject(DepartmentsService);
+  userService = inject(UserService);
+  router = inject(Router);
   fb = inject(FormBuilder);
+
   createUser = this.fb.group(
     {
       username: [''],
@@ -38,8 +45,8 @@ export class UserCreateDialogComponent {
       password_confirm: [''],
       first_name: [''],
       last_name: [''],
-      department: [''],
-      roles: [''],
+      department: [null as number | null],
+      roles: [null as string | null],
     },
     {
       validators: CustomValidators.passwordMatchValidator()
@@ -62,6 +69,34 @@ export class UserCreateDialogComponent {
   onSubmit(){
     this.createUser.markAllAsTouched();
     if (this.createUser.invalid) return;
-    console.log("Form Data: ", this.createUser.getRawValue())
+    const userData = {
+      ...this.createUser.getRawValue(),
+      roles: this.createUser.value.roles === 'user' ? [] : [this.createUser.value.roles]  //backend does not accept 'user' as role, auto assigns it if empty
+    };
+    this.userService.createUser(userData).subscribe({
+      next: (user) => {
+        this.openSnackBar(`Created user with id: ${user.id}`, 'Close'),
+        this.dialogRef.close();
+        this.router.navigate(['/dashboard']);
+      },
+      error: (err => {
+        console.log(err.error);
+        if (err.error?.username) {
+          const message = err.error.username[0];
+          this.openSnackBar(message, 'Close');
+        }
+        if (err.error?.email) {
+          const message = err.error?.email[0];
+          this.openSnackBar(message, 'Close');
+        }
+      })
+    })
+  }
+
+  private _snackBar = inject(MatSnackBar);
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 3000
+    });
   }
 }
