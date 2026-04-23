@@ -5,6 +5,7 @@ import { DepartmentsPage } from "./features/departments/pages/departments-page/d
 import { UserProfilePage } from "./features/user/pages/user-profile-page/user-profile-page";
 import { DashboardPage } from "./features/dashboard/pages/dashboard-page/dashboard-page";
 import { adminGuard } from "./core/auth/guards/admin.guard";
+import { noAuthGuard } from "./core/auth/guards/noAuth.guard";
 
 export const appRoutes: Route[] = [
   {
