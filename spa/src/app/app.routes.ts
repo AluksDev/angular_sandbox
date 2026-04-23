@@ -20,8 +20,9 @@ export const appRoutes: Route[] = [
     path: "",
     canActivateChild: [authGuard],
     children: [
+      { path: "", redirectTo: "dashboard", pathMatch: "full" },
       {
-        path: "",
+        path: "dashboard",
         component: DashboardPage,
       },
       {

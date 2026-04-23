@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-create-dialog-page',
-  imports: [UserCreateDialogComponent],
+  imports: [],
   templateUrl: './user-create-dialog-page.html',
   styleUrl: './user-create-dialog-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

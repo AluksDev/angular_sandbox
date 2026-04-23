@@ -2,12 +2,14 @@ import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { Router } from "@angular/router";
 import { AuthService } from '@app/core/auth/auth.service';
 
 @Component({
   selector: 'app-dashboard-page',
-  imports: [MatButtonModule],
+  imports: [MatButtonModule, MatCardModule, MatIconModule],
   templateUrl: './dashboard-page.html',
   styleUrl: './dashboard-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
