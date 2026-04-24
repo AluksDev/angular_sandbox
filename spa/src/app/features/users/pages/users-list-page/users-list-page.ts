@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal, effect } from '@angular/core';
 import { UsersListComponent } from '../../components/users-list-component/users-list-component';
 import { UsersFiltersComponent } from "../../components/users-filters-component/users-filters-component";
 import { MatTableDataSource } from '@angular/material/table';
@@ -34,6 +34,11 @@ export class UsersListPage implements OnInit{
 
   totalUsers = signal<number>(0);
   usersList = signal<UserTableRow[]>([]);
+  query = signal<GetUsersQuery>({
+    search: '',
+    limit: 10,
+    offset: 0,
+  })
 
   columnsSettings: TableColumnConfig[] = [
     {
@@ -81,11 +86,17 @@ export class UsersListPage implements OnInit{
       color: 'warn'
     },
     {
-      key: 'delete',
-      label: 'Delete',
+      key: 'deactivate',
+      label: 'Deactivate',
       color: 'danger'
     },
   ]
+
+  constructor(){
+    effect(()=>{
+      this.loadUsers(this.query());
+    })
+  }
 
   ngOnInit() {
     this.loadUsers()
@@ -105,18 +116,22 @@ export class UsersListPage implements OnInit{
       })
     )
     .subscribe( users => {
-      console.log(users)
       this.usersList.set(users);
     })
   }
+  
 
   onPaginationChange(event: PageEvent) {
     const offset = event.pageIndex * event.pageSize;
-    this.loadUsers({limit: event.pageSize, offset: offset});
+    this.query.update(prev=> ({...prev, limit: event.pageSize, offset: offset}));
   }
 
   onSortChange(event: Sort){
     console.log(event)
+  }
+
+  onSearchTermChange(searchTerm: string){
+    this.query.update(prev => ({...prev, search: searchTerm}))
   }
 
 
