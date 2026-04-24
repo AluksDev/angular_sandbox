@@ -1,3 +1,5 @@
+import { initial } from "lodash";
+
 export interface User {
   id: number;
   fullName: string;
@@ -29,4 +31,7 @@ export interface CreateUser {
   last_name: string;
   department: number;
   roles: string[];
+}
+export interface UserTableRow extends User{
+  initials: string;
 }

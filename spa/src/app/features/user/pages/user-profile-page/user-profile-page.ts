@@ -75,16 +75,11 @@ export class UserProfilePage {
   private transformAvatarDetails(user: any) {
     return {
       initials: this.userInitials(user.first_name, user.last_name),
-      color: this.getAvatarColor(user.id)
+      id: user.id
     };
   }
 
   userInitials(firstName: string, lastName: string): string {
     return (firstName?.[0] ?? '$') + (lastName?.[0] ?? '$');
-  }
-
-  getAvatarColor(id: number): string {
-    const hue = (id * 137) % 360;
-    return `hsl(${hue}, 70%, 60%)`;
   }
 }

@@ -1,9 +1,8 @@
 <div 
-    class="flex items-center justify-center rounded-full text-white font-semibold 
-           w-32 h-32 text-4xl 
-           md:w-48 md:h-48 md:text-6xl 
-           transition-all duration-300 shadow-lg"
-    [style.background-color]="color()"
->
+      class="flex items-center justify-center rounded-full text-white font-semibold 
+             transition-all duration-300 shadow-lg"
+      [style.background-color]="color()"
+      [ngClass]="sizeClasses()"
+    >
   {{ initials() }}
 </div>

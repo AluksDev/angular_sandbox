@@ -49,9 +49,18 @@
                 {{ column.label }}
             </th>
             <td mat-cell *matCellDef="let element">
-            <div>
-                {{ element[column.key] }}
-            </div>
+              @if (column.key === 'initials'){
+                <app-avatar-component 
+                  [initials]="element[column.key]"
+                  sizePreset="xxs"
+                  [id]="element.id"
+                />
+              } @else {
+                <div>
+                  {{ element[column.key] }}
+                </div>
+              }
+            
             </td>
         </ng-container>
     }

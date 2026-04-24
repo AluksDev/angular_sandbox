@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { APIUser, CreateUser, User } from '../DTOs/user.interace';
+import { ApiPaginatedResponse } from '@api/shared/DTOs/api-paginated-response.interface';
 
 @Injectable({providedIn: 'root'})
 export class UserRepository {
@@ -16,5 +17,9 @@ export class UserRepository {
 
     createUser(userData: CreateUser): Observable<APIUser> {
         return this.http.post<APIUser>("/services/sandbox/user/", userData);
+    }
+
+    getAllUsers(): Observable<ApiPaginatedResponse<APIUser>>{
+        return this.http.get<ApiPaginatedResponse<APIUser>>("/services/sandbox/user/");
     }
 }

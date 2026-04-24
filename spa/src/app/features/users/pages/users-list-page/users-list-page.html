@@ -1,13 +1,19 @@
 <h2>Users List Page</h2>
-<app-users-filters-component 
+<!-- <app-users-filters-component 
   [departments$]="departments$()"
   (filterChange)="onFilterChange($event)"
-/>
+/> -->
 
-<app-users-list-component
+<!-- <app-users-list-component
   [dataSource]="userDataSource()"
   [totalUsers]="totalUsers()"
   [departmentMap]="departmentMap()"
   (pageChange)="onPageChange($event)"
   (sortChange)="onSortChange($event)"
+/> -->
+<app-table-component 
+  [dataSource]="usersList()"
+  [totalElements]="totalUsers()"
+  [columns]="columnsSettings"
+  [actions]="actionsSettings"
 />

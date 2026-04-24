@@ -9,10 +9,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormInputComponent } from "../forms/components/form-input-component/form-input-component";
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
+import { AvatarComponent } from "@app/features/user/components/avatar-component/avatar-component";
 
 @Component({
   selector: 'app-table-component',
-  imports: [MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule, NgClass, MatProgressSpinnerModule, FormInputComponent, ReactiveFormsModule],
+  imports: [MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule, NgClass, MatProgressSpinnerModule, FormInputComponent, ReactiveFormsModule, AvatarComponent],
   templateUrl: './table-component.html',
   styleUrl: './table-component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
