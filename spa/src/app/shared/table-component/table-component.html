@@ -56,11 +56,21 @@
                   [id]="element.id"
                 />
               } @else {
-                <div>
-                  {{ element[column.key] }}
-                </div>
+                @if (column.is_badge){
+                  <div
+                    class="px-2 py-1 rounded-full text-white text-center inline-block bg-opacity-60"
+                    [ngClass]="{
+                      'bg-green-500': element[column.key] === 'active',
+                      'bg-red-500': element[column.key] !== 'active'
+                    }">
+                    {{ element[column.key] }}
+                  </div>
+                } @else {
+                  <div>
+                    {{ element[column.key] }}
+                  </div>
+                }
               }
-            
             </td>
         </ng-container>
     }

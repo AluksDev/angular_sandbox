@@ -64,7 +64,8 @@ export class UsersListPage implements OnInit{
     {
       key: 'status',
       label: 'Status',
-      sortable: true
+      sortable: true,
+      is_badge: true
     },
   ]
 
@@ -91,7 +92,6 @@ export class UsersListPage implements OnInit{
   }
 
   loadUsers(options?: GetUsersQuery) {
-    
     this.usersService.getAllUsers(options).pipe(
       tap((res)=> this.totalUsers.set(res.count)),
       map(res => {
@@ -105,6 +105,7 @@ export class UsersListPage implements OnInit{
       })
     )
     .subscribe( users => {
+      console.log(users)
       this.usersList.set(users);
     })
   }
@@ -112,6 +113,10 @@ export class UsersListPage implements OnInit{
   onPaginationChange(event: PageEvent) {
     const offset = event.pageIndex * event.pageSize;
     this.loadUsers({limit: event.pageSize, offset: offset});
+  }
+
+  onSortChange(event: Sort){
+    console.log(event)
   }
 
 
