@@ -9,7 +9,7 @@ import { DepartmentsService } from '@app/features/departments/departments.servic
 
 @Component({
   selector: 'app-user-profile-page',
-  imports: [ProfileCardComponent, AvatarComponent, MatButtonModule, NgIf, AsyncPipe],
+  imports: [ProfileCardComponent, AvatarComponent, MatButtonModule, AsyncPipe],
   templateUrl: './user-profile-page.html',
   styleUrl: './user-profile-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

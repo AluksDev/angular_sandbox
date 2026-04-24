@@ -12,6 +12,7 @@ import { APIUser, User, UserTableRow } from '@api/users/DTOs/user.interace';
 import { TableComponent } from "@app/shared/table-component/table-component";
 import { TableActionConfig, TableColumnConfig } from '@app/shared/table-component/table.models';
 import { mapApiUserToUser } from '@app/features/user/user.mapper';
+import { GetUsersQuery } from '@api/shared/DTOs/api-get-users-query.interface';
 
 
 type FilterValues = {
@@ -89,8 +90,9 @@ export class UsersListPage implements OnInit{
     this.loadUsers()
   }
 
-  loadUsers() {
-    this.usersService.getAllUsers().pipe(
+  loadUsers(options?: GetUsersQuery) {
+    
+    this.usersService.getAllUsers(options).pipe(
       tap((res)=> this.totalUsers.set(res.count)),
       map(res => {
         return res.results.map(u => {
@@ -105,6 +107,11 @@ export class UsersListPage implements OnInit{
     .subscribe( users => {
       this.usersList.set(users);
     })
+  }
+
+  onPaginationChange(event: PageEvent) {
+    const offset = event.pageIndex * event.pageSize;
+    this.loadUsers({limit: event.pageSize, offset: offset});
   }
 
 

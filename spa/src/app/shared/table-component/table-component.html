@@ -40,7 +40,7 @@
       mat-table 
       [dataSource]="dataSource()" 
       matSort 
-      class="mat-elevation-z8 w-full overflow-auto" 
+      class="w-full" 
       (matSortChange)="onSortChange($event)"
     >
     @for (column of columns(); track column.key){

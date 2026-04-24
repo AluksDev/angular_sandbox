@@ -7,7 +7,7 @@ export function mapApiUserToUser(apiUser: APIUser): User{
         username: apiUser.username,
         email: apiUser.email,
         fullName: fullName || apiUser.username,
-        department: apiUser.department ?? 0,
+        department: apiUser.department,
         status: apiUser.is_active ? 'active' : 'inactive'
     };
 }
