@@ -14,6 +14,8 @@ from rest_framework.parsers import MultiPartParser, JSONParser, FormParser
 from rest_framework.response import Response
 from django.core.exceptions import ValidationError
 
+from utils.filters import NullsLastOrderingFilter
+
 from authentication.models import Department
 from authentication.serializers import DepartmentSerializer
 from .models import GameUserAnswer, GameQuestion, GameAnswer, Score
@@ -35,12 +37,15 @@ class GameQuestionView(
     """
     permission_classes = [permissions.IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser, JSONParser]
-    filter_backends = [SearchFilter, DjangoFilterBackend]
+    filter_backends = [SearchFilter, DjangoFilterBackend, NullsLastOrderingFilter]
     serializer_class = GameQuestionSerializer
     queryset = GameQuestion.objects.all().order_by('stage_number')
     search_fields = ("question", "stage_number", "title")
     filterset_fields = {"is_active", "stage_number", "department_score__department"}
-    ordering_fields = ("stage_number", "created")
+    ordering_fields = (
+        'id', 'title', 'question', 'is_active', 'is_phishing',
+        'explanation', 'date_activated', 'stage_number', 'created',
+    )
     ordering = ("stage_number", "date_activated", "id")
 
     @swagger_auto_schema()
@@ -191,12 +196,15 @@ class GameAnswerView(
     Views for Game Question REST
     """
     permission_classes = [permissions.IsAuthenticated]
-    filter_backends = [SearchFilter, DjangoFilterBackend]
+    filter_backends = [SearchFilter, DjangoFilterBackend, NullsLastOrderingFilter]
     serializer_class = GameAnswerSerializer
     queryset = GameAnswer.objects.all()
     search_fields = ("id", "question")
     # filterset_fields = {"is_active"}
-    ordering_fields = ("created",)
+    ordering_fields = (
+        'id', 'question', ('question__stage_number', 'stage_number'),
+        'answer', 'is_correct', 'created',
+    )
     ordering = ("created",)
 
     @swagger_auto_schema()
@@ -236,12 +244,15 @@ class UserAnswerView(
     Views for Game Question REST
     """
     permission_classes = [permissions.IsAuthenticated]
-    filter_backends = [SearchFilter, DjangoFilterBackend]
+    filter_backends = [SearchFilter, DjangoFilterBackend, NullsLastOrderingFilter]
     serializer_class = GameUserAnswerSerializer
     queryset = GameUserAnswer.objects.all()
     search_fields = ("id", "question")
     # filterset_fields = {"is_active"}
-    ordering_fields = ("created",)
+    ordering_fields = (
+        'id', 'user', 'question', 'answer',
+        ('answer__is_correct', 'is_correct'), 'created',
+    )
     ordering = ("created",)
 
     @swagger_auto_schema()
@@ -306,12 +317,18 @@ class ScoreView(
     Views for Game Question REST
     """
     permission_classes = [permissions.IsAuthenticated]
-    filter_backends = [SearchFilter, DjangoFilterBackend]
+    filter_backends = [SearchFilter, DjangoFilterBackend, NullsLastOrderingFilter]
     serializer_class = ScoreSerializer
     queryset = Score.objects.all()
     search_fields = ("id", "question")
     filterset_fields = {"question", "question__stage_number"}
-    ordering_fields = ("created",)
+    ordering_fields = (
+        'id', 'score', 'question',
+        ('question__stage_number', 'stage_number'),
+        'department', ('department__name', 'department_name'),
+        'timestamp', 'is_weekly_winner', 'has_reached_max',
+        'accuracy', 'created',
+    )
     ordering = ("created",)
 
     @swagger_auto_schema()
