@@ -11,9 +11,11 @@ import { TableComponent } from "@app/shared/table-component/table-component";
 import { TableActionConfig, TableColumnConfig } from '@app/shared/table-component/table.models';
 import { mapApiUserToUser } from '@app/features/user/user.mapper';
 import { GetUsersQuery } from '@api/shared/DTOs/api-get-users-query.interface';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '@app/core/auth/auth.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 
 type FilterValues = {
@@ -24,7 +26,7 @@ type FilterValues = {
 
 @Component({
   selector: 'app-users-list-page',
-  imports: [UsersFiltersComponent, TableComponent],
+  imports: [UsersFiltersComponent, TableComponent, MatButtonModule, MatIconModule, RouterLink],
   templateUrl: './users-list-page.html',
   styleUrl: './users-list-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -41,6 +43,7 @@ export class UsersListPage implements OnInit{
   usersList = signal<UserTableRow[]>([]);
   departmentList = signal<Department[]>([]);
   isLoading = signal<boolean>(false);
+  isAdmin = signal<boolean>(false);
   query = signal<GetUsersQuery>({
     limit: 10,
     offset: 0,
@@ -106,17 +109,15 @@ export class UsersListPage implements OnInit{
     },
   ]
 
-  actionsSettings: TableActionConfig[];
-
   ngOnInit() {
     this.authService.currentUser$
     .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(user => {
       if (!user) return;
       if (user.roles.includes('admin') || user.roles.includes('superuser')){
-        this.actionsSettings = this.adminActionsSettings;
+        this.isAdmin.set(true);
       } else {
-        this.actionsSettings = this.userActionsSettings;
+        this.isAdmin.set(false);
       }
     });
     

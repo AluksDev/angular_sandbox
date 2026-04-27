@@ -1,4 +1,12 @@
 <h2 class="mb-6">Users List Page</h2>
+@if (isAdmin()){
+  <div class="flex justify-end items-center p-4">
+    <button mat-fab extended routerLink="/admin/users/create">
+      <mat-icon>add</mat-icon>
+      Add User
+    </button>
+  </div>
+}
 <app-users-filters-component 
   [departments]="departmentList()"
   (filterChange)="onFilterChange($event)"
@@ -8,7 +16,7 @@
   [searchable]="false"
   [totalElements]="totalUsers()"
   [columns]="columnsSettings"
-  [actions]="actionsSettings"
+  [actions]="isAdmin() ? adminActionsSettings : userActionsSettings"
   (pageChange)="onPaginationChange($event)"
   (sortChange)="onSortChange($event)"
   [loading]="isLoading()"
