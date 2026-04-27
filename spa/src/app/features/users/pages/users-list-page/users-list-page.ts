@@ -4,7 +4,7 @@ import { UsersFiltersComponent } from "../../components/users-filters-component/
 import { MatTableDataSource } from '@angular/material/table';
 import { UsersService } from '../../users.service';
 import { DepartmentsService } from '@app/features/departments/departments.service';
-import { map, Observable, of, Subject, tap } from 'rxjs';
+import { finalize, map, Observable, of, Subject, tap } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
 import { Department } from '@api/departments/DTOs/department.interface';
@@ -34,6 +34,8 @@ export class UsersListPage implements OnInit{
 
   totalUsers = signal<number>(0);
   usersList = signal<UserTableRow[]>([]);
+  departmentList = signal<Department[]>([]);
+  isLoading = signal<boolean>(false);
   query = signal<GetUsersQuery>({
     search: '',
     limit: 10,
@@ -62,7 +64,7 @@ export class UsersListPage implements OnInit{
       sortable: true
     },
     {
-      key: 'department',
+      key: 'departmentName',
       label: 'Department',
       sortable: true
     },
@@ -92,25 +94,26 @@ export class UsersListPage implements OnInit{
     },
   ]
 
-  constructor(){
-    effect(()=>{
-      this.loadUsers(this.query());
-    })
-  }
-
   ngOnInit() {
-    this.loadUsers()
+    this.loadDepartments();
+    this.loadUsers();
   }
 
   loadUsers(options?: GetUsersQuery) {
+    this.isLoading.set(true);
     this.usersService.getAllUsers(options).pipe(
+      finalize(() => this.isLoading.set(false)),
       tap((res)=> this.totalUsers.set(res.count)),
       map(res => {
+          const deptMap = Object.fromEntries(
+            this.departmentList().map(d => [d.id, d.name])
+          );
         return res.results.map(u => {
           const user = mapApiUserToUser(u);
           return {
             ...user,
-            initials: user.fullName.split(' ').map(name => name[0]).join('').toUpperCase()
+            initials: user.fullName.split(' ').map(name => name[0]).join('').toUpperCase(),
+            departmentName: deptMap[user.department] ?? 'Unknown'
           }
         });
       })
@@ -119,19 +122,36 @@ export class UsersListPage implements OnInit{
       this.usersList.set(users);
     })
   }
-  
 
+  loadDepartments(){
+  this.departmentService.getDepartments().pipe(
+      tap(res => this.departmentList.set(res.results))
+    ).subscribe();
+  }
+  
   onPaginationChange(event: PageEvent) {
     const offset = event.pageIndex * event.pageSize;
-    this.query.update(prev=> ({...prev, limit: event.pageSize, offset: offset}));
+
+    this.query.update(prev => ({
+      ...prev,
+      limit: event.pageSize,
+      offset
+    }));
+
+    this.loadUsers(this.query());
   }
 
   onSortChange(event: Sort){
     console.log(event)
   }
 
-  onSearchTermChange(searchTerm: string){
-    this.query.update(prev => ({...prev, search: searchTerm}))
+  onSearchTermChange(searchTerm: string) {
+    this.query.update(prev => ({
+      ...prev,
+      search: searchTerm
+    }));
+
+    this.loadUsers(this.query());
   }
 
 

@@ -1,28 +1,4 @@
-@if (loading()){
-  <div class="skeleton-table">
-    <div class="skeleton-row skeleton-header">
-      <div class="skeleton-cell"><div class="skeleton-bar w-60"></div></div>
-      <div class="skeleton-cell"><div class="skeleton-bar w-60"></div></div>
-      <div class="skeleton-cell"><div class="skeleton-bar w-60"></div></div>
-    </div>
 
-    <div class="skeleton-row">
-      <div class="skeleton-cell"><div class="skeleton-bar"></div></div>
-      <div class="skeleton-cell"><div class="skeleton-bar w-40"></div></div>
-      <div class="skeleton-cell"><div class="skeleton-bar"></div></div>
-    </div>
-    <div class="skeleton-row">
-      <div class="skeleton-cell"><div class="skeleton-bar w-40"></div></div>
-      <div class="skeleton-cell"><div class="skeleton-bar"></div></div>
-      <div class="skeleton-cell"><div class="skeleton-bar w-60"></div></div>
-    </div>
-    <div class="skeleton-row">
-      <div class="skeleton-cell"><div class="skeleton-bar"></div></div>
-      <div class="skeleton-cell"><div class="skeleton-bar w-40"></div></div>
-      <div class="skeleton-cell"><div class="skeleton-bar"></div></div>
-    </div>
-  </div>
-} @else {
   @if (totalElements() === 0){
     <div>
       <p>{{ emptyMessage() }}</p>
@@ -37,11 +13,37 @@
         iconName="search"
       />
     </form>
+    <div class="relative">
+      <div  [class.hidden]="!loading()" class="skeleton-table">
+        <div class="skeleton-row skeleton-header">
+          <div class="skeleton-cell"><div class="skeleton-bar w-60"></div></div>
+          <div class="skeleton-cell"><div class="skeleton-bar w-60"></div></div>
+          <div class="skeleton-cell"><div class="skeleton-bar w-60"></div></div>
+        </div>
+
+        <div class="skeleton-row">
+          <div class="skeleton-cell"><div class="skeleton-bar"></div></div>
+          <div class="skeleton-cell"><div class="skeleton-bar w-40"></div></div>
+          <div class="skeleton-cell"><div class="skeleton-bar"></div></div>
+        </div>
+        <div class="skeleton-row">
+          <div class="skeleton-cell"><div class="skeleton-bar w-40"></div></div>
+          <div class="skeleton-cell"><div class="skeleton-bar"></div></div>
+          <div class="skeleton-cell"><div class="skeleton-bar w-60"></div></div>
+        </div>
+        <div class="skeleton-row">
+          <div class="skeleton-cell"><div class="skeleton-bar"></div></div>
+          <div class="skeleton-cell"><div class="skeleton-bar w-40"></div></div>
+          <div class="skeleton-cell"><div class="skeleton-bar"></div></div>
+        </div>
+      </div>
+    </div>
     <table 
       mat-table 
       [dataSource]="dataSource()" 
       matSort 
-      class="w-full" 
+      class="w-full"
+      [class.hidden]="loading()"
       (matSortChange)="onSortChange($event)"
     >
     @for (column of columns(); track column.key){
@@ -110,5 +112,4 @@
         aria-label="Select table page"
         (page)="onPageChange($event)"
     />
-  }
 }

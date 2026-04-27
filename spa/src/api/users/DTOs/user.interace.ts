@@ -33,5 +33,6 @@ export interface CreateUser {
   roles: string[];
 }
 export interface UserTableRow extends User{
+  departmentName: string
   initials: string;
 }
