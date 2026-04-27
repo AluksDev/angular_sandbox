@@ -3,14 +3,6 @@
   [departments]="departmentList()"
   (filterChange)="onFilterChange($event)"
 />
-
-<!-- <app-users-list-component
-  [dataSource]="userDataSource()"
-  [totalUsers]="totalUsers()"
-  [departmentMap]="departmentMap()"
-  (pageChange)="onPageChange($event)"
-  (sortChange)="onSortChange($event)"
-/> -->
 <app-table-component 
   [dataSource]="usersList()"
   [searchable]="false"
@@ -19,7 +11,7 @@
   [actions]="actionsSettings"
   (pageChange)="onPaginationChange($event)"
   (sortChange)="onSortChange($event)"
-  (searchTerm)="onSearchTermChange($event)"
   [loading]="isLoading()"
   emptyMessage="No users found"
+  (executeAction)="onAction($event)"
 />

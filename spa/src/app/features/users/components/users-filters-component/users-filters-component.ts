@@ -1,22 +1,22 @@
-import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit, output } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatChipsModule } from '@angular/material/chips';
+import { ActivatedRoute } from '@angular/router';
 import { Department } from '@api/departments/DTOs/department.interface';
 import { FormInputComponent } from '@app/shared/forms/components/form-input-component/form-input-component';
 import { FormSelectComponent } from '@app/shared/forms/components/form-select-component/form-select-component';
-import { debounceTime, Observable, startWith, switchMap, tap } from 'rxjs';
+import { debounceTime, skip } from 'rxjs';
 
 type FilterValues = {
-  searchTerm?: string;
+  search?: string;
   department?: number | null;
   status?: string;
 };
 
 @Component({
   selector: 'app-users-filters-component',
-  imports: [ReactiveFormsModule, FormInputComponent, FormSelectComponent, AsyncPipe, MatChipsModule],
+  imports: [ReactiveFormsModule, FormInputComponent, FormSelectComponent, MatChipsModule],
   templateUrl: './users-filters-component.html',
   styleUrl: './users-filters-component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -36,42 +36,60 @@ export class UsersFiltersComponent implements OnInit{
   })
   
   activeFilters = computed(() => {
-    const { searchTerm, status, department } = this.formValue();
+    const { search, status, department } = this.formValue();
     return [
-      searchTerm && { label: `Search: ${searchTerm}`, key: 'searchTerm' },
-      status && { label: `Status: ${status}`, key: 'status' },
+      search && { label: `Search: ${search}`, key: 'search' },
+      status && status!== 'all' && { label: `Status: ${status}`, key: 'status' },
       department && { label: `Department: ${department}`, key: 'department' }
     ].filter(Boolean);
   });
   
   fb = inject(FormBuilder);
-    filterForm = this.fb.group({
-      searchTerm: [''],
-      department: [null as number | null],
-      status: [''],
-    })
+  filterForm = this.fb.group({
+    search: [''],
+    department: [null as number | null],
+    status: [''],
+  })
 
   formValue = toSignal(this.filterForm.valueChanges, {
     initialValue: this.filterForm.value
   });
+  route = inject(ActivatedRoute);
+  constructor(){
+    const params = this.route.snapshot.queryParamMap;
+    const rawStatus = params.get('status');
 
-    ngOnInit() {
-      this.filterForm.valueChanges
-        .pipe(
-          debounceTime(300),
-          startWith(this.filterForm.value), 
-        )
-        .subscribe(values => {
-          this.filterChange.emit(values)
-        })
+    let status = '';
+    if (rawStatus === 'true') {
+      status = 'active';
+    } else if (rawStatus === 'false') {
+      status = 'inactive';
     }
-    removeFilter(key: string) {
-      if (key === 'searchTerm') {
-        this.filterForm.patchValue({ searchTerm: '' });
-      } else if (key === 'department') {
-        this.filterForm.patchValue({ department: null });
-      } else if (key === 'status') {
-        this.filterForm.patchValue({ status: '' });
-      }
+    const initialFilters: FilterValues = {
+      search: params.get('search') || '',
+      department: Number(params.get('department')),
+      status: status
     }
+    this.filterForm.patchValue(initialFilters);
+  }
+
+  ngOnInit() {
+    this.filterForm.valueChanges
+      .pipe(
+        debounceTime(300),
+        skip(1),
+      )
+      .subscribe(values => {
+        this.filterChange.emit(values)
+      })
+  }
+  removeFilter(key: string) {
+    if (key === 'search') {
+      this.filterForm.patchValue({ search: '' });
+    } else if (key === 'department') {
+      this.filterForm.patchValue({ department: null });
+    } else if (key === 'status') {
+      this.filterForm.patchValue({ status: '' });
+    }
+  }
  }

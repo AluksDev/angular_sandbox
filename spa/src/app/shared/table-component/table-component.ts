@@ -1,4 +1,4 @@
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit, output, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
@@ -8,7 +8,7 @@ import { TableActionConfig, TableColumnConfig } from './table.models';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormInputComponent } from "../forms/components/form-input-component/form-input-component";
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, skip, Subject, takeUntil } from 'rxjs';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { AvatarComponent } from "@app/features/user/components/avatar-component/avatar-component";
 
 @Component({

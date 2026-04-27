@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, effect, Injector, input, OnInit } from '@angular/core';
-import { FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, effect, Injector, input } from '@angular/core';
+import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BaseFormControlAccessor } from '../../utils/control-value-accessor-base';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { map, Observable, of, startWith } from 'rxjs';
+import { map, Observable, startWith } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
