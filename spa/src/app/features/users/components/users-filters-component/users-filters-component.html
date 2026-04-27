@@ -6,25 +6,21 @@
       label="Search user by name, usernamer email"
       [required]="false"
       iconName="search"
-      appearance="fill"
     />
     </div>
     <div class="flex justify-between items-center">
-      @if (departments$() | async; as departments) {
-        <app-form-select-component 
-          formControlName="department"
-          label="Department filter"
-          placeholder="Select a department"
-          [options]="departments"
-          [searchable]="true"
-        />
-      }
-      
+      <app-form-select-component 
+        formControlName="department"
+        label="Department filter"
+        placeholder="Select a department"
+        [options]="depSelectOptions()"
+        [searchable]="true"
+      />
       <app-form-select-component 
         formControlName="status"
         label="Status filter"
         placeholder="Select a status"
-        [options]="['Active', 'Inactive']"
+        [options]="[{label: 'All', value: 'all'}, {label: 'Active', value: 'active'}, {label: 'Inactive', value: 'inactive'}]"
       />
     </div>
 </form>

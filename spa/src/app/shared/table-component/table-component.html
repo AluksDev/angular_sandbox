@@ -1,18 +1,23 @@
 
-  @if (totalElements() === 0){
-    <div>
-      <p>{{ emptyMessage() }}</p>
+    @if (searchable()){
+      <form [formGroup]="searchForm" class="mt-2">
+        <app-form-input-component 
+          formControlName="searchTerm"
+          [required]="false"
+          label="Search"
+          type="text"
+          iconName="search"
+        />
+    </form>
+    }
+    
+    @if (totalElements() === 0){
+    <div class="flex items-center justify-center h-full">
+      <p class="text-gray-500 text-xl font-medium text-center">
+        {{ emptyMessage() }}
+      </p>
     </div>
   } @else {
-    <form [formGroup]="searchForm" class="mt-2">
-      <app-form-input-component 
-        formControlName="searchTerm"
-        [required]="false"
-        label="Search"
-        type="text"
-        iconName="search"
-      />
-    </form>
     <div class="relative">
       <div  [class.hidden]="!loading()" class="skeleton-table">
         <div class="skeleton-row skeleton-header">

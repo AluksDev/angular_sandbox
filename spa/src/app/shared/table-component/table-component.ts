@@ -26,6 +26,7 @@ export class TableComponent <T> implements OnInit{
   emptyMessage = input<string>('No data');
   clickableRow = input<boolean>(false);
   loading = input<boolean>(false);
+  searchable = input<boolean>();
 
   columnsNames = computed(() => {
     const cols = this.columns()?.map(c => c.key) ?? [];

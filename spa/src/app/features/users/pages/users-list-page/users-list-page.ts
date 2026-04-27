@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal, effect } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal, effect, EventEmitter } from '@angular/core';
 import { UsersListComponent } from '../../components/users-list-component/users-list-component';
 import { UsersFiltersComponent } from "../../components/users-filters-component/users-filters-component";
 import { MatTableDataSource } from '@angular/material/table';
@@ -17,7 +17,7 @@ import { GetUsersQuery } from '@api/shared/DTOs/api-get-users-query.interface';
 
 type FilterValues = {
   searchTerm: string;
-  department: number | null;
+  department: string;
   status: string;
 };
 
@@ -38,6 +38,8 @@ export class UsersListPage implements OnInit{
   isLoading = signal<boolean>(false);
   query = signal<GetUsersQuery>({
     search: '',
+    department: '',
+    is_active: '',
     limit: 10,
     offset: 0,
   })
@@ -100,6 +102,7 @@ export class UsersListPage implements OnInit{
   }
 
   loadUsers(options?: GetUsersQuery) {
+    console.log(options)
     this.isLoading.set(true);
     this.usersService.getAllUsers(options).pipe(
       finalize(() => this.isLoading.set(false)),
@@ -146,9 +149,29 @@ export class UsersListPage implements OnInit{
   }
 
   onSearchTermChange(searchTerm: string) {
+  }
+
+  onFilterChange(filters: FilterValues){
+    const { searchTerm, department } = filters;
+    let status = '';
+    switch (filters.status) {
+      case 'active':{
+        status = 'true'
+        break;
+      }
+      case 'inactive':{
+        status = 'false'
+        break;
+      }
+      default: 
+        status = '';
+        break;
+    }
     this.query.update(prev => ({
       ...prev,
-      search: searchTerm
+      search: searchTerm,
+      department: department,
+      is_active: status
     }));
 
     this.loadUsers(this.query());

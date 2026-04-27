@@ -23,8 +23,17 @@ type FilterValues = {
   
 })
 export class UsersFiltersComponent implements OnInit{
-  departments$ = input.required<Observable<Department[]>>();
+  departments = input.required<Department[]>();
   filterChange = output<FilterValues>();
+
+  depSelectOptions = computed(() => {
+    return this.departments().map(d => {
+      return {
+        label: d.name,
+        value: d.id
+      }
+    })
+  })
   
   activeFilters = computed(() => {
     const { searchTerm, status, department } = this.formValue();
@@ -42,9 +51,9 @@ export class UsersFiltersComponent implements OnInit{
       status: [''],
     })
 
-    formValue = toSignal(this.filterForm.valueChanges, {
-      initialValue: this.filterForm.value
-    });
+  formValue = toSignal(this.filterForm.valueChanges, {
+    initialValue: this.filterForm.value
+  });
 
     ngOnInit() {
       this.filterForm.valueChanges

@@ -1,8 +1,8 @@
-<h2>Users List Page</h2>
-<!-- <app-users-filters-component 
-  [departments$]="departments$()"
+<h2 class="mb-6">Users List Page</h2>
+<app-users-filters-component 
+  [departments]="departmentList()"
   (filterChange)="onFilterChange($event)"
-/> -->
+/>
 
 <!-- <app-users-list-component
   [dataSource]="userDataSource()"
@@ -13,6 +13,7 @@
 /> -->
 <app-table-component 
   [dataSource]="usersList()"
+  [searchable]="false"
   [totalElements]="totalUsers()"
   [columns]="columnsSettings"
   [actions]="actionsSettings"
@@ -20,4 +21,5 @@
   (sortChange)="onSortChange($event)"
   (searchTerm)="onSearchTermChange($event)"
   [loading]="isLoading()"
+  emptyMessage="No users found"
 />
