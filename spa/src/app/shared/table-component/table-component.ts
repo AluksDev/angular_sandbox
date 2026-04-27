@@ -7,13 +7,17 @@ import { MatTableModule } from '@angular/material/table';
 import { TableActionConfig, TableColumnConfig } from './table.models';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormInputComponent } from "../forms/components/form-input-component/form-input-component";
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { AvatarComponent } from "@app/features/user/components/avatar-component/avatar-component";
+import { FormSelectComponent } from "../forms/components/form-select-component/form-select-component";
+import { MatLabel, MatSelect, MatFormField, MatSelectModule } from "@angular/material/select";
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-table-component',
-  imports: [MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule, NgClass, MatProgressSpinnerModule, FormInputComponent, ReactiveFormsModule, AvatarComponent],
+  imports: [MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule, NgClass, MatProgressSpinnerModule, FormInputComponent, ReactiveFormsModule, AvatarComponent, MatFormFieldModule, MatSelectModule, MatInputModule, FormsModule],
   templateUrl: './table-component.html',
   styleUrl: './table-component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
