@@ -178,7 +178,26 @@ export class UsersListPage implements OnInit{
   }
 
   onSortChange(event: Sort){
-    console.log(event)
+    let sortField = event.active;
+    switch (sortField) {
+      case 'fullName':
+        sortField = 'first_name'
+        break;
+      case 'status':
+        sortField = 'is_active';
+        break;
+      case 'departmentName':
+        sortField = 'department';
+        break;
+      }
+    const direction = event.direction;
+    this.query.update(prev => ({
+      ...prev,
+      ordering: direction
+        ? (direction === 'asc' ? sortField : `-${sortField}`)
+        : undefined
+    }))
+    this.loadUsers(this.query());
   }
 
   onFilterChange(filters: FilterValues){

@@ -6,4 +6,5 @@ export interface GetUsersQuery {
   offset?: number;
   fields?: string;
   expand?: string;
+  ordering?: string;
 }

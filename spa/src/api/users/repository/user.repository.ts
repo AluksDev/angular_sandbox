@@ -30,7 +30,7 @@ export class UserRepository {
         if (options?.offset) params = params.set('offset', options.offset);
         if (options?.fields) params = params.set('fields', options.fields);
         if (options?.expand) params = params.set('expand', options.expand);
-
+        if (options?.ordering) params = params.set('ordering', options.ordering);
         return this.http.get<ApiPaginatedResponse<APIUser>>(
             '/services/sandbox/user/',
             { params }
