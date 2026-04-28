@@ -4,7 +4,7 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import { FormInputComponent } from "@app/shared/forms/components/form-input-component/form-input-component";
 import { debounceTime, Observable, of, startWith, Subject, switchMap, takeUntil, tap } from 'rxjs';
-import { UsersService } from '../../services/users.service';
+import { UsersService } from '../../users.service';
 import { FormSelectComponent } from '@app/shared/forms/components/form-select-component/form-select-component';
 import { DepartmentsService } from '@app/features/departments/departments.service';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';

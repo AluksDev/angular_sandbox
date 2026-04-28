@@ -21,13 +21,31 @@ html {
   border-color: #22c55e !important;
   color: #22c55e !important;
 }
+.mat-mdc-outlined-button.success-btn:hover{
+  background-color: hsla(142, 71%, 45%, 0.3);
+  color: white !important;
+}
 .mat-mdc-outlined-button.warn-btn{
   border-color: #f59e0b !important;
   color: #f59e0b !important;
 }
+.mat-mdc-outlined-button.warn-btn:hover{
+  background-color: hsla(38, 92%, 50%, 0.3);
+  color: white !important;
+}
 .mat-mdc-outlined-button.danger-btn{
   border-color: #ef4444 !important;
   color: #ef4444 !important;
+}
+.mat-mdc-outlined-button.danger-btn:hover{
+  background-color: hsla(0, 84%, 60%, 0.3);
+  color: white !important;
+}
+
+.mat-mdc-outlined-button.success-btn,
+.mat-mdc-outlined-button.warn-btn,
+.mat-mdc-outlined-button.danger-btn {
+  transition: all 0.2s ease-in-out;
 }
 
 .mat-mdc-unelevated-button.success-btn{
