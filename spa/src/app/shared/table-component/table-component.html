@@ -107,6 +107,7 @@
         (click)="onRowClick(row)"
         [class.clickable]="clickableRow()"
         mat-row 
+        [style.opacity]="row.status === 'inactive' ? 0.6 : 1"
         *matRowDef="let row; columns: columnsNames()" 
     ></tr>
     </table>
