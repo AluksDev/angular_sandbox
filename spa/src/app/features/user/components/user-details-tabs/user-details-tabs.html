@@ -40,7 +40,58 @@
         </div>
     </div>
   </mat-tab>
-  <mat-tab label="Department"> Content 2 </mat-tab>
-  <mat-tab label="Status"> Content 3 </mat-tab>
+  <mat-tab label="Department">
+    <div class="p-6 grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-8">
+        @if (department()){
+            <div class="flex flex-col gap-1">
+                <span class="font-bold uppercase tracking-wider text-slate-500">Department ID</span>
+                <p class="font-medium text-slate-900 py-2 bg-slate-50 px-3 rounded-lg ring-1 ring-inset ring-slate-200">
+                    {{ department().id}}
+                </p>
+            </div>
+
+            <div class="flex flex-col gap-1">
+                <span class="font-bold uppercase tracking-wider text-slate-500">Name</span>
+                <p class="font-medium text-slate-900 py-2 bg-slate-50 px-3 rounded-lg ring-1 ring-inset ring-slate-200">
+                    {{ department().name }}
+                </p>
+            </div>
+
+            <div class="flex flex-col gap-1">
+                <span class="font-bold uppercase tracking-wider text-slate-500">Code</span>
+                <p class="font-medium text-slate-900 py-2 bg-slate-50 px-3 rounded-lg ring-1 ring-inset ring-slate-200">
+                    {{ department().code }}
+                </p>
+            </div>
+        } @else {
+            <p>No department details</p>
+        }
+        
+    </div>
+  </mat-tab>
+  <mat-tab label="Status">
+    <div class="p-6 grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-8">
+        <div class="flex flex-col gap-1">
+            <span class="font-bold uppercase tracking-wider text-slate-500">Date Joined</span>
+            <p class="font-medium text-slate-900 py-2 bg-slate-50 px-3 rounded-lg ring-1 ring-inset ring-slate-200">
+                {{ user().date_joined | date: 'short' }}
+            </p>
+        </div>
+
+        <div class="flex flex-col gap-1">
+            <span class="font-bold uppercase tracking-wider text-slate-500">Last Login</span>
+            <p class="font-medium text-slate-900 py-2 bg-slate-50 px-3 rounded-lg ring-1 ring-inset ring-slate-200">
+                {{ user().last_login | date: 'short' }}
+            </p>
+        </div>
+
+        <div class="flex flex-col gap-1">
+            <span class="font-bold uppercase tracking-wider text-slate-500">Status</span>
+            <p class="font-medium text-slate-900 py-2 bg-slate-50 px-3 rounded-lg ring-1 ring-inset ring-slate-200">
+                {{ user().is_active ? 'Active' : 'Inactive' }}
+            </p>
+        </div>
+    </div>
+  </mat-tab>
 </mat-tab-group>
 </div>
