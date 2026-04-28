@@ -231,7 +231,7 @@ export class UsersListPage implements OnInit{
     const userId = element.id;
     switch (action){
       case 'details':
-        this.router.navigate([`users/${userId}`])
+        this.router.navigate(['/users', userId])
         break;
     }
   }

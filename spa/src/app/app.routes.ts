@@ -7,6 +7,7 @@ import { DashboardPage } from "./features/dashboard/pages/dashboard-page/dashboa
 import { adminGuard } from "./core/auth/guards/admin.guard";
 import { Forbidden403Page } from "./features/errors/pages/forbidden-403-page/forbidden-403-page";
 import { UserDetailsPage } from "./features/user/pages/user-details-page/user-details-page";
+import { UserResolver } from "./features/users/user.resolver";
 
 export const appRoutes: Route[] = [
   {
@@ -40,7 +41,10 @@ export const appRoutes: Route[] = [
             },
             {
               path: ":id",
-              component: UserDetailsPage
+              component: UserDetailsPage,
+              resolve: {
+                userDetails: UserResolver
+              }
             }
           ]
       },
