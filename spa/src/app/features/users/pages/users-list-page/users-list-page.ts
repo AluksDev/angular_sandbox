@@ -16,7 +16,6 @@ import { AuthService } from '@app/core/auth/auth.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { environment } from 'environments/environment.hmr';
 
 
 type FilterValues = {
