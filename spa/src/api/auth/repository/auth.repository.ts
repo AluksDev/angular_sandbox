@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { map, Observable, of } from "rxjs";
 import { APILoginResponse, APILogoutResponse, ApiUserRegister } from "@api/auth/DTOs/auth.interface";
-import { mapApiUserToUser } from "@app/core/user/user.mapper";
+import { mapApiUserToUser } from "@app/features/user/user.mapper";
 import { APIUser, User } from "@api/users/DTOs/user.interace";
 @Injectable({
   providedIn: "root",

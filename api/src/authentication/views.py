@@ -10,6 +10,8 @@ from django.utils import timezone
 from django.contrib.auth.models import Group
 from drf_yasg import openapi
 
+from utils.filters import NullsLastOrderingFilter
+
 from .models import User, Department
 from .serializers import (
     UserSerializer,
@@ -97,9 +99,16 @@ class UserView(
     permission_classes = [IsAuthenticated]
     serializer_class = UserSerializer
     queryset = User.objects.all()
-    filter_backends = [SearchFilter, DjangoFilterBackend]
+    filter_backends = [SearchFilter, DjangoFilterBackend, NullsLastOrderingFilter]
     search_fields = ['username', 'email', 'first_name', 'last_name']
     filterset_fields = ['department', 'is_active']
+    ordering_fields = (
+        'id', 'username', 'email', 'first_name', 'last_name',
+        'department', ('department__name', 'department_name'),
+        'is_active', 'date_joined', 'last_login',
+    )
+    
+    
 
     def get_serializer_class(self):
         """Use UserRegistrationSerializer for create, UserSerializer otherwise"""
@@ -147,8 +156,9 @@ class DepartmentView(
     permission_classes = [IsAuthenticated]
     serializer_class = DepartmentSerializer
     queryset = Department.objects.all()
-    filter_backends = [SearchFilter]
+    filter_backends = [SearchFilter, NullsLastOrderingFilter]
     search_fields = ['name', 'code']
+    ordering_fields = ('id', 'name', 'code')
 
     @swagger_auto_schema(
         request_body=DepartmentSerializer,

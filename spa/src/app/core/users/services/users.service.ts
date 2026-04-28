@@ -70,7 +70,6 @@ export class UsersService {
     private http = inject(HttpClient);
 
     getUsers(options: Options): Observable<{data: User[], total: number}>{
-        console.log(options)
         const {searchTerm, department, status, limit , offset, sortBy } = options;
         let filteredUsers = MOCK_USERS_DATA;
 

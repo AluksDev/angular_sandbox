@@ -3,7 +3,7 @@ import { UsersListComponent } from '../../components/users-list-component/users-
 import { UsersFiltersComponent } from "../../components/users-filters-component/users-filters-component";
 import { MatTableDataSource } from '@angular/material/table';
 import { UsersService } from '../../services/users.service';
-import { DepartmentsService } from '@app/core/departments/departments.service';
+import { DepartmentsService } from '@app/features/departments/departments.service';
 import { Observable, of, Subject } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';

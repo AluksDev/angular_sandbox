@@ -1,0 +1,80 @@
+<h2>Create User</h2>
+<mat-dialog-content>
+    <form [formGroup]="createUser" class="flex flex-col flex-wrap gap-4" (ngSubmit)="onSubmit()">
+        <div class="flex flex-col md:flex-row gap-6 w-full">
+            <div class="flex flex-col gap-4 w-full md:w-1/2">
+                <app-form-input-component 
+                    formControlName="username"
+                    type="text"
+                    [required]="true"
+                    label="Username"
+                    placeholder="Insert username"
+                />
+                <app-form-input-component 
+                    formControlName="email"
+                    type="email"
+                    [required]="true"
+                    label="Email"
+                    placeholder="Insert email"
+                />
+                <app-form-input-component 
+                    formControlName="password"
+                    type="password"
+                    [required]="true"
+                    label="Password"
+                    placeholder="Insert password"
+                    minLength="8"
+                    [validPattern]="passwordPattern"
+                />
+                <app-form-input-component 
+                    formControlName="password_confirm"
+                    type="password"
+                    [required]="true"
+                    label="Confirm password"
+                    placeholder="Confirm password"
+                    minLength="8"
+                    [validPattern]="passwordPattern"
+                />
+            </div>
+            <div class="flex flex-col gap-4 w-full md:w-1/2">
+                <app-form-input-component 
+                    formControlName="first_name"
+                    type="text"
+                    [required]="true"
+                    label="First name"
+                    placeholder="Insert first name"
+                />
+                <app-form-input-component 
+                    formControlName="last_name"
+                    type="text"
+                    [required]="true"
+                    label="Last name"
+                    placeholder="Insert last name"
+                />
+                @let departments = (departments$ | async);
+                <app-form-select-component 
+                    formControlName="department"
+                    label="Select department"
+                    [options]="departments"
+                    placeholder="Pick one department"
+                    [required]="true"
+                />
+                <app-form-select-component 
+                    formControlName="roles"
+                    label="Select role"
+                    [options]="[{value: 'admin', label: 'Admin'}, {value: 'user', label: 'User'}]"
+                    placeholder="Pick one role"
+                    [required]="true"
+                />
+            </div>
+        </div>
+        @if (createUser.errors?.['passwordMismatch']){
+            <div class="text-red-500 text-xl">Passwords do not match</div>
+        }
+        <app-password-generator-component />
+        <mat-dialog-actions class="flex justify-end items-center gap-2 p-0">
+            <button mat-button mat-dialog-close>Cancel</button>
+            <button mat-flat-button>Create User</button>
+        </mat-dialog-actions>
+    </form>
+</mat-dialog-content>
