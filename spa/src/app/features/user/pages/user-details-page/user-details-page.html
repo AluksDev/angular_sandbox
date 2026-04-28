@@ -1,1 +1,13 @@
-<p>user-details-page works!</p>,
+<div class="p-6">
+    <app-user-details-header 
+        [userId]="userDetails().id"
+        [firstName]="userDetails().first_name"
+        [lastName]="userDetails().last_name"
+        [username]="userDetails().username"
+        [is_active]="userDetails().is_active"
+        [email]="userDetails().email"
+    />
+    <app-user-details-tabs 
+        [user]="userDetails()"
+    />
+</div>

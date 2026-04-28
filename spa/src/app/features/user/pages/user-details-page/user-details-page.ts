@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { APIUser } from '@api/users/DTOs/user.interace';
+import { UserDetailsHeader } from "../../components/user-details-header/user-details-header";
+import { UserDetailsTabs } from "../../components/user-details-tabs/user-details-tabs";
 
 @Component({
   selector: 'app-user-details-page',
-  imports: [],
+  imports: [UserDetailsHeader, UserDetailsTabs],
   templateUrl: './user-details-page.html',
   styleUrl: './user-details-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Injector, input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, Injector, input, OnInit } from '@angular/core';
 import { FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BaseFormControlAccessor } from '../../utils/control-value-accessor-base';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
