@@ -40,9 +40,13 @@ export class UsersFiltersComponent implements OnInit{
     return [
       search && { label: `Search: ${search}`, key: 'search' },
       status && status!== 'all' && { label: `Status: ${status}`, key: 'status' },
-      department && { label: `Department: ${department}`, key: 'department' }
+      department && { label: `Department: ${this.getDepartmentName(department)}`, key: 'department' }
     ].filter(Boolean);
   });
+
+  getDepartmentName(id: number): string {
+    return this.depSelectOptions().find(dep => dep.value === id).label;
+  }
   
   fb = inject(FormBuilder);
   filterForm = this.fb.group({
