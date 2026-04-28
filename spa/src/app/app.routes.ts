@@ -6,6 +6,7 @@ import { UserProfilePage } from "./features/user/pages/user-profile-page/user-pr
 import { DashboardPage } from "./features/dashboard/pages/dashboard-page/dashboard-page";
 import { adminGuard } from "./core/auth/guards/admin.guard";
 import { Forbidden403Page } from "./features/errors/pages/forbidden-403-page/forbidden-403-page";
+import { UserDetailsPage } from "./features/user/pages/user-details-page/user-details-page";
 
 export const appRoutes: Route[] = [
   {
@@ -32,7 +33,16 @@ export const appRoutes: Route[] = [
       },
       {
         path: "users",
-        component: UsersListPage,
+        children: [
+            {
+              path: "",
+              component: UsersListPage
+            },
+            {
+              path: ":id",
+              component: UserDetailsPage
+            }
+          ]
       },
       {
         path: 'departments',

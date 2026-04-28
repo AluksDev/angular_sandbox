@@ -16,6 +16,7 @@ import { AuthService } from '@app/core/auth/auth.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { environment } from 'environments/environment.hmr';
 
 
 type FilterValues = {
@@ -226,6 +227,12 @@ export class UsersListPage implements OnInit{
   }
 
   onAction(event: {action: string, element: UserTableRow}){
-    console.log(event);
+    const { action, element } = event;
+    const userId = element.id;
+    switch (action){
+      case 'details':
+        this.router.navigate([`users/${userId}`])
+        break;
+    }
   }
 }
