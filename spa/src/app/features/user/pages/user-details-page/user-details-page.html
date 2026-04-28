@@ -1,4 +1,7 @@
 <div class="p-6">
+    <app-breadcrumb-component 
+        [lastCrumb]="(userDetails()?.first_name ?? '') + ' ' + (userDetails()?.last_name ?? '')"
+    />
     <app-user-details-header 
         [userId]="userDetails().id"
         [firstName]="userDetails().first_name"

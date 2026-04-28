@@ -5,10 +5,11 @@ import { UserDetailsHeader } from "../../components/user-details-header/user-det
 import { UserDetailsTabs } from "../../components/user-details-tabs/user-details-tabs";
 import { DepartmentsService } from '@app/features/departments/departments.service';
 import { Department } from '@api/departments/DTOs/department.interface';
+import { BreadcrumbComponent } from "@app/shared/components/breadcrumb-component/breadcrumb-component";
 
 @Component({
   selector: 'app-user-details-page',
-  imports: [UserDetailsHeader, UserDetailsTabs],
+  imports: [UserDetailsHeader, UserDetailsTabs, BreadcrumbComponent],
   templateUrl: './user-details-page.html',
   styleUrl: './user-details-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
