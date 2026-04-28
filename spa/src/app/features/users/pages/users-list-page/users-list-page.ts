@@ -226,6 +226,12 @@ export class UsersListPage implements OnInit{
   }
 
   onAction(event: {action: string, element: UserTableRow}){
-    console.log(event);
+    const { action, element } = event;
+    const userId = element.id;
+    switch (action){
+      case 'details':
+        this.router.navigate(['/users', userId])
+        break;
+    }
   }
 }

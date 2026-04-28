@@ -36,4 +36,8 @@ export class UserRepository {
             { params }
         );
     }
+
+    getUserById(id: number): Observable<APIUser> {
+        return this.http.get<APIUser>(`/services/sandbox/user/${id}/`);
+    }
 }

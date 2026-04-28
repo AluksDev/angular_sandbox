@@ -1,0 +1,16 @@
+<div class="p-6">
+    <app-breadcrumb-component 
+        [lastCrumb]="fullName() || userDetails().username"
+    />
+    <app-user-details-header 
+        [userId]="userDetails().id"
+        [fullName]="fullName()"
+        [username]="userDetails().username"
+        [is_active]="userDetails().is_active"
+        [email]="userDetails().email"
+    />
+    <app-user-details-tabs 
+        [user]="userDetails()"
+        [department]="departmentDetails()"
+    />
+</div>

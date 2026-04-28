@@ -7,6 +7,9 @@ import { DashboardPage } from "./features/dashboard/pages/dashboard-page/dashboa
 import { adminGuard } from "./core/auth/guards/admin.guard";
 import { noAuthGuard } from "./core/auth/guards/noAuth.guard";
 import { Forbidden403Page } from "./features/errors/pages/forbidden-403-page/forbidden-403-page";
+import { UserDetailsPage } from "./features/user/pages/user-details-page/user-details-page";
+import { UserResolver } from "./features/users/user.resolver";
+import { NotFound404Page } from "./features/errors/pages/not-found-404-page/not-found-404-page";
 
 export const appRoutes: Route[] = [
   {
@@ -23,6 +26,10 @@ export const appRoutes: Route[] = [
     component: Forbidden403Page
   },
   {
+    path: '404',
+    component: NotFound404Page
+  },
+  {
     path: "",
     canActivateChild: [authGuard],
     children: [
@@ -33,7 +40,19 @@ export const appRoutes: Route[] = [
       },
       {
         path: "users",
-        component: UsersListPage,
+        children: [
+            {
+              path: "",
+              component: UsersListPage
+            },
+            {
+              path: ":id",
+              component: UserDetailsPage,
+              resolve: {
+                userDetails: UserResolver
+              }
+            }
+          ]
       },
       {
         path: 'departments',
