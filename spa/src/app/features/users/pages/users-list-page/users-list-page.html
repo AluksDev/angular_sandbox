@@ -1,0 +1,28 @@
+<div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
+  <h2 class="text-xl font-semibold">Users List Page</h2>
+
+  @if (isAdmin()){
+    <div class="flex justify-start md:justify-end">
+      <button mat-fab extended routerLink="/admin/users/create">
+        <mat-icon>add</mat-icon>
+        Add User
+      </button>
+    </div>
+  }
+</div>
+<app-users-filters-component 
+  [departments]="departmentList()"
+  (filterChange)="onFilterChange($event)"
+/>
+<app-table-component 
+  [dataSource]="usersList()"
+  [searchable]="false"
+  [totalElements]="totalUsers()"
+  [columns]="columnsSettings"
+  [actions]="isAdmin() ? adminActionsSettings : userActionsSettings"
+  (pageChange)="onPaginationChange($event)"
+  (sortChange)="onSortChange($event)"
+  [loading]="isLoading()"
+  emptyMessage="No users found"
+  (executeAction)="onAction($event)"
+/>

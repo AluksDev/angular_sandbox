@@ -1,6 +1,6 @@
 import { Route } from "@angular/router";
 import { authGuard } from "app/core/auth/guards/auth.guard";
-import { UsersListPage } from "./core/users/pages/users-list-page/users-list-page";
+import { UsersListPage } from "./features/users/pages/users-list-page/users-list-page";
 import { DepartmentsPage } from "./features/departments/pages/departments-page/departments-page";
 import { UserProfilePage } from "./features/user/pages/user-profile-page/user-profile-page";
 import { DashboardPage } from "./features/dashboard/pages/dashboard-page/dashboard-page";

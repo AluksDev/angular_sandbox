@@ -2,6 +2,7 @@ export interface TableColumnConfig {
   key:  string
   label: string
   sortable?: boolean
+  is_badge?: boolean
 }
 
 export interface TableActionConfig {

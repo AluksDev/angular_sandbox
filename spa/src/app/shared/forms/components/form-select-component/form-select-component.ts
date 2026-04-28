@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, input, OnInit } from '@an
 import { FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BaseFormControlAccessor } from '../../utils/control-value-accessor-base';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { map, Observable, of, startWith } from 'rxjs';
+import { map, Observable, startWith } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -35,7 +35,22 @@ export class FormSelectComponent extends BaseFormControlAccessor{
   searchable = input<boolean>();
   appearance = input<string>("outline")
 
-  filteredOptions: Observable<any[]>;
+  filteredOptions: Observable<SelectOptions[]>;
+  constructor(injector: Injector) {
+    super(injector);
+    
+    effect(() => {
+      if (!this.formControl || !this.searchable()) return;
+      const currentOptions = this.options();
+      this.filteredOptions = this.formControl.valueChanges.pipe(
+        startWith(currentOptions),
+        map(value => {
+          const displayValue = typeof value === 'string' ? value : '';
+          return this.searchFilter(displayValue);
+        })
+      );
+    });
+  }
 
   ngOnInit() {
     super.ngOnInit();
@@ -78,7 +93,7 @@ export class FormSelectComponent extends BaseFormControlAccessor{
     );
   }
 
-  displayWith(value: string): string {
+  displayWith = (value: string): string => {
     if (!value) return '';
 
     const option = this.options().find(opt => opt.value === value);
