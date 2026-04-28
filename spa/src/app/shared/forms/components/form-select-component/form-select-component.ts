@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, effect, Injector, input } from '@angular/core';
-import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, Injector, input, OnInit } from '@angular/core';
+import { FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BaseFormControlAccessor } from '../../utils/control-value-accessor-base';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { map, Observable, startWith } from 'rxjs';
@@ -61,6 +61,15 @@ export class FormSelectComponent extends BaseFormControlAccessor{
     const validators = [];
     if (this.required()){
       validators.push(Validators.required);
+    }
+    if (this.searchable()) {
+      this.filteredOptions = this.formControl.valueChanges.pipe(
+        startWith(this.formControl.value),
+        map(value => {
+          const displayValue = typeof value === 'string' ? value : '';
+          return this.searchFilter(displayValue);
+        })
+      );
     }
     this.formControl!.setValidators(validators);
     this.formControl!.updateValueAndValidity();
