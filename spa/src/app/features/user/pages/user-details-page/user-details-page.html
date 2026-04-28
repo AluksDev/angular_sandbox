@@ -1,11 +1,10 @@
 <div class="p-6">
     <app-breadcrumb-component 
-        [lastCrumb]="(userDetails()?.first_name ?? '') + ' ' + (userDetails()?.last_name ?? '')"
+        [lastCrumb]="fullName() || userDetails().username"
     />
     <app-user-details-header 
         [userId]="userDetails().id"
-        [firstName]="userDetails().first_name"
-        [lastName]="userDetails().last_name"
+        [fullName]="fullName()"
         [username]="userDetails().username"
         [is_active]="userDetails().is_active"
         [email]="userDetails().email"

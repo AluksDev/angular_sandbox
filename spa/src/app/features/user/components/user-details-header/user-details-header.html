@@ -11,7 +11,7 @@
         <div class="flex flex-col gap-1">
             <div class="flex items-center gap-3">
                 <h3 class="text-2xl font-bold text-slate-900 tracking-tight leading-none">
-                    {{ fullName() }}
+                    {{ fullName() ? fullName() : 'NO NAME REGISTERED' }}
                 </h3>
                 
                 <span [ngClass]="is_active 

@@ -12,17 +12,13 @@ import { NgClass } from '@angular/common';
 })
 export class UserDetailsHeader {
   userId = input<number>();
-  firstName = input<string>();
-  lastName = input<string>();
+  fullName = input<string>();
   username = input<string>();
   email = input<string>();
   is_active = input<boolean>();
 
-  fullName = computed(()=> {
-    return `${this.firstName()} ${this.lastName()}`;
-  })
-
   initials = computed(()=> {
-    return `${this.firstName()[0] || '$'} ${this.lastName()[0] || '$'}`;
+    if (!this.fullName()) return;
+    return this.fullName().split(' ').map(n => n[0]).join('');
   })
  }

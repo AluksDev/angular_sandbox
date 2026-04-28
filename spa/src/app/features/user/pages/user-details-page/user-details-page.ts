@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { APIUser } from '@api/users/DTOs/user.interace';
 import { UserDetailsHeader } from "../../components/user-details-header/user-details-header";
@@ -21,9 +21,15 @@ export class UserDetailsPage implements OnInit{
   userDetails = signal<APIUser>(null);
   departmentDetails = signal<Department>(null);
 
+  fullName = computed(()=>{
+    const user = this.userDetails();
+    if (!user) return;
+    const name = `${user.first_name ?? ''} ${user.last_name ?? ''}`.trim();
+    return name || null;
+  })
+
   ngOnInit(): void {
     this.userDetails.set(this.route.snapshot.data['userDetails']);
-    console.log(this.userDetails())
     this.departmentsService.getDepartmentById(this.userDetails().department).subscribe({
       next: ((res) => {
         this.departmentDetails.set(res);
