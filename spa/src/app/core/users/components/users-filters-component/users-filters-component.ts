@@ -28,7 +28,6 @@ export class UsersFiltersComponent implements OnInit{
   
   activeFilters = computed(() => {
     const { searchTerm, status, department } = this.formValue();
-    console.log('cmputing active filters')
     return [
       searchTerm && { label: `Search: ${searchTerm}`, key: 'searchTerm' },
       status && { label: `Status: ${status}`, key: 'status' },

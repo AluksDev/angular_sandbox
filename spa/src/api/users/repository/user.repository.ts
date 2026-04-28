@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { APIUser, User } from '../DTOs/user.interace';
+import { APIUser, CreateUser, User } from '../DTOs/user.interace';
 
 @Injectable({providedIn: 'root'})
 export class UserRepository {
@@ -13,5 +13,8 @@ export class UserRepository {
             department: departmentId
         })
     }
-    
+
+    createUser(userData: CreateUser): Observable<APIUser> {
+        return this.http.post<APIUser>("/services/sandbox/user/", userData);
+    }
 }

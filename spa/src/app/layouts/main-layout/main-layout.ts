@@ -1,18 +1,19 @@
 import {Component, inject, signal} from '@angular/core';
 import {MatSidenavModule} from '@angular/material/sidenav';
-import { Router, RouterOutlet } from '@angular/router';
-import { FuseNavigationItem, FuseVerticalNavigationComponent } from '@fuse/components/navigation';
+import { Router, RouterOutlet, RouterLink } from '@angular/router';
+import { FuseNavigationItem, FuseNavigationService, FuseVerticalNavigationComponent } from '@fuse/components/navigation';
 import { CdkTableModule } from "@angular/cdk/table";
-import { UserSidebarSnippetComponent } from "@app/core/user/components/user-sidebar-snippet-component/user-sidebar-snippet-component";
+import { UserSidebarSnippetComponent } from "@app/features/user/components/user-sidebar-snippet-component/user-sidebar-snippet-component";
 import { AuthService } from '@app/core/auth/auth.service';
 import { finalize, map } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AsyncPipe, NgIf } from '@angular/common';
-import { mapApiUserToUser } from '@app/core/user/user.mapper';
+import { mapApiUserToUser } from '@app/features/user/user.mapper';
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
   selector: 'app-main-layout',
-  imports: [MatSidenavModule, FuseVerticalNavigationComponent, RouterOutlet, CdkTableModule, UserSidebarSnippetComponent, AsyncPipe, NgIf],
+  imports: [MatSidenavModule, FuseVerticalNavigationComponent, RouterOutlet, CdkTableModule, UserSidebarSnippetComponent, AsyncPipe, NgIf, RouterLink, MatIcon],
   templateUrl: './main-layout.html',
   styleUrl: './main-layout.scss',
 })
@@ -33,6 +34,19 @@ export class MainLayout {
       icon: 'mat_outline:apartment'
     }
   ]
+  private _fuseNavigationService = inject(FuseNavigationService);
+  sideBarOpened = signal<boolean>(true);
+
+  toggleNavigation(name: string): void {
+    // Get the navigation
+    const navigation = this._fuseNavigationService.getComponent<FuseVerticalNavigationComponent>(name);
+
+    if (navigation) {
+      // Toggle the opened status
+      navigation.toggle();
+      this.sideBarOpened.set(navigation.opened());
+    }
+  }
 
   authService = inject(AuthService);
   user$ = this.authService.currentUser$.pipe(
@@ -49,6 +63,10 @@ export class MainLayout {
     switch(action){
       case 'logout':
         this.logout();
+        break;
+      case 'account':
+        this.router.navigate(['/account']);
+        break;
     }
   }
 
@@ -74,4 +92,5 @@ export class MainLayout {
       duration: 3000
     });
   }
+  
  }

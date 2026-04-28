@@ -7,15 +7,16 @@
         class="h-full w-full object-cover"
       />
     </div>
-
-    <div class="flex flex-col overflow-hidden">
-      <span class="text-sm font-semibold truncate">
-        {{ user().fullName }}
-      </span>
-      <span class="text-xs truncate">
-        {{ user().email }}
-      </span>
-    </div>
+    @if (fullSnippet()){
+      <div class="flex flex-col overflow-hidden">
+        <span class="text-sm font-semibold truncate">
+          {{ user().fullName }}
+        </span>
+        <span class="text-xs truncate">
+          {{ user().email }}
+        </span>
+      </div>
+      }
   </div>
 
   <div class="rounded-full text-gray-400 hover:text-gray-600">
@@ -23,8 +24,13 @@
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
     </svg>
   </div>
+    
 </div>
 <mat-menu #userMenu="matMenu" yPosition="above">
+  <button mat-menu-item (click)="onAction('account')">
+    <mat-icon>person</mat-icon>
+    <span>Account</span>
+  </button>
   <button mat-menu-item (click)="onAction('logout')">
     <mat-icon>logout</mat-icon>
     <span>Logout</span>

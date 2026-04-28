@@ -3,7 +3,7 @@ import { UserRepository } from '../repository/user.repository';
 import { map, Observable, switchMap, take, tap } from 'rxjs';
 import { AuthService } from '@app/core/auth/auth.service';
 import { APIUser, User } from '../DTOs/user.interace';
-import { mapApiUserToUser } from '@app/core/user/user.mapper';
+import { mapApiUserToUser } from '@app/features/user/user.mapper';
 
 @Injectable({providedIn: 'root'})
 export class AssignDepartmentToCurrentUserUseCase {

@@ -6,6 +6,7 @@ import { GetMeUseCase } from "@api/auth/use-cases/get-me.use-case";
 import { LogoutUseCase } from "@api/auth/use-cases/logout.use-case";
 import { RegistertUseCase } from "@api/auth/use-cases/register.use-case";
 import { APIUser, User } from "@api/users/DTOs/user.interace";
+import { filter } from "lodash";
 
 
 @Injectable({
@@ -23,6 +24,10 @@ export class AuthService {
 
   private currentUserSubject = new BehaviorSubject<APIUser | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
+
+  get currentUserSnapshot(): APIUser | null {
+    return this.currentUserSubject.value;
+  }
 
   setCurrentUser(user: APIUser) {
     this.currentUserSubject.next(user);

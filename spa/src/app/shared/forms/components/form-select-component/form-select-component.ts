@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, input, OnInit } from '@angular/core';
-import { FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BaseFormControlAccessor } from '../../utils/control-value-accessor-base';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { map, Observable, of, startWith } from 'rxjs';
@@ -28,8 +28,8 @@ interface SelectOptions {
   ]
 })
 export class FormSelectComponent extends BaseFormControlAccessor{
-  label = input.required<string>();
-  options = input.required<SelectOptions[]>()
+  label = input<string>();
+  options = input<SelectOptions[]>()
   required = input<boolean>();
   placeholder= input<string>();
   searchable = input<boolean>();
@@ -38,22 +38,38 @@ export class FormSelectComponent extends BaseFormControlAccessor{
   filteredOptions: Observable<any[]>;
 
   ngOnInit() {
-  super.ngOnInit();
+    super.ngOnInit();
+    if (!this.formControl) {
+      console.error('FormControl not initialized');
+      return;
+    }
+    const validators = [];
+    if (this.required()){
+      validators.push(Validators.required);
+    }
+    if (this.searchable()) {
+      this.filteredOptions = this.formControl.valueChanges.pipe(
+        startWith(this.formControl.value),
+        map(value => {
+          const displayValue = typeof value === 'string' ? value : '';
+          return this.searchFilter(displayValue);
+        })
+      );
+    }
+    this.formControl!.setValidators(validators);
+    this.formControl!.updateValueAndValidity();
+  }
 
-  if (!this.formControl) {
-    console.error('FormControl not initialized');
-    return;
+  getErrorMessage(): string | null{
+    if (!this.formControl.errors) return null;
+    const errors = this.formControl.errors ?? {};
+    for (const key of Object.keys(errors)){
+      switch (key) {
+        case 'required':
+          return 'This field is required';
+      }
+    }
   }
-  if (this.searchable()) {
-    this.filteredOptions = this.formControl.valueChanges.pipe(
-      startWith(this.formControl.value),
-      map(value => {
-        const displayValue = typeof value === 'string' ? value : '';
-        return this.searchFilter(displayValue);
-      })
-    );
-  }
-}
 
   private searchFilter(value: string): SelectOptions[] {
     const filterValue = String(value).toLowerCase();

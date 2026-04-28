@@ -1,9 +1,12 @@
 import { Route } from "@angular/router";
 import { authGuard } from "app/core/auth/guards/auth.guard";
 import { UsersListPage } from "./core/users/pages/users-list-page/users-list-page";
-import { LandingHomeComponent } from "@modules/landing/home/home.component";
-import { DepartmentsPage } from "./core/departments/pages/departments-page/departments-page";
-import { UserProfilePage } from "./core/user/pages/user-profile-page/user-profile-page";
+import { DepartmentsPage } from "./features/departments/pages/departments-page/departments-page";
+import { UserProfilePage } from "./features/user/pages/user-profile-page/user-profile-page";
+import { DashboardPage } from "./features/dashboard/pages/dashboard-page/dashboard-page";
+import { adminGuard } from "./core/auth/guards/admin.guard";
+import { noAuthGuard } from "./core/auth/guards/noAuth.guard";
+import { Forbidden403Page } from "./features/errors/pages/forbidden-403-page/forbidden-403-page";
 
 export const appRoutes: Route[] = [
   {
@@ -11,17 +14,22 @@ export const appRoutes: Route[] = [
     loadChildren: () => import("./core/auth/auth.routes"),
   },
   {
-    path: "",
-    redirectTo: "users",
-    pathMatch: "full",
+    path: "admin",
+    canActivate: [adminGuard],
+    loadChildren: () => import("./features/admin/admin.routes"),
+  },
+  {
+    path: '403',
+    component: Forbidden403Page
   },
   {
     path: "",
     canActivateChild: [authGuard],
     children: [
+      { path: "", redirectTo: "dashboard", pathMatch: "full" },
       {
-        path: "home",
-        component: LandingHomeComponent,
+        path: "dashboard",
+        component: DashboardPage,
       },
       {
         path: "users",
@@ -39,7 +47,7 @@ export const appRoutes: Route[] = [
   },
   {
     path: "**",
-    redirectTo: "home",
+    redirectTo: "",
   },
 ];
 

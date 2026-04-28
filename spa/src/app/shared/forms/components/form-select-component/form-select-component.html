@@ -15,14 +15,13 @@
       }
     </mat-autocomplete>
   } @else {
-    @if (formControl && options()) {
-        <mat-select [formControl]="formControl" [placeholder]="placeholder() ?? 'Pick One'">
-            @for (option of options(); track option.value) {
-            <mat-option [value]="option.value">
-              {{ option.label }}
-            </mat-option>
-          }
-        </mat-select>
-      }
+      <mat-select [formControl]="formControl" [placeholder]="placeholder() ?? 'Pick One'">
+          @for (option of options(); track option.value) {
+          <mat-option [value]="option.value">
+            {{ option.label }}
+          </mat-option>
+        }
+      </mat-select>
     }
+    <mat-error>{{ getErrorMessage() }}</mat-error>
   </mat-form-field>
