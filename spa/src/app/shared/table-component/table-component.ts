@@ -69,6 +69,10 @@ export class TableComponent <T> implements OnInit{
 
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  resetPagination() {
+    this.paginator.firstPage();
+  }
   
   onPageChange(event: PageEvent) {
     this.pageChange.emit(event);
