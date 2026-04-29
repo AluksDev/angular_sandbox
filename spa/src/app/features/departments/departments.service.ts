@@ -17,8 +17,8 @@ export class DepartmentsService {
     getDepartmentByIdUseCase = inject(GetDepartmentByIdUseCase);
 
 
-    getDepartments(): Observable<ApiPaginatedResponse<Department>> {
-        return this.getDepartmentsUseCase.execute();
+    getDepartments(search?: string): Observable<ApiPaginatedResponse<Department>> {
+        return this.getDepartmentsUseCase.execute(search);
     }
 
     addDepartment(newDep: CreateDepartment): Observable<Department>{

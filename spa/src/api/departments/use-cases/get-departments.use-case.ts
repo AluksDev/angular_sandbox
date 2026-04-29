@@ -10,7 +10,7 @@ import { Department } from "../DTOs/department.interface";
 export class GetDepartmentsUseCase {
   private departmentsRepository = inject(DepartmentsRepository);
 
-  execute(): Observable<ApiPaginatedResponse<Department>> {
-    return this.departmentsRepository.getDepartments();
+  execute(search?: string): Observable<ApiPaginatedResponse<Department>> {
+    return this.departmentsRepository.getDepartments(search);
   }
 }
