@@ -73,17 +73,11 @@
             </div>
 
             <div class="pt-6 flex items-center justify-end space-x-4 border-t border-gray-100">
-                <button mat-button>Cancel</button>
+                <button (click)="checkIfUnsavedChanges()" mat-button>Cancel</button>
                 <button [disabled]="userForm.pristine" mat-flat-button>
                     Save Changes
                 </button>
             </div>
         </form>
-        <pre>
-            <p>Dirty: {{ userForm.dirty }}</p>
-            <p>Pristine: {{ userForm.pristine }}</p>
-            <p>Valid: {{ userForm.valid }}</p>
-            <p>Errors: {{ userForm.errors }}</p>
-        </pre>
     </div>
 </div>
