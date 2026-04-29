@@ -232,6 +232,9 @@ export class UsersListPage implements OnInit{
       case 'details':
         this.router.navigate(['/users', userId])
         break;
+      case 'edit':
+        this.router.navigate(['/users', userId, 'edit']);
+        break;
     }
   }
 }

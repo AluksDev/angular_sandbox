@@ -10,6 +10,7 @@ import { Forbidden403Page } from "./features/errors/pages/forbidden-403-page/for
 import { UserDetailsPage } from "./features/user/pages/user-details-page/user-details-page";
 import { UserResolver } from "./features/users/user.resolver";
 import { NotFound404Page } from "./features/errors/pages/not-found-404-page/not-found-404-page";
+import { EditUserPage } from "./features/user/pages/edit-user-page/edit-user-page";
 
 export const appRoutes: Route[] = [
   {
@@ -48,6 +49,13 @@ export const appRoutes: Route[] = [
             {
               path: ":id",
               component: UserDetailsPage,
+              resolve: {
+                userDetails: UserResolver
+              }
+            },
+            {
+              path: ":id/edit",
+              component: EditUserPage,
               resolve: {
                 userDetails: UserResolver
               }
