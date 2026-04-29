@@ -59,9 +59,11 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
-                <div>
-                    <mat-slide-toggle [disabled]="awaitingServer()" [checked]="userDetails().is_active" (change)="onActiveToggleChange($event)" class="bg-transparent" labelPosition="before">Account active</mat-slide-toggle>
-                </div>
+                @if (currentUser()?.roles?.includes('admin') || currentUser()?.roles?.includes('superuser')) {
+                    <div>
+                        <mat-slide-toggle [disabled]="awaitingServer()" [checked]="userDetails().is_active" (change)="onActiveToggleChange($event)" class="bg-transparent" labelPosition="before">Account active</mat-slide-toggle>
+                    </div>
+                }
                 <div>
                     <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Date Joined</label>
                     <div class="w-full px-4 py-2 bg-gray-50 border border-solid border-black-500 rounded-lg text-gray-600 text-sm">{{ userDetails().date_joined | date: 'short' }}</div>

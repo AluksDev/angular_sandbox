@@ -15,6 +15,8 @@ import { UserService } from '../../user.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { finalize } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { AuthService } from '@app/core/auth/auth.service';
 
 @Component({
   selector: 'app-edit-user-page',
@@ -31,10 +33,12 @@ export class EditUserPage implements OnInit{
   userService = inject(UserService);
   readonly dialog = inject(MatDialog);
   private _snackBar = inject(MatSnackBar);
+  authService = inject(AuthService);
 
   userDetails = signal<APIUser>(null);
   departmentsList = signal<{label: string, value: number}[]>([]);
   awaitingServer = signal<boolean>(false);
+  currentUser = toSignal(this.authService.currentUser$);
 
   ngOnInit(): void {
     this.userDetails.set(this.route.snapshot.data['userDetails']);

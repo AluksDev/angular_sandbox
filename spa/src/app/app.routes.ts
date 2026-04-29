@@ -5,7 +5,6 @@ import { DepartmentsPage } from "./features/departments/pages/departments-page/d
 import { UserProfilePage } from "./features/user/pages/user-profile-page/user-profile-page";
 import { DashboardPage } from "./features/dashboard/pages/dashboard-page/dashboard-page";
 import { adminGuard } from "./core/auth/guards/admin.guard";
-import { noAuthGuard } from "./core/auth/guards/noAuth.guard";
 import { Forbidden403Page } from "./features/errors/pages/forbidden-403-page/forbidden-403-page";
 import { UserDetailsPage } from "./features/user/pages/user-details-page/user-details-page";
 import { UserResolver } from "./features/users/user.resolver";
@@ -77,40 +76,3 @@ export const appRoutes: Route[] = [
     component: NotFound404Page,
   },
 ];
-
-// export const appRoutes: Route[] = [
-//   {
-//     path: 'auth',
-//     loadChildren: () => import('./core/auth/auth.routes')
-//   },
-//   {
-//     path: 'users',
-//     component: UsersListPage
-//   },
-//   // Redirect empty path to '/example'
-//   { path: "", pathMatch: "full", redirectTo: "home" },
-//   {
-//     path: "403",
-//     loadComponent: () => import("@modules/error403/error403.component").then((m) => m.Error403Component),
-//   },
-//   {
-//     path: "404",
-//     loadComponent: () => import("@modules/error403/error403.component").then((m) => m.Error403Component),
-//   },
-//   {
-//     path: "",
-//     // canActivate: [AuthGuard],
-//     // canActivateChild: [AuthGuard],
-//     loadComponent: () => import("app/layout/layout.component").then((m) => m.LayoutComponent),
-//     resolve: {
-//       // initialData: initialDataResolver,
-//     },
-//     children: [
-//       {
-//         path: "home",
-//         loadChildren: () => import("app/modules/landing/home/home.routes"),
-//       },
-//       { path: "**", redirectTo: "home" },
-//     ],
-//   },
-// ];
