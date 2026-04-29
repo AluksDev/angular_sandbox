@@ -15,7 +15,8 @@ export class DepartmentCardComponent {
   action = output<{dep: Department, action: string}>();
   icons = ICONS.departments;
 
-  onActionClick(action: string) {
+  onActionClick(action: string, event: MouseEvent) {
+    event.stopPropagation();
     this.action.emit({
       dep: this.department(),
       action: action

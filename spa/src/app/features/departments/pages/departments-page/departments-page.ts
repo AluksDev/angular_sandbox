@@ -12,6 +12,7 @@ import { FormInputComponent } from "@app/shared/forms/components/form-input-comp
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, finalize } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-departments-page',
@@ -25,6 +26,7 @@ export class DepartmentsPage implements OnInit{
   _snackBar = inject(MatSnackBar);
   fb = inject(FormBuilder);
   destroyRef = inject(DestroyRef);
+  router = inject(Router);
 
   isLoading = signal<boolean>(false);
   totalDeps = signal<number>(0);
@@ -89,6 +91,7 @@ export class DepartmentsPage implements OnInit{
         data: dep,
       });
       dialogRef.afterClosed().subscribe((message) => {
+        if (!message) return;
         this.openSnackBar(message, 'Close');
         this.loadDepartments();
       })
@@ -100,6 +103,7 @@ export class DepartmentsPage implements OnInit{
       autoFocus: false
     });
     dialogRef.afterClosed().subscribe((result) => {
+      if (!result) return;
       if (result.error){
         this.openSnackBar(result.message, 'Close');
       } else {
@@ -108,5 +112,9 @@ export class DepartmentsPage implements OnInit{
         this.loadDepartments();
       }
     })
+  }
+
+  getDepDetails(id: number){
+    this.router.navigate(['/departments', id]);
   }
  }

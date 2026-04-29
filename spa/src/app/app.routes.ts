@@ -10,6 +10,8 @@ import { Forbidden403Page } from "./features/errors/pages/forbidden-403-page/for
 import { UserDetailsPage } from "./features/user/pages/user-details-page/user-details-page";
 import { UserResolver } from "./features/users/user.resolver";
 import { NotFound404Page } from "./features/errors/pages/not-found-404-page/not-found-404-page";
+import { DepartmentDetailsPage } from "./features/departments/pages/department-details-page/department-details-page";
+import { DepartmentResolver } from "./features/departments/department.resolver";
 
 export const appRoutes: Route[] = [
   {
@@ -56,7 +58,20 @@ export const appRoutes: Route[] = [
       },
       {
         path: 'departments',
-        component: DepartmentsPage
+        children: [
+          {
+            path: "",
+            component: DepartmentsPage
+          },
+          {
+            path: ":id",
+            component: DepartmentDetailsPage,
+            resolve: {
+              departmentDetails: DepartmentResolver
+            }
+          }
+        ]
+        
       },
       {
         path: 'account',
