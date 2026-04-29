@@ -37,3 +37,12 @@ export interface UserTableRow extends User{
   departmentName: string
   initials: string;
 }
+
+export interface UpdateUser {
+  username: string;
+  email?: string;
+  first_name?: string;
+  last_name?: string;
+  department?: number;
+  is_active?: boolean;
+}

@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { APIUser, CreateUser, User } from '../DTOs/user.interace';
+import { APIUser, CreateUser, UpdateUser, User } from '../DTOs/user.interace';
 import { ApiPaginatedResponse } from '@api/shared/DTOs/api-paginated-response.interface';
 import { GetUsersQuery } from '@api/shared/DTOs/api-get-users-query.interface';
 
@@ -39,5 +39,9 @@ export class UserRepository {
 
     getUserById(id: number): Observable<APIUser> {
         return this.http.get<APIUser>(`/services/sandbox/user/${id}/`);
+    }
+
+    updateUser(id: number, data: UpdateUser): Observable<APIUser> {
+        return this.http.patch<APIUser>(`/services/sandbox/user/${id}/`, data);
     }
 }

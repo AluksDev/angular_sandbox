@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 export interface DialogData {
   title: string;
   message: string;
+  action: string;
 }
 
 @Component({
@@ -19,6 +20,6 @@ export class MessageDialogComponent {
   readonly data = inject<DialogData>(MAT_DIALOG_DATA);
 
   onConfirm(){
-    this.dialogRef.close('back');
+    this.dialogRef.close(this.data.action);
   }
  }

@@ -14,11 +14,11 @@
                     {{ fullName() ? fullName() : 'NO NAME REGISTERED' }}
                 </h3>
                 
-                <span [ngClass]="is_active 
+                <span [ngClass]="is_active() 
                     ? 'bg-emerald-50 text-emerald-700 ring-emerald-600/20' 
-                    : 'bg-slate-100 text-slate-600 ring-slate-500/10'"
+                    : 'bg-red-100 text-slate-600 ring-slate-500/10'"
                     class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset">
-                    {{ is_active ? 'Active' : 'Inactive' }}
+                    {{ is_active() ? 'Active' : 'Inactive' }}
                 </span>
             </div>
             

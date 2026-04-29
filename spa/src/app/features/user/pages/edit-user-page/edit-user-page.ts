@@ -11,10 +11,14 @@ import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { DepartmentsService } from '@app/features/departments/departments.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MessageDialogComponent } from "@app/shared/components/message-dialog-component/message-dialog-component";
+import { UserService } from '../../user.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { finalize } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-edit-user-page',
-  imports: [FormInputComponent, FormsModule, ReactiveFormsModule, DatePipe, FormSelectComponent, MatSlideToggleModule, MatButtonModule, MatTooltipModule, MatTooltip, MessageDialogComponent],
+  imports: [FormInputComponent, FormsModule, ReactiveFormsModule, DatePipe, FormSelectComponent, MatSlideToggleModule, MatButtonModule, MatTooltipModule, MatTooltip, MatProgressSpinnerModule],
   templateUrl: './edit-user-page.html',
   styleUrl: './edit-user-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -24,10 +28,13 @@ export class EditUserPage implements OnInit{
   fb = inject(FormBuilder);
   departmentService = inject(DepartmentsService);
   location = inject(Location);
+  userService = inject(UserService);
   readonly dialog = inject(MatDialog);
+  private _snackBar = inject(MatSnackBar);
 
   userDetails = signal<APIUser>(null);
   departmentsList = signal<{label: string, value: number}[]>([]);
+  awaitingServer = signal<boolean>(false);
 
   ngOnInit(): void {
     this.userDetails.set(this.route.snapshot.data['userDetails']);
@@ -39,7 +46,7 @@ export class EditUserPage implements OnInit{
         }
       }),
       error: ((err) => {
-        console.log(err)
+        console.error(err)
       })
     })
     this.userForm.patchValue({
@@ -47,7 +54,8 @@ export class EditUserPage implements OnInit{
       last_name: this.userDetails().last_name,
       username: this.userDetails().username,
       email: this.userDetails().email,
-      department: this.userDetails().department
+      department: this.userDetails().department,
+      is_active: this.userDetails().is_active
     })
     this.userForm.markAsPristine();
   }
@@ -57,20 +65,32 @@ export class EditUserPage implements OnInit{
     last_name: [''],
     username: [{value: '', disabled: true}],
     email: [''],
-    department: [null as number]
+    department: [null as number],
+    is_active: [null as boolean]
   })
 
   onActiveToggleChange(event: MatSlideToggleChange){
-    console.log(event)
+    const status = event.checked;
+    this.userForm.patchValue({
+      is_active: status
+    })
+    this.userForm.get('is_active').markAsDirty();
   }
 
-  openDialog(title: string, message: string): void {
+  openDialog(title: string, message: string, action: string): void {
     const dialogRef = this.dialog.open(MessageDialogComponent, {
-      data: {title: title, message: message}
+      data: {title: title, message: message, action: action}
     });
     dialogRef.afterClosed().subscribe((result)=> {
       if (!result) return;
-      this.location.back()
+      switch (result){
+        case 'back':
+          this.location.back()
+          break;
+        case 'continue':
+          this.updateUser();
+          break;
+      }
   });
   }
 
@@ -79,6 +99,49 @@ export class EditUserPage implements OnInit{
       this.location.back();
       return;
     }
-    this.openDialog('Unsaved changes', 'You have unsaved changes that will be lost. Do you want to continue?');
+    this.openDialog('Unsaved changes', 'You have unsaved changes that will be lost. Do you want to continue?', 'back');
+  }
+
+  checkIfDeactivatingUser(): void{
+    if (this.userForm.get('is_active').dirty && this.userForm.get('is_active').value === false){
+      this.openDialog('Changing user status', 'You are about to deactivate a user, continue?', 'continue');
+    } else {
+      this.updateUser();
+    }
+  }
+
+  updateUser(){
+    console.log('updateuser')
+    this.awaitingServer.set(true);
+    this.userForm.disable();
+    let data = {username: this.userForm.get('username').value};
+    for (let control of Object.keys(this.userForm.controls)){
+      if (this.userForm.get(control).dirty){
+        data[control] = this.userForm.get(control).value;
+      }
+    }
+    const userId = this.userDetails().id;
+    this.userService.updateUser(userId, data).pipe(
+      finalize(() => {
+        this.awaitingServer.set(false);
+        this.userForm.enable();
+      })
+    )
+    .subscribe({
+      next: (res => {
+        this.openSnackBar('User updated', 'Close');
+        this.location.back();
+      }),
+      error: (err => {
+        console.error(err);
+        this.openSnackBar('Something went wrong', 'Close');
+      })
+    })
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000
+    });
   }
 }

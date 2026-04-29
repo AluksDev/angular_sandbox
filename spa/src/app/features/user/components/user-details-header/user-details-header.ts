@@ -30,7 +30,6 @@ export class UserDetailsHeader {
 
   currentUser = toSignal(this.authService.currentUser$);
   canEdit = computed(() => {
-    console.log(this.currentUser())
     const user = this.currentUser();
     const userId = this.userId();
 

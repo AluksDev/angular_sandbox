@@ -35,7 +35,7 @@ export class UserDetailsPage implements OnInit{
         this.departmentDetails.set(res);
       }),
       error: ((err) => {
-        console.log(err);
+        console.error(err);
       })
     })
   }
