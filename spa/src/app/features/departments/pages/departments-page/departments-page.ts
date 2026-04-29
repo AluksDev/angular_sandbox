@@ -10,7 +10,7 @@ import { EditDepartmentDialog } from '../../components/edit-department-dialog/ed
 import { MatButtonModule } from '@angular/material/button';
 import { FormInputComponent } from "@app/shared/forms/components/form-input-component/form-input-component";
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { debounceTime } from 'rxjs';
+import { debounceTime, finalize } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
@@ -26,6 +26,7 @@ export class DepartmentsPage implements OnInit{
   fb = inject(FormBuilder);
   destroyRef = inject(DestroyRef);
 
+  isLoading = signal<boolean>(false);
   totalDeps = signal<number>(0);
   departments = signal<Department[]>([]);
   searchForm = this.fb.group({
@@ -58,7 +59,11 @@ export class DepartmentsPage implements OnInit{
   }
 
   loadDepartments(search?: string) {
-     this.departmentService.getDepartments(search).subscribe(res => {
+    this.isLoading.set(true);
+    this.departmentService.getDepartments(search).pipe(
+      finalize(() => this.isLoading.set(false))
+    )
+    .subscribe(res => {
       this.totalDeps.set(res.count ?? 0);
       this.departments.set(res.results ?? []);
     })
