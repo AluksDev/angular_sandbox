@@ -74,7 +74,7 @@ export const appRoutes: Route[] = [
   },
   {
     path: "**",
-    redirectTo: "",
+    component: NotFound404Page,
   },
 ];
 
