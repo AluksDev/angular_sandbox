@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { map, Observable, of } from "rxjs";
-import { APILoginResponse, APILogoutResponse, ApiUserRegister } from "@api/auth/DTOs/auth.interface";
+import { APILoginResponse, APILogoutResponse } from "@api/auth/DTOs/auth.interface";
 import { mapApiUserToUser } from "@app/features/user/user.mapper";
 import { APIUser, User } from "@api/users/DTOs/user.interace";
 @Injectable({
@@ -27,7 +27,7 @@ export class AuthRepository {
     return this.http.post<APILogoutResponse>("/services/sandbox/auth/logout/", {});
   }
 
-  register(body: ApiUserRegister): Observable<{token: string; user: APIUser}> {
+  register(body: APIUser & {password: string, password_confirm: string}): Observable<{token: string; user: APIUser}> {
     return this.http.post<APILoginResponse>("/services/sandbox/auth/register/", body).pipe(
       map((res) =>( {
         token: res.token,

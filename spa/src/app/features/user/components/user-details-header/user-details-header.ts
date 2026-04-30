@@ -5,10 +5,11 @@ import { NgClass } from '@angular/common';
 import { AuthService } from '@app/core/auth/auth.service';
 import { APIUser } from '@api/users/DTOs/user.interace';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-user-details-header',
-  imports: [AvatarComponent, MatButtonModule, NgClass],
+  imports: [AvatarComponent, MatButtonModule, NgClass, RouterLink],
   templateUrl: './user-details-header.html',
   styleUrl: './user-details-header.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -29,7 +30,6 @@ export class UserDetailsHeader {
 
   currentUser = toSignal(this.authService.currentUser$);
   canEdit = computed(() => {
-    console.log(this.currentUser())
     const user = this.currentUser();
     const userId = this.userId();
 

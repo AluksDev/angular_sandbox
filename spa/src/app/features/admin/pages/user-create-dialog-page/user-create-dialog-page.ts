@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, inject, OnInit, output } from '@ang
 import { UserCreateDialogComponent } from "../../components/user-create-dialog-component/user-create-dialog-component";
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { CreateUser } from '@api/users/DTOs/user.interace';
 
 @Component({
   selector: 'app-user-create-dialog-page',

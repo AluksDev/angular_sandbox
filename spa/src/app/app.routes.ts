@@ -5,13 +5,13 @@ import { DepartmentsPage } from "./features/departments/pages/departments-page/d
 import { UserProfilePage } from "./features/user/pages/user-profile-page/user-profile-page";
 import { DashboardPage } from "./features/dashboard/pages/dashboard-page/dashboard-page";
 import { adminGuard } from "./core/auth/guards/admin.guard";
-import { noAuthGuard } from "./core/auth/guards/noAuth.guard";
 import { Forbidden403Page } from "./features/errors/pages/forbidden-403-page/forbidden-403-page";
 import { UserDetailsPage } from "./features/user/pages/user-details-page/user-details-page";
 import { UserResolver } from "./features/users/user.resolver";
 import { NotFound404Page } from "./features/errors/pages/not-found-404-page/not-found-404-page";
 import { DepartmentDetailsPage } from "./features/departments/pages/department-details-page/department-details-page";
 import { DepartmentResolver } from "./features/departments/department.resolver";
+import { EditUserPage } from "./features/user/pages/edit-user-page/edit-user-page";
 
 export const appRoutes: Route[] = [
   {
@@ -53,6 +53,13 @@ export const appRoutes: Route[] = [
               resolve: {
                 userDetails: UserResolver
               }
+            },
+            {
+              path: ":id/edit",
+              component: EditUserPage,
+              resolve: {
+                userDetails: UserResolver
+              }
             }
           ]
       },
@@ -81,43 +88,6 @@ export const appRoutes: Route[] = [
   },
   {
     path: "**",
-    redirectTo: "",
+    component: NotFound404Page,
   },
 ];
-
-// export const appRoutes: Route[] = [
-//   {
-//     path: 'auth',
-//     loadChildren: () => import('./core/auth/auth.routes')
-//   },
-//   {
-//     path: 'users',
-//     component: UsersListPage
-//   },
-//   // Redirect empty path to '/example'
-//   { path: "", pathMatch: "full", redirectTo: "home" },
-//   {
-//     path: "403",
-//     loadComponent: () => import("@modules/error403/error403.component").then((m) => m.Error403Component),
-//   },
-//   {
-//     path: "404",
-//     loadComponent: () => import("@modules/error403/error403.component").then((m) => m.Error403Component),
-//   },
-//   {
-//     path: "",
-//     // canActivate: [AuthGuard],
-//     // canActivateChild: [AuthGuard],
-//     loadComponent: () => import("app/layout/layout.component").then((m) => m.LayoutComponent),
-//     resolve: {
-//       // initialData: initialDataResolver,
-//     },
-//     children: [
-//       {
-//         path: "home",
-//         loadChildren: () => import("app/modules/landing/home/home.routes"),
-//       },
-//       { path: "**", redirectTo: "home" },
-//     ],
-//   },
-// ];

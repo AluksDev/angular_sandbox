@@ -80,7 +80,7 @@ export class UserCreateDialogComponent {
         this.router.navigate(['/dashboard']);
       },
       error: (err => {
-        console.log(err.error);
+        console.error(err.error);
         if (err.error?.username) {
           const message = err.error.username[0];
           this.openSnackBar(message, 'Close');

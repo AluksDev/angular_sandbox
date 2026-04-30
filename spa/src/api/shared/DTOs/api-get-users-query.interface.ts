@@ -1,4 +1,4 @@
-export interface GetUsersQuery {
+export interface GetQuery {
   search?: string;
   department?: string;
   is_active?: string;
