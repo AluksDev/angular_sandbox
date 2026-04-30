@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { APIUser, CreateUser, UpdateUser, User } from '@api/users/DTOs/user.interace';
+import { APIUser } from '@api/users/DTOs/user.interace';
 import { AssignDepartmentToCurrentUserUseCase } from '@api/users/use-cases/assign-department-to-current-user.use-case';
 import { CreateUserUseCase } from '@api/users/use-cases/create-user.use-case';
 import { GetUserByIdUseCase } from '@api/users/use-cases/get-user-by-id.use-case';
@@ -14,7 +14,7 @@ export class UserService {
     }
 
     createUserUseCase = inject(CreateUserUseCase);
-    createUser(userData: CreateUser): Observable<APIUser> {
+    createUser(userData: APIUser & { password:string, password_confirm: string }): Observable<APIUser> {
         return this.createUserUseCase.execute(userData);
     }
 
@@ -24,7 +24,7 @@ export class UserService {
     }
 
     updateUserUseCase = inject(UpdateUserUseCase);
-    updateUser(id: number, data: UpdateUser): Observable<APIUser> {
+    updateUser(id: number, data: APIUser): Observable<APIUser> {
         return this.updateUserUseCase.execute(id, data);
     }
 }

@@ -1,5 +1,5 @@
 import { Observable } from "rxjs";
-import { APIUser, CreateUser } from "../DTOs/user.interace";
+import { APIUser } from "../DTOs/user.interace";
 import { inject, Injectable } from "@angular/core";
 import { UserRepository } from "../repository/user.repository";
 
@@ -8,7 +8,7 @@ import { UserRepository } from "../repository/user.repository";
 export class CreateUserUseCase {
     userRepository = inject(UserRepository);
     
-    execute(userData: CreateUser): Observable<APIUser> {
+    execute(userData: APIUser & { password:string, password_confirm: string }): Observable<APIUser> {
         return this.userRepository.createUser(userData);
     }
 }

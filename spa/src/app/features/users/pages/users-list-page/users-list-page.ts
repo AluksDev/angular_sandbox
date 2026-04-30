@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal, effect, EventEmitter, DestroyRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal, DestroyRef } from '@angular/core';
 import { UsersFiltersComponent } from "../../components/users-filters-component/users-filters-component";
 import { UsersService } from '../../users.service';
 import { DepartmentsService } from '@app/features/departments/departments.service';
@@ -6,16 +6,16 @@ import { finalize, map, tap } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
 import { Department } from '@api/departments/DTOs/department.interface';
-import { UserTableRow } from '@api/users/DTOs/user.interace';
 import { TableComponent } from "@app/shared/table-component/table-component";
 import { TableActionConfig, TableColumnConfig } from '@app/shared/table-component/table.models';
 import { mapApiUserToUser } from '@app/features/user/user.mapper';
-import { GetUsersQuery } from '@api/shared/DTOs/api-get-users-query.interface';
+import { GetQuery } from '@api/shared/DTOs/api-get-users-query.interface';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '@app/core/auth/auth.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { User } from '@api/users/DTOs/user.interace';
 
 
 type FilterValues = {
@@ -40,11 +40,11 @@ export class UsersListPage implements OnInit{
   destroyRef = inject(DestroyRef);
 
   totalUsers = signal<number>(0);
-  usersList = signal<UserTableRow[]>([]);
+  usersList = signal<User[]>([]);
   departmentList = signal<Department[]>([]);
   isLoading = signal<boolean>(false);
   isAdmin = signal<boolean>(false);
-  query = signal<GetUsersQuery>({
+  query = signal<GetQuery>({
     limit: 10,
     offset: 0,
   })
@@ -123,7 +123,7 @@ export class UsersListPage implements OnInit{
     
     this.loadDepartments();
     this.route.queryParams.subscribe(params => {
-      const initialQuery: GetUsersQuery = {
+      const initialQuery: GetQuery = {
         limit: this.query().limit,
         offset: this.query().offset,
         department: params['department'] ?? undefined,
@@ -135,21 +135,17 @@ export class UsersListPage implements OnInit{
     })
   }
 
-  loadUsers(options?: GetUsersQuery) {
+  loadUsers(options?: GetQuery) {
     this.isLoading.set(true);
     this.usersService.getAllUsers(options).pipe(
       finalize(() => this.isLoading.set(false)),
       tap((res)=> this.totalUsers.set(res.count)),
       map(res => {
-          const deptMap = Object.fromEntries(
-            this.departmentList().map(d => [d.id, d.name])
-          );
         return res.results.map(u => {
           const user = mapApiUserToUser(u);
           return {
             ...user,
             initials: user.fullName.split(' ').map(name => name[0]).join('').toUpperCase(),
-            departmentName: deptMap[user.department] ?? 'Unknown'
           }
         });
       })
@@ -225,7 +221,7 @@ export class UsersListPage implements OnInit{
     });
   }
 
-  onAction(event: {action: string, element: UserTableRow}){
+  onAction(event: {action: string, element: User}){
     const { action, element } = event;
     const userId = element.id;
     switch (action){
