@@ -16,8 +16,8 @@ export class UserResolver implements Resolve<any> {
                     this.router.navigate(['/404'], {
                         queryParams: {returnUrl: '/users'}
                     });
-                    return EMPTY;
                 }
+                return EMPTY;
             })
         );
     }

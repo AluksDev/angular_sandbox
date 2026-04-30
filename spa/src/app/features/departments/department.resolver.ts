@@ -18,8 +18,8 @@ export class DepartmentResolver implements Resolve<any> {
                     this.router.navigate(['/404'], {
                         queryParams: {returnUrl: '/departments'}
                     });
-                    return EMPTY;
                 }
+                return EMPTY;
             })
         );
     }

@@ -2,15 +2,19 @@ import { HttpRequest, HttpHandlerFn, HttpErrorResponse } from '@angular/common/h
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
+import { NotificationsService } from '../notifications/notification.service';
 
 export function errorInterceptor(request: HttpRequest<unknown>, next: HttpHandlerFn) {
-  const router = inject(Router);
+  const notificationService = inject(NotificationsService);
   return next(request).pipe(
     catchError((error: HttpErrorResponse) => {
-        switch (error.status){
-            case 404:
-                router.navigate(['/404']);
-                break;
+        if (error.status >= 500){
+            console.error('Server error', error);
+            notificationService.error('Something went wrong');
+        }
+        if (error.status === 0){
+            console.error('Network error', error);
+            notificationService.error('Network error');
         }
         return throwError(() => error);
     })

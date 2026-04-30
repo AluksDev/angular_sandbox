@@ -76,9 +76,4 @@ export class AuthService {
           })
     );
   }
-
-  clearSession(): void {
-    localStorage.removeItem('token');
-    this.currentUserSubject.next(null);
-  }
 }
