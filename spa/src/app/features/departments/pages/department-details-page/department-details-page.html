@@ -64,6 +64,7 @@
                 emptyMessage="No users in this department"
                 (pageChange)="onPageChange($event)"
                 (rowClick)="OnRowClick($event)"
+                [loading]="loadingUsers()"
             />
         </section>
         </main>

@@ -12,6 +12,7 @@ import { mapApiUserToUser } from '@app/features/user/user.mapper';
 import { TableColumnConfig } from '@app/shared/table-component/table.models';
 import { PageEvent } from '@angular/material/paginator';
 import { GetQuery } from '@api/shared/DTOs/api-get-users-query.interface';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-department-details-page',
@@ -29,6 +30,7 @@ export class DepartmentDetailsPage implements OnInit{
   departmentDetails = signal<Department>(null);
   users = signal<User[]>([]);
   totalUsers = signal<number>(0);
+  loadingUsers = signal<boolean>(false);
   query = signal<GetQuery>({
     limit: 10,
     offset: 0,
@@ -60,7 +62,11 @@ export class DepartmentDetailsPage implements OnInit{
   }
 
   loadUsers(options?: GetQuery) {
-    this.usersService.getAllUsers(options).subscribe({
+    this.loadingUsers.set(true);
+    this.usersService.getAllUsers(options).pipe(
+      finalize(() => this.loadingUsers.set(false))
+    )
+    .subscribe({
         next: (res => {
           if (!res) return;
           this.totalUsers.set(res.count);
