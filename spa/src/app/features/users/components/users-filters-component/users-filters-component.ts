@@ -23,7 +23,7 @@ type FilterValues = {
   
 })
 export class UsersFiltersComponent implements OnInit{
-  departments = input.required<Department[]>();
+  departments = input<Department[]>();
   filterChange = output<FilterValues>();
 
   depSelectOptions = computed(() => {

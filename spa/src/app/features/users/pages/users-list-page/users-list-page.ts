@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal, DestroyRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal, DestroyRef, ViewChild } from '@angular/core';
 import { UsersFiltersComponent } from "../../components/users-filters-component/users-filters-component";
 import { UsersService } from '../../users.service';
 import { DepartmentsService } from '@app/features/departments/departments.service';
@@ -125,7 +125,7 @@ export class UsersListPage implements OnInit{
     this.route.queryParams.subscribe(params => {
       const initialQuery: GetQuery = {
         limit: this.query().limit,
-        offset: this.query().offset,
+        offset: 0,
         department: params['department'] ?? undefined,
         is_active: params['status'] ?? undefined,
         search: params['search'] ?? undefined
@@ -197,7 +197,6 @@ export class UsersListPage implements OnInit{
   }
 
   onFilterChange(filters: FilterValues){
-    this.resetTable();
     let { search, department, status } = filters;
     switch (filters.status) {
       case 'active':{
@@ -216,6 +215,15 @@ export class UsersListPage implements OnInit{
     if (search?.trim()) queryParams.search = search;
     if (department) queryParams.department = department;
     if (status) queryParams.status = status;
+    this.query.set({
+      limit: this.query().limit,
+      offset: 0,
+      department: filters.department || undefined,
+      is_active: status || undefined,
+      search: filters.search || undefined
+    });
+    
+    this.resetTable();
     this.router.navigate([], {
       queryParams,
     });
@@ -233,9 +241,10 @@ export class UsersListPage implements OnInit{
         break;
     }
   }
-  @ViewChild(TableComponent) table!: TableComponent<UserTableRow[]>;
+  @ViewChild(TableComponent) table!: TableComponent<User>;
 
   resetTable() {
+    if(!this.table) return;
     this.table.resetPagination();
   }
 }
