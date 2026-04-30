@@ -115,7 +115,6 @@ export class EditUserPage implements OnInit{
   }
 
   updateUser(){
-    console.log('updateuser')
     this.awaitingServer.set(true);
     this.userForm.disable();
     let data = {username: this.userForm.get('username').value};
