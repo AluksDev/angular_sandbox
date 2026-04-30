@@ -1,9 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { APIUser, CreateUser, User } from '../DTOs/user.interace';
+import { APIUser } from '../DTOs/user.interace';
 import { ApiPaginatedResponse } from '@api/shared/DTOs/api-paginated-response.interface';
-import { GetUsersQuery } from '@api/shared/DTOs/api-get-users-query.interface';
+import { GetQuery } from '@api/shared/DTOs/api-get-users-query.interface';
 
 @Injectable({providedIn: 'root'})
 export class UserRepository {
@@ -16,11 +16,11 @@ export class UserRepository {
         })
     }
 
-    createUser(userData: CreateUser): Observable<APIUser> {
+    createUser(userData: APIUser & { password:string, password_confirm: string }): Observable<APIUser> {
         return this.http.post<APIUser>("/services/sandbox/user/", userData);
     }
 
-    getAllUsers(options?: GetUsersQuery): Observable<ApiPaginatedResponse<APIUser>> {
+    getAllUsers(options?: GetQuery): Observable<ApiPaginatedResponse<APIUser>> {
         let params = new HttpParams();
 
         if (options?.search) params = params.set('search', options.search);
@@ -39,5 +39,9 @@ export class UserRepository {
 
     getUserById(id: number): Observable<APIUser> {
         return this.http.get<APIUser>(`/services/sandbox/user/${id}/`);
+    }
+
+    updateUser(id: number, data: APIUser): Observable<APIUser> {
+        return this.http.patch<APIUser>(`/services/sandbox/user/${id}/`, data);
     }
 }

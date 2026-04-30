@@ -33,7 +33,7 @@
     </div>
 
     <div class="flex justify-center items-center my-16">
-        <button class="w-40" mat-flat-button>Edit Profile</button>
+        <button class="w-40" mat-flat-button [routerLink]="['/users', data.user.id, 'edit']">Edit Profile</button>
     </div>
 } @else {
     <div class="p-8 bg-gray-50 min-h-screen">

@@ -6,10 +6,11 @@ import { AuthService } from '@app/core/auth/auth.service';
 import { combineLatest, map, of, switchMap, tap } from 'rxjs';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { DepartmentsService } from '@app/features/departments/departments.service';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-user-profile-page',
-  imports: [ProfileCardComponent, AvatarComponent, MatButtonModule, AsyncPipe],
+  imports: [ProfileCardComponent, AvatarComponent, MatButtonModule, AsyncPipe, RouterLink],
   templateUrl: './user-profile-page.html',
   styleUrl: './user-profile-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
