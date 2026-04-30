@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { CreateDepartment, Department } from '@api/departments/DTOs/department.interface';
+import { Department } from '@api/departments/DTOs/department.interface';
 import { AddDepartmentUseCase } from '@api/departments/use-cases/add-department.use-case';
 import { DeleteDepartmentByIdUseCase } from '@api/departments/use-cases/delete-department-by-id.use-case';
 import { GetDepartmentByIdUseCase } from '@api/departments/use-cases/get-department-by-id.use-case';
@@ -21,7 +21,7 @@ export class DepartmentsService {
         return this.getDepartmentsUseCase.execute(search);
     }
 
-    addDepartment(newDep: CreateDepartment): Observable<Department>{
+    addDepartment(newDep: Department): Observable<Department>{
         return this.addDepartmentUseCase.execute(newDep);
     }
 
