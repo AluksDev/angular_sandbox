@@ -9,7 +9,7 @@
                 type="text"
             />
         </form>
-        @if (currentUser().roles.includes('admin') || currentUser().roles.includes('superuser')){
+        @if (currentUser()?.roles?.includes('admin') || currentUser()?.roles?.includes('superuser')){
             <button mat-flat-button (click)="openAddDepDialog()">Add Department</button>
         }
     </div>
