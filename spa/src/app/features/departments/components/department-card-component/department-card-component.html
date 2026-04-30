@@ -17,12 +17,14 @@
     </div>
     
     <div class="h-0.5 w-full bg-gradient-to-r from-blue-500 to-indigo-600"></div>
-    <div class="flex justify-center items-center gap-6 py-2">
-        <div class="card-icon-container edit" (click)="onActionClick('edit', $event)">
-            <mat-icon aria-hidden="false" aria-label="Edit icon" fontIcon="edit"></mat-icon>
+    @if (currentUser().roles.includes('admin') || currentUser().roles.includes('superuser')){
+        <div class="flex justify-center items-center gap-6 py-2">
+            <div class="card-icon-container edit" (click)="onActionClick('edit', $event)">
+                <mat-icon aria-hidden="false" aria-label="Edit icon" fontIcon="edit"></mat-icon>
+            </div>
+            <div class="card-icon-container delete" (click)="onActionClick('delete', $event)">
+                <mat-icon aria-hidden="false" aria-label="Delete icon" fontIcon="delete"></mat-icon>
+            </div>
         </div>
-        <div class="card-icon-container delete" (click)="onActionClick('delete', $event)">
-            <mat-icon aria-hidden="false" aria-label="Delete icon" fontIcon="delete"></mat-icon>
-        </div>
-    </div>
+    }
 </div>

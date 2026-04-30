@@ -11,8 +11,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormInputComponent } from "@app/shared/forms/components/form-input-component/form-input-component";
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, finalize } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
+import { AuthService } from '@app/core/auth/auth.service';
 
 @Component({
   selector: 'app-departments-page',
@@ -22,6 +23,7 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DepartmentsPage implements OnInit{
+  authService = inject(AuthService);
   departmentService = inject(DepartmentsService);
   _snackBar = inject(MatSnackBar);
   fb = inject(FormBuilder);
@@ -34,6 +36,7 @@ export class DepartmentsPage implements OnInit{
   searchForm = this.fb.group({
     search: ['']
   })
+  currentUser = toSignal(this.authService.currentUser$);
 
   ngOnInit(): void {
     this.searchForm.valueChanges
