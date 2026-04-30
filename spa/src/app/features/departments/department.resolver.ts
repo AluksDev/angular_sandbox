@@ -13,11 +13,13 @@ export class DepartmentResolver implements Resolve<any> {
     resolve(route: ActivatedRouteSnapshot): Observable<Department>{
         const id = Number(route.paramMap.get('id'));
         return this.departmentService.getDepartmentById(id).pipe(
-            catchError(()=>{
-                this.router.navigate(['/404'], {
-                    queryParams: {returnUrl: '/departments'}
-                });
-                return EMPTY;
+            catchError((err)=>{
+                if (err.status === 404){
+                    this.router.navigate(['/404'], {
+                        queryParams: {returnUrl: '/departments'}
+                    });
+                    return EMPTY;
+                }
             })
         );
     }

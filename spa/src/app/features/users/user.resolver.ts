@@ -11,11 +11,13 @@ export class UserResolver implements Resolve<any> {
     resolve(route: ActivatedRouteSnapshot): Observable<APIUser>{
         const id = Number(route.paramMap.get('id'));
         return this.userService.getUserById(id).pipe(
-            catchError(()=>{
-                this.router.navigate(['/404'], {
-                    queryParams: {returnUrl: '/users'}
-                });
-                return EMPTY;
+            catchError((err)=>{
+                if (err.status === 404){
+                    this.router.navigate(['/404'], {
+                        queryParams: {returnUrl: '/users'}
+                    });
+                    return EMPTY;
+                }
             })
         );
     }

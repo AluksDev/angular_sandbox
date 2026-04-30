@@ -19,8 +19,9 @@ import { FuseThemeService } from "@fuse/services/theme/theme.service"; // Import
 // } from '@angular/platform-browser';
 
 import { LayoutService } from "@utils/layout.service";
-import { authInterceptor } from "./core/auth/auth.interceptor";
+import { authInterceptor } from "./core/interceptors/auth.interceptor";
 import { getCatPaginatorIntl } from "./i18n/cat-paginator-intl";
+import { errorInterceptor } from "./core/interceptors/error.interceptor";
 
 registerLocaleData(localeCa, "ca-CA"); // Cambia 'ca-CA' a 'ca-ES' si es necesario
 registerLocaleData(localeCa, "ca-ES"); // Registrar el locale catalán como 'ca-ES'
@@ -31,7 +32,7 @@ export const appConfig: ApplicationConfig = {
     FuseThemeService,
     LayoutService,
     RuntimeConfigService,
-    provideHttpClient(withFetch(), withInterceptors([authInterceptor]), withJsonpSupport()),
+    provideHttpClient(withFetch(), withInterceptors([authInterceptor, errorInterceptor]), withJsonpSupport()),
     {
       provide: LOCALE_ID,
       useValue: "ca-CA",
