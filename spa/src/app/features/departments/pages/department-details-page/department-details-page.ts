@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Department } from '@api/departments/DTOs/department.interface';
 import { BreadcrumbComponent } from "@app/shared/components/breadcrumb-component/breadcrumb-component";
 import { ICONS } from '@app/shared/ui/icon/icons';
@@ -11,6 +11,7 @@ import { User } from '@api/users/DTOs/user.interace';
 import { mapApiUserToUser } from '@app/features/user/user.mapper';
 import { TableColumnConfig } from '@app/shared/table-component/table.models';
 import { PageEvent } from '@angular/material/paginator';
+import { GetQuery } from '@api/shared/DTOs/api-get-users-query.interface';
 
 @Component({
   selector: 'app-department-details-page',
@@ -22,11 +23,16 @@ import { PageEvent } from '@angular/material/paginator';
 export class DepartmentDetailsPage implements OnInit{ 
   route = inject(ActivatedRoute);
   usersService = inject(UsersService);
+  router = inject(Router);
   
   icons = ICONS.departments;
   departmentDetails = signal<Department>(null);
   users = signal<User[]>([]);
   totalUsers = signal<number>(0);
+  query = signal<GetQuery>({
+    limit: 10,
+    offset: 0,
+  })
 
   usersListConfig: TableColumnConfig[] = [
     {
@@ -45,7 +51,16 @@ export class DepartmentDetailsPage implements OnInit{
     const departmentId = this.departmentDetails()?.id;
 
     if (departmentId) {
-      this.usersService.getAllUsers({department: String(departmentId)}).subscribe({
+      this.query.update(prev => ({
+        ...prev,
+        department: String(departmentId)
+      }))
+      this.loadUsers(this.query());
+    }
+  }
+
+  loadUsers(options?: GetQuery) {
+    this.usersService.getAllUsers(options).subscribe({
         next: (res => {
           if (!res) return;
           this.totalUsers.set(res.count);
@@ -60,13 +75,20 @@ export class DepartmentDetailsPage implements OnInit{
           console.error(err);
         })
       })
-    }
   }
 
   onPageChange(event: PageEvent) {
-    console.log(event)
+    const offset = event.pageIndex * event.pageSize;
+
+    this.query.update(prev => ({
+      ...prev,
+      limit: event.pageSize,
+      offset
+    }));
+
+    this.loadUsers(this.query());
   }
-  OnRowClick(event: User) {
-    console.log(event)
+  OnRowClick(user: User) {
+    this.router.navigate(['/users', user.id]);
   }
 }

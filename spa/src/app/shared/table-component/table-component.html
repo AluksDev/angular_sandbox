@@ -13,7 +13,7 @@
   
 @if (totalElements() === 0){
 <div class="flex items-center justify-center h-full">
-  <p class="text-gray-500 text-xl font-medium text-center">
+  <p class="text-gray-500 text-xl font-medium text-center py-6">
     {{ emptyMessage() }}
   </p>
 </div>
@@ -114,18 +114,21 @@
   </div>
 
   <div class="block md:hidden">
-    <mat-form-field appearance="outline">
-      <mat-label>Sort By (Asc)</mat-label>
-      <mat-select canSelectNullableOptions (selectionChange)="onSortChange({active: $event.value, direction: 'asc'})">      
-        <mat-option value=null>None</mat-option>  
-        <mat-option value="first_name">Name</mat-option>
-        <mat-option value="username">Username</mat-option>
-        <mat-option value="email">Email</mat-option>
-        <mat-option value="is_active" >Status</mat-option>
-      </mat-select>
-    </mat-form-field>
+    @if (hasSortableColumns()){
+      <mat-form-field appearance="outline">
+        <mat-label>Sort By (Asc)</mat-label>
+        <mat-select canSelectNullableOptions (selectionChange)="onSortChange({active: $event.value, direction: 'asc'})">
+          <mat-option value=null>None</mat-option>  
+          @for (column of columns(); track column.key){
+            @if (column.sorteable){
+              <mat-option [value]="column.key">{{ column.label }}</mat-option>
+            }
+          }
+        </mat-select>
+      </mat-form-field>
+    }
     @for (user of dataSource(); track user.id) {
-      <div class="border rounded-lg p-4 mb-3 shadow-sm">
+      <div class="border rounded-lg p-4 mb-3 shadow-sm" [class.clickableCard]="clickableRow()" (click)="onRowClick(user)">
         <div class="font-semibold">Name: {{ user.fullName }}</div>
         <div class="text-sm text-gray-500">Uername: {{ user.username }}</div>
         <div class="text-sm text-gray-500">Email: {{ user.email }}</div>
