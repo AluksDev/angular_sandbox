@@ -9,9 +9,9 @@ import { DepartmentsService } from '@app/features/departments/departments.servic
 import { Department } from '@api/departments/DTOs/department.interface';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { finalize, switchMap } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterLink } from "@angular/router";
 import { UserService } from '@app/features/user/user.service';
+import { NotificationsService } from '@app/core/notifications/notification.service';
 
 @Component({
   selector: 'app-register-page',
@@ -45,9 +45,8 @@ export class RegisterPage{
   hasRegistered = signal<boolean>(false);
   loading = signal<boolean>(false);
   stepper = viewChild<MatStepper>('stepper'); 
-  private _snackBar = inject(MatSnackBar);
-
-   passwordMatchValidator(formGroup: AbstractControl){
+  notificationService = inject(NotificationsService);
+  passwordMatchValidator(formGroup: AbstractControl){
     const psw = formGroup.get('password').value;
     const confirmPsw = formGroup.get('password_confirm').value;
     if (psw !== confirmPsw){
@@ -123,9 +122,7 @@ export class RegisterPage{
       error: ((err)=>{
         console.error(err);
         const errorMsg = err.error.username || 'Something went wrong';
-        this._snackBar.open(errorMsg, 'Close',{
-          duration: 3000
-        });
+        this.notificationService.error(errorMsg);
         pswGroup.reset();
       })
     });
@@ -145,9 +142,7 @@ export class RegisterPage{
       }),
       error: ((err) => {
         console.error(err);
-        this._snackBar.open('Something went wrong', 'Close',{
-          duration: 3000
-        });
+        this.notificationService.error('Failed to assign department. Please try again.');
       })
     })
   }

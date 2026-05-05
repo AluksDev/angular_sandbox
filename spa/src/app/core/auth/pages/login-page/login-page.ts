@@ -3,10 +3,10 @@ import { FormInputComponent } from "@app/shared/forms/components/form-input-comp
 import { FormBuilder, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../auth.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { finalize } from 'rxjs';
 import { Router, RouterLink } from "@angular/router";
+import { NotificationsService } from '@app/core/notifications/notification.service';
 
 
 @Component({
@@ -17,7 +17,7 @@ import { Router, RouterLink } from "@angular/router";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginPage {
-  _snackBar = inject(MatSnackBar);
+  notificationService = inject(NotificationsService);
   authService = inject(AuthService);
   fb = inject(FormBuilder);
   loginForm = this.fb.group({
@@ -31,9 +31,7 @@ export class LoginPage {
   onSubmit() {
     this.loginForm.markAsTouched();
     if (this.loginForm.invalid) {
-      this._snackBar.open('Form invalid', 'Close', {
-          duration: 3000
-        });
+      this.notificationService.warning('Form invalid');
       return;
     };
     const data = this.loginForm.getRawValue();
@@ -42,16 +40,12 @@ export class LoginPage {
       finalize(()=> this.isLoading.set(false))
     ).subscribe({
       next: () => {
-        this._snackBar.open('Login Successful', 'Close', {
-          duration: 3000
-        });
+        this.notificationService.success('Login Successful');
         this.router.navigate(['/']);
       },
       error: (err) => {
         console.error("Error", err);
-        this._snackBar.open(this.getErrorMessage(err), 'Close', {
-          duration: 3000
-        });
+        this.notificationService.error(this.getErrorMessage(err));
         this.loginForm.reset();
       },
     })
@@ -59,9 +53,6 @@ export class LoginPage {
   getErrorMessage(error: any): string{
     if (error.status === 400){
       return 'Invalid username or password';
-    }
-    if (error.status === 0){
-      return 'Connection error - check your network';
     }
     return 'Login failed. Please try again.';
   }

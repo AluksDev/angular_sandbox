@@ -6,8 +6,8 @@ import { FormInputComponent } from "@app/shared/forms/components/form-input-comp
 import { DepartmentsService } from '../../departments.service';
 import { Department } from '@api/departments/DTOs/department.interface';
 import { finalize } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NotificationsService } from '@app/core/notifications/notification.service';
 
 @Component({
   selector: 'app-new-department-dialog',
@@ -20,8 +20,7 @@ export class NewDepartmentDialog {
   departmentService = inject(DepartmentsService);
   dialogRef = inject(MatDialogRef<NewDepartmentDialog>);
   loading = signal<boolean>(false);
-  _snackBar = inject(MatSnackBar);
-
+  notificationService = inject(NotificationsService);
   fb = inject(FormBuilder);
   newDepForm = this.fb.group({
     name: [''],
@@ -47,15 +46,9 @@ export class NewDepartmentDialog {
         error: (err)=> {
           const errors = err.error;
           if (Object.keys(errors).find(key=> key === 'code' || key === 'name')){
-            this._snackBar.open('This department name or code already exists', 'Close', {
-                duration: 3000
-              });
-          } else {
-              this._snackBar.open('Something went wrong', 'Close', {
-                duration: 3000
-              });
-            }
+            this.notificationService.error('This department name or code already exists');
           }
+        }
       })
   }
  }

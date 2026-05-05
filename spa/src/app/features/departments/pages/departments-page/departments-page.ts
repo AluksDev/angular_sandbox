@@ -4,7 +4,6 @@ import {  Department } from '@api/departments/DTOs/department.interface';
 import { DepartmentCardComponent } from '../../components/department-card-component/department-card-component';
 import { MatDialog } from '@angular/material/dialog';
 import { NewDepartmentDialog } from '../../components/new-department-dialog/new-department-dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { DeleteDepartmentDialog } from '../../components/delete-department-dialog/delete-department-dialog';
 import { EditDepartmentDialog } from '../../components/edit-department-dialog/edit-department-dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,6 +13,7 @@ import { debounceTime, finalize } from 'rxjs';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { AuthService } from '@app/core/auth/auth.service';
+import { NotificationsService } from '@app/core/notifications/notification.service';
 
 @Component({
   selector: 'app-departments-page',
@@ -25,7 +25,7 @@ import { AuthService } from '@app/core/auth/auth.service';
 export class DepartmentsPage implements OnInit{
   authService = inject(AuthService);
   departmentService = inject(DepartmentsService);
-  _snackBar = inject(MatSnackBar);
+  notificationService = inject(NotificationsService);
   fb = inject(FormBuilder);
   destroyRef = inject(DestroyRef);
   router = inject(Router);
@@ -57,7 +57,7 @@ export class DepartmentsPage implements OnInit{
       if (result !== undefined) {
         const { name, code } = result;
         const message = `${name}${code ? ` (${code})` : ''} department added correctly`;
-        this.openSnackBar(message, 'Close');
+        this.notificationService.success(message);
         this.loadDepartments();
       }
     })
@@ -72,12 +72,6 @@ export class DepartmentsPage implements OnInit{
       this.totalDeps.set(res.count ?? 0);
       this.departments.set(res.results ?? []);
     })
-  }
-
-  openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action, {
-      duration: 3000
-    });
   }
 
   onDepCardAction(event: {dep: Department, action: string}){
@@ -95,7 +89,7 @@ export class DepartmentsPage implements OnInit{
       });
       dialogRef.afterClosed().subscribe((message) => {
         if (!message) return;
-        this.openSnackBar(message, 'Close');
+        this.notificationService.info(message);
         this.loadDepartments();
       })
   }
@@ -108,10 +102,10 @@ export class DepartmentsPage implements OnInit{
     dialogRef.afterClosed().subscribe((result) => {
       if (!result) return;
       if (result.error){
-        this.openSnackBar(result.message, 'Close');
+        this.notificationService.error(result.message);
       } else {
         const message = `Department: ${result.data.name} updated correctly`;
-        this.openSnackBar(message, 'Close');
+        this.notificationService.success(message);
         this.loadDepartments();
       }
     })
