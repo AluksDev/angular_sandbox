@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, input, signal } f
 import { AvatarComponent } from "../avatar-component/avatar-component";
 import { MatButtonModule } from '@angular/material/button';
 import { NgClass } from '@angular/common';
-import { AuthService } from '@app/core/auth/auth.service';
+import { AuthService } from '@app/services/auth.service';
 import { APIUser } from '@api/users/DTOs/user.interace';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from "@angular/router";

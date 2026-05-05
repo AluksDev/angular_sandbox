@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
-import { DepartmentsService } from '../../departments.service';
+import { DepartmentsService } from '../../../../services/departments.service';
 import {  Department } from '@api/departments/DTOs/department.interface';
 import { DepartmentCardComponent } from '../../components/department-card-component/department-card-component';
 import { MatDialog } from '@angular/material/dialog';
@@ -12,7 +12,7 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, finalize } from 'rxjs';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
-import { AuthService } from '@app/core/auth/auth.service';
+import { AuthService } from '@app/services/auth.service';
 import { NotificationsService } from '@app/core/notifications/notification.service';
 
 @Component({

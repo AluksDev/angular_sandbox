@@ -2,10 +2,10 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ProfileCardComponent } from "../../components/profile-card-component/profile-card-component";
 import { AvatarComponent } from "../../components/avatar-component/avatar-component";
 import { MatButtonModule } from '@angular/material/button';
-import { AuthService } from '@app/core/auth/auth.service';
+import { AuthService } from '@app/services/auth.service';
 import { combineLatest, map, of, switchMap, tap } from 'rxjs';
 import { AsyncPipe, NgIf } from '@angular/common';
-import { DepartmentsService } from '@app/features/departments/departments.service';
+import { DepartmentsService } from '@app/services/departments.service';
 import { RouterLink } from "@angular/router";
 
 @Component({

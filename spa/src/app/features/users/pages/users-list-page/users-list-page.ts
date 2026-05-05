@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal, DestroyRef, ViewChild } from '@angular/core';
 import { UsersFiltersComponent } from "../../components/users-filters-component/users-filters-component";
-import { UsersService } from '../../users.service';
-import { DepartmentsService } from '@app/features/departments/departments.service';
+import { UsersService } from '../../../../services/users.service';
+import { DepartmentsService } from '@app/services/departments.service';
 import { finalize, map, tap } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
@@ -11,7 +11,7 @@ import { TableActionConfig, TableColumnConfig } from '@app/shared/table-componen
 import { mapApiUserToUser } from '@app/features/user/user.mapper';
 import { GetQuery } from '@api/shared/DTOs/api-get-users-query.interface';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { AuthService } from '@app/core/auth/auth.service';
+import { AuthService } from '@app/services/auth.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';

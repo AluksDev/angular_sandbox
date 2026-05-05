@@ -4,12 +4,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { FormInputComponent } from "@app/shared/forms/components/form-input-component/form-input-component";
 import { PasswordGeneratorComponent } from "@app/shared/components/password-generator-component/password-generator-component";
-import { DepartmentsService } from '@app/features/departments/departments.service';
+import { DepartmentsService } from '@app/services/departments.service';
 import { FormSelectComponent } from "@app/shared/forms/components/form-select-component/form-select-component";
 import { AsyncPipe } from '@angular/common';
 import { map } from 'rxjs';
 import { CustomValidators } from '@app/shared/forms/custom-validators';
-import { UserService } from '@app/features/user/user.service';
+import { UserService } from '@app/services/user.service';
 import { Router } from '@angular/router';
 import { NotificationsService } from '@app/core/notifications/notification.service';
 

@@ -5,7 +5,7 @@ import { BreadcrumbComponent } from "@app/shared/components/breadcrumb-component
 import { ICONS } from '@app/shared/ui/icon/icons';
 import { MatIconModule } from "@angular/material/icon";
 import { TableComponent } from "@app/shared/table-component/table-component";
-import { UsersService } from '@app/features/users/users.service';
+import { UsersService } from '@app/services/users.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { User } from '@api/users/DTOs/user.interace';
 import { mapApiUserToUser } from '@app/features/user/user.mapper';

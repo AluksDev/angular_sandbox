@@ -3,7 +3,7 @@ import { tap } from 'rxjs/operators';
 import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 import { ActionService } from '@app/action.service';
 
-import { AuthService } from '../../core/auth/auth.service';
+import { AuthService } from '../../services/auth.service';
 
 @Directive({
   selector: ':not(a)[navigateIfAllowed]',

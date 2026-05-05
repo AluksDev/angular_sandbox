@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { catchError, EMPTY, Observable } from 'rxjs';
-import { UserService } from '../user/user.service';
+import { UserService } from '../../services/user.service';
 import { APIUser } from '@api/users/DTOs/user.interace';
 
 @Injectable({ providedIn: 'root' })

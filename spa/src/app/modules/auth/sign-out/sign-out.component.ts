@@ -1,7 +1,7 @@
 import { I18nPluralPipe, NgOptimizedImage } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from 'app/core/auth/auth.service';
+import { AuthService } from '@app/services/auth.service';
 import { finalize, Subject, takeUntil, takeWhile, tap, timer } from 'rxjs';
 
 @Component({
