@@ -11,10 +11,12 @@ export function errorInterceptor(request: HttpRequest<unknown>, next: HttpHandle
         if (error.status >= 500){
             console.error('Server error', error);
             notificationService.error('Something went wrong');
-        }
-        if (error.status === 0){
+        } else if (error.status === 0){
             console.error('Network error', error);
             notificationService.error('Network error');
+        } else if (error.status === 403){
+          console.error('Unauthorized');
+          notificationService.error('You are not authorised');
         }
         return throwError(() => error);
     })

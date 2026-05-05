@@ -71,7 +71,7 @@ export class UserCreateDialogComponent {
     if (this.createUser.invalid) return;
     const userData = {
       ...this.createUser.getRawValue(),
-      roles: this.createUser.value.roles === 'user' ? [] : [this.createUser.value.roles]  //backend does not accept 'user' as role, auto assigns it if empty
+      roles: this.createUser.value.roles === 'user' ? [] : [this.createUser.value.roles]
     };
     this.userService.createUser(userData).subscribe({
       next: (user) => {

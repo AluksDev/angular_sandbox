@@ -30,6 +30,7 @@ export class UserDetailsPage implements OnInit{
 
   ngOnInit(): void {
     this.userDetails.set(this.route.snapshot.data['userDetails']);
+    if (!this.userDetails().department) return;
     this.departmentsService.getDepartmentById(this.userDetails().department).subscribe({
       next: ((res) => {
         this.departmentDetails.set(res);
