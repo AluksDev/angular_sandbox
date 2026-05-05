@@ -1,5 +1,5 @@
 <form [formGroup]="editDepForm" class="flex flex-col my-6 mx-4 gap-4" (ngSubmit)="onSubmit()">
-    @if (loading()) {
+    @if (loading$ | async) {
         <mat-spinner></mat-spinner>
     } @else {
         <h2>Edit department: {{ dep.name }}</h2>

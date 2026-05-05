@@ -56,7 +56,6 @@ export class MainLayout {
     })
   );
   router = inject(Router);
-  loading = signal<boolean>(false);
   notificationService = inject(NotificationsService);
 
   onUserAction(action: string){
@@ -71,12 +70,7 @@ export class MainLayout {
   }
 
   logout(){
-    this.loading.set(true);
-    this.authService.logout()
-    .pipe(
-      finalize(()=> this.loading.set(false))
-    )
-    .subscribe({
+    this.authService.logout().subscribe({
       next: ((res) => {
         this.notificationService.info(res.detail);
         this.router.navigate(['/auth/login']);

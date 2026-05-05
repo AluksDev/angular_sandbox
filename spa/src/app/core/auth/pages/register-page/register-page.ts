@@ -12,6 +12,8 @@ import { finalize, switchMap } from 'rxjs';
 import { Router, RouterLink } from "@angular/router";
 import { UserService } from '@app/core/services/user.service';
 import { NotificationsService } from '@app/core/notifications/notification.service';
+import { LoadingService } from '@app/core/services/loading.service';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-register-page',
@@ -22,7 +24,8 @@ import { NotificationsService } from '@app/core/notifications/notification.servi
     FormSelectComponent, 
     MatStepperModule, 
     MatProgressSpinnerModule, 
-    RouterLink
+    RouterLink,
+    AsyncPipe
   ],
   templateUrl: './register-page.html',
   styleUrl: './register-page.scss',
@@ -43,7 +46,8 @@ export class RegisterPage{
   }))
 );
   hasRegistered = signal<boolean>(false);
-  loading = signal<boolean>(false);
+  loadingService = inject(LoadingService);
+  loading$ = this.loadingService.loading$;
   stepper = viewChild<MatStepper>('stepper'); 
   notificationService = inject(NotificationsService);
   passwordMatchValidator(formGroup: AbstractControl){
@@ -99,7 +103,6 @@ export class RegisterPage{
     const dataGroup = this.formArray.at(0);
     const pswGroup = this.formArray.at(1);
     if (pswGroup.get('password').invalid || pswGroup.get('password_confirm').invalid || dataGroup.invalid) return;
-    this.loading.set(true);
     const userData = dataGroup.value;
     const pswData = pswGroup.value;
     const formData = {...userData, ...pswData};
@@ -107,7 +110,6 @@ export class RegisterPage{
     this.authService.registerUser(formData)
     .pipe(
       switchMap(() => this.departmentService.getDepartments()),
-      finalize(() => this.loading.set(false))
     )
     .subscribe({
       next: ((res)=>{
@@ -131,12 +133,7 @@ export class RegisterPage{
   assignDepartment(){
     if (this.formArray.at(2).invalid || this.formArray.at(2).get('department').value === '') return;
     const departmentId = parseInt(this.formArray.at(2).get('department').value);
-    this.loading.set(true);
-    this.userService.assignDepartmentToCurrentUser(departmentId)
-    .pipe(
-      finalize(() => this.loading.set(false))
-    )
-    .subscribe({
+    this.userService.assignDepartmentToCurrentUser(departmentId).subscribe({
       next: ((res) => {
         this.router.navigate(['/']);
       }),

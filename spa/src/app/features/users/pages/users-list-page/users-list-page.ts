@@ -16,6 +16,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { User } from '@api/users/DTOs/user.interace';
+import { AsyncPipe } from '@angular/common';
+import { LoadingService } from '@app/core/services/loading.service';
 
 
 type FilterValues = {
@@ -26,7 +28,7 @@ type FilterValues = {
 
 @Component({
   selector: 'app-users-list-page',
-  imports: [UsersFiltersComponent, TableComponent, MatButtonModule, MatIconModule, RouterLink],
+  imports: [UsersFiltersComponent, TableComponent, MatButtonModule, MatIconModule, RouterLink, AsyncPipe],
   templateUrl: './users-list-page.html',
   styleUrl: './users-list-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -38,11 +40,12 @@ export class UsersListPage implements OnInit{
   router = inject(Router);
   authService = inject(AuthService);
   destroyRef = inject(DestroyRef);
+  loadingService = inject(LoadingService);
+  loading$ = this.loadingService.loading$;
 
   totalUsers = signal<number>(0);
   usersList = signal<User[]>([]);
   departmentList = signal<Department[]>([]);
-  isLoading = signal<boolean>(false);
   isAdmin = signal<boolean>(false);
   query = signal<GetQuery>({
     limit: 10,
@@ -136,9 +139,7 @@ export class UsersListPage implements OnInit{
   }
 
   loadUsers(options?: GetQuery) {
-    this.isLoading.set(true);
     this.usersService.getAllUsers(options).pipe(
-      finalize(() => this.isLoading.set(false)),
       tap((res)=> this.totalUsers.set(res.count)),
       map(res => {
         return res.results.map(u => {

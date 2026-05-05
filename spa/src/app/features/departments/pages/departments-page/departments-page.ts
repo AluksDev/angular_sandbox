@@ -14,10 +14,12 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { AuthService } from '@app/core/services/auth.service';
 import { NotificationsService } from '@app/core/notifications/notification.service';
+import { LoadingService } from '@app/core/services/loading.service';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-departments-page',
-  imports: [DepartmentCardComponent, MatButtonModule, FormInputComponent, ReactiveFormsModule],
+  imports: [DepartmentCardComponent, MatButtonModule, FormInputComponent, ReactiveFormsModule, AsyncPipe],
   templateUrl: './departments-page.html',
   styleUrl: './departments-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -29,8 +31,9 @@ export class DepartmentsPage implements OnInit{
   fb = inject(FormBuilder);
   destroyRef = inject(DestroyRef);
   router = inject(Router);
+  loadingService = inject(LoadingService);
+  loading$ = this.loadingService.loading$;
 
-  isLoading = signal<boolean>(false);
   totalDeps = signal<number>(0);
   departments = signal<Department[]>([]);
   searchForm = this.fb.group({
@@ -64,11 +67,7 @@ export class DepartmentsPage implements OnInit{
   }
 
   loadDepartments(search?: string) {
-    this.isLoading.set(true);
-    this.departmentService.getDepartments(search).pipe(
-      finalize(() => this.isLoading.set(false))
-    )
-    .subscribe(res => {
+    this.departmentService.getDepartments(search).subscribe(res => {
       this.totalDeps.set(res.count ?? 0);
       this.departments.set(res.results ?? []);
     })
