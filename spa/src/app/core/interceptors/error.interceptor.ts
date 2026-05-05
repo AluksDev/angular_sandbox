@@ -34,7 +34,7 @@ export function errorInterceptor(request: HttpRequest<unknown>, next: HttpHandle
           notificationService.error('Page not found');
           break;
         case 401: 
-          console.error('Unauthorized - clearing token');
+          console.error('Unauthorized');
           notificationService.error('Session expired. Please log in again');
           localStorage.removeItem('token');
           router.navigate(['/']);

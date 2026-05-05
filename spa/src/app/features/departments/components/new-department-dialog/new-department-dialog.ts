@@ -3,7 +3,7 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FormInputComponent } from "@app/shared/forms/components/form-input-component/form-input-component";
-import { DepartmentsService } from '../../../../services/departments.service';
+import { DepartmentsService } from '../../../../core/services/departments.service';
 import { Department } from '@api/departments/DTOs/department.interface';
 import { finalize } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';

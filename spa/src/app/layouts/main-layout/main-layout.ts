@@ -4,7 +4,7 @@ import { Router, RouterOutlet, RouterLink } from '@angular/router';
 import { FuseNavigationItem, FuseNavigationService, FuseVerticalNavigationComponent } from '@fuse/components/navigation';
 import { CdkTableModule } from "@angular/cdk/table";
 import { UserSidebarSnippetComponent } from "@app/features/user/components/user-sidebar-snippet-component/user-sidebar-snippet-component";
-import { AuthService } from '@app/services/auth.service';
+import { AuthService } from '@app/core/services/auth.service';
 import { finalize, map } from 'rxjs';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { mapApiUserToUser } from '@app/features/user/user.mapper';

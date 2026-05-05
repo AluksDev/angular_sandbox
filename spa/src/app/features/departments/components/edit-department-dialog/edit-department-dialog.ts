@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormInputComponent } from '@app/shared/forms/components/form-input-component/form-input-component';
-import { DepartmentsService } from '../../../../services/departments.service';
+import { DepartmentsService } from '../../../../core/services/departments.service';
 import { Department } from '@api/departments/DTOs/department.interface';
 import { finalize } from 'rxjs';
 

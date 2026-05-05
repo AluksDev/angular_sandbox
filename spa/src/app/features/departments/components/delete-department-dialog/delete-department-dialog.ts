@@ -3,7 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import {  MatIconModule } from '@angular/material/icon';
 import { Department } from '@api/departments/DTOs/department.interface';
-import { DepartmentsService } from '../../../../services/departments.service';
+import { DepartmentsService } from '../../../../core/services/departments.service';
 import { finalize } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 

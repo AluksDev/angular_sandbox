@@ -8,7 +8,7 @@ import { MatPaginatorIntl } from "@angular/material/paginator";
 import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
 import { PreloadAllModules, provideRouter, withInMemoryScrolling, withPreloading } from "@angular/router";
 import { appRoutes } from "@app/app.routes";
-import { AuthService } from "@app/services/auth.service";
+import { AuthService } from "@app/core/services/auth.service";
 import { provideIcons } from "@app/core/icons/icons.provider";
 import { RuntimeConfigService } from "@app/runtime-config.service";
 import { provideFuse } from "@fuse";

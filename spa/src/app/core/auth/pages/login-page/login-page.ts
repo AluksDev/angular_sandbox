@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, signal} from '@angular/core
 import { FormInputComponent } from "@app/shared/forms/components/form-input-component/form-input-component";
 import { FormBuilder, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatButtonModule } from '@angular/material/button';
-import { AuthService } from '../../../../services/auth.service';
+import { AuthService } from '../../../services/auth.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { finalize } from 'rxjs';
 import { Router, RouterLink } from "@angular/router";

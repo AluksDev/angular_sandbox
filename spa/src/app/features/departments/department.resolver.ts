@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { catchError, EMPTY, Observable } from 'rxjs';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../core/services/user.service';
 import { APIUser } from '@api/users/DTOs/user.interace';
-import { DepartmentsService } from '../../services/departments.service';
+import { DepartmentsService } from '../../core/services/departments.service';
 import { Department } from '@api/departments/DTOs/department.interface';
 
 @Injectable({ providedIn: 'root' })

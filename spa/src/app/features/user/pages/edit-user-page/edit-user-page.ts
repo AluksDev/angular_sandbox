@@ -8,14 +8,14 @@ import { FormSelectComponent } from "@app/shared/forms/components/form-select-co
 import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
-import { DepartmentsService } from '@app/services/departments.service';
+import { DepartmentsService } from '@app/core/services/departments.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MessageDialogComponent } from "@app/shared/components/message-dialog-component/message-dialog-component";
-import { UserService } from '../../../../services/user.service';
+import { UserService } from '../../../../core/services/user.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { finalize } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { AuthService } from '@app/services/auth.service';
+import { AuthService } from '@app/core/services/auth.service';
 import { NotificationsService } from '@app/core/notifications/notification.service';
 
 @Component({

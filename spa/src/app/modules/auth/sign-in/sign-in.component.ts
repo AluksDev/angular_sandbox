@@ -16,7 +16,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
-import { AuthService } from '@app/services/auth.service';
+import { AuthService } from '@app/core/services/auth.service';
 import { NgOptimizedImage } from '@angular/common';
 
 @Component({
