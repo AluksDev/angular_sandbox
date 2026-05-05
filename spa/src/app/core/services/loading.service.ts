@@ -8,7 +8,6 @@ export class LoadingService {
 
     show() {
         this.loadingSubject.next(this.loadingSubject.value + 1);
-        console.log(this.loadingSubject.value)
     }
 
     hide() {
