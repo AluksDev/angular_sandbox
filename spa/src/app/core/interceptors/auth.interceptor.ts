@@ -16,16 +16,5 @@ export function authInterceptor(request: HttpRequest<unknown>, next: HttpHandler
       }
     });
   }
-  return next(authReq).pipe(
-    catchError((error: HttpErrorResponse) => {
-
-      if (error.status === 401) {
-        console.error('Unauthorized - clearing token');
-        localStorage.removeItem('token');
-        router.navigate(['/']);
-      }
-
-      return throwError(() => error);
-    })
-  );
+  return next(authReq);
 }
