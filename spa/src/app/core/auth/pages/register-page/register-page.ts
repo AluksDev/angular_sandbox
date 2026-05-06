@@ -3,19 +3,20 @@ import { AbstractControl, FormArray, FormBuilder, ReactiveFormsModule } from '@a
 import { MatButtonModule } from '@angular/material/button';
 import { FormInputComponent } from '@app/shared/forms/components/form-input-component/form-input-component';
 import { AuthService } from '../../../services/auth.service';
-import { AuthService } from '../../../services/auth.service';
 import { FormSelectComponent } from "@app/shared/forms/components/form-select-component/form-select-component";
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { DepartmentsService } from '@app/core/services/departments.service';
-import { DepartmentsService } from '@app/core/services/departments.service';
 import { Department } from '@api/departments/DTOs/department.interface';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { finalize, switchMap } from 'rxjs';
+import { switchMap } from 'rxjs';
 import { Router, RouterLink } from "@angular/router";
 import { UserService } from '@app/core/services/user.service';
 import { NotificationsService } from '@app/core/notifications/notification.service';
 import { LoadingService } from '@app/core/services/loading.service';
 import { AsyncPipe } from '@angular/common';
+import { CustomValidators } from '@app/shared/forms/validators/custom-validators';
+import { ErrorMessages } from '@app/shared/forms/error-messages';
+import { MatError } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-register-page',
@@ -27,7 +28,8 @@ import { AsyncPipe } from '@angular/common';
     MatStepperModule, 
     MatProgressSpinnerModule, 
     RouterLink,
-    AsyncPipe
+    AsyncPipe,
+    MatError
   ],
   templateUrl: './register-page.html',
   styleUrl: './register-page.scss',
@@ -46,8 +48,6 @@ export class RegisterPage{
   }))
 );
   hasRegistered = signal<boolean>(false);
-  loadingService = inject(LoadingService);
-  loading$ = this.loadingService.loading$;
   loadingService = inject(LoadingService);
   loading$ = this.loadingService.loading$;
   stepper = viewChild<MatStepper>('stepper'); 
@@ -136,7 +136,6 @@ export class RegisterPage{
   assignDepartment(){
     if (this.formArray.at(2).invalid || this.formArray.at(2).get('department').value === '') return;
     const departmentId = parseInt(this.formArray.at(2).get('department').value);
-    this.userService.assignDepartmentToCurrentUser(departmentId).subscribe({
     this.userService.assignDepartmentToCurrentUser(departmentId).subscribe({
       next: ((res) => {
         this.router.navigate(['/']);
