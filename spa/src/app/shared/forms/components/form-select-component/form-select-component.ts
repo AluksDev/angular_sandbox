@@ -7,6 +7,7 @@ import { AsyncPipe } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { ErrorMessages } from '../../error-messages';
 
 interface SelectOptions {
   label: string,
@@ -77,13 +78,7 @@ export class FormSelectComponent extends BaseFormControlAccessor{
 
   getErrorMessage(): string | null{
     if (!this.formControl.errors) return null;
-    const errors = this.formControl.errors ?? {};
-    for (const key of Object.keys(errors)){
-      switch (key) {
-        case 'required':
-          return 'This field is required';
-      }
-    }
+    ErrorMessages.getErrorMessage(this.formControl.errors);
   }
 
   private searchFilter(value: string): SelectOptions[] {

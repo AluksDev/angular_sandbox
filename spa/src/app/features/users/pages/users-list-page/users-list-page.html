@@ -22,7 +22,7 @@
   [actions]="isAdmin() ? adminActionsSettings : userActionsSettings"
   (pageChange)="onPaginationChange($event)"
   (sortChange)="onSortChange($event)"
-  [loading]="isLoading()"
+  [loading]="loading$ | async"
   emptyMessage="No users found"
   (executeAction)="onAction($event)"
 />

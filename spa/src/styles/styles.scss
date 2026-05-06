@@ -17,6 +17,22 @@ html {
   ));
 }
 
+.success-snackbar {
+  --mdc-snackbar-container-color: #22c55e;
+}
+
+.error-snackbar {
+  --mdc-snackbar-container-color: #ef4444;
+}
+
+.warning-snackbar {
+  --mdc-snackbar-container-color: #f59e0b;
+}
+
+.info-snackbar {
+  --mdc-snackbar-container-color: #3b82f6;
+}
+
 .mat-mdc-outlined-button.success-btn{
   border-color: #22c55e !important;
   color: #22c55e !important;

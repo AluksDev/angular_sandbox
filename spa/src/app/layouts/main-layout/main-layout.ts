@@ -4,12 +4,12 @@ import { Router, RouterOutlet, RouterLink } from '@angular/router';
 import { FuseNavigationItem, FuseNavigationService, FuseVerticalNavigationComponent } from '@fuse/components/navigation';
 import { CdkTableModule } from "@angular/cdk/table";
 import { UserSidebarSnippetComponent } from "@app/features/user/components/user-sidebar-snippet-component/user-sidebar-snippet-component";
-import { AuthService } from '@app/core/auth/auth.service';
+import { AuthService } from '@app/core/services/auth.service';
 import { finalize, map } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { mapApiUserToUser } from '@app/features/user/user.mapper';
 import { MatIcon } from "@angular/material/icon";
+import { NotificationsService } from '@app/core/notifications/notification.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -56,8 +56,7 @@ export class MainLayout {
     })
   );
   router = inject(Router);
-  loading = signal<boolean>(false);
-  _snackBar = inject(MatSnackBar);
+  notificationService = inject(NotificationsService);
 
   onUserAction(action: string){
     switch(action){
@@ -70,27 +69,15 @@ export class MainLayout {
     }
   }
 
-   logout(){
-    this.loading.set(true);
-    this.authService.logout()
-    .pipe(
-      finalize(()=> this.loading.set(false))
-    )
-    .subscribe({
+  logout(){
+    this.authService.logout().subscribe({
       next: ((res) => {
-        this.openSnackBar(res.detail, 'Close');
+        this.notificationService.info(res.detail);
         this.router.navigate(['/auth/login']);
       }),
       error: ()=>{
-        this.openSnackBar('Something went wrong', 'Close');
+        this.notificationService.error('Something went wrong');
       }
     })
-  }
-
-  openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action, {
-      duration: 3000
-    });
-  }
-  
- }
+  }  
+}

@@ -4,13 +4,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormInputComponent } from '@app/shared/forms/components/form-input-component/form-input-component';
-import { DepartmentsService } from '../../departments.service';
+import { DepartmentsService } from '../../../../core/services/departments.service';
 import { Department } from '@api/departments/DTOs/department.interface';
 import { finalize } from 'rxjs';
+import { LoadingService } from '@app/core/services/loading.service';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-edit-department-dialog',
-  imports: [ReactiveFormsModule, MatButtonModule, FormInputComponent, MatProgressSpinnerModule],
+  imports: [ReactiveFormsModule, MatButtonModule, FormInputComponent, MatProgressSpinnerModule, AsyncPipe],
   templateUrl: './edit-department-dialog.html',
   styleUrl: './edit-department-dialog.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -19,7 +21,8 @@ export class EditDepartmentDialog {
   dialogRef = inject(MatDialogRef<EditDepartmentDialog>);
   dep = inject<Department>(MAT_DIALOG_DATA);
   departmentService = inject(DepartmentsService);
-  loading = signal<boolean>(false);
+  loadingService = inject(LoadingService);
+  loading$ = this.loadingService.loading$;
 
   fb = inject(FormBuilder);
   editDepForm = this.fb.group({
@@ -33,13 +36,8 @@ export class EditDepartmentDialog {
 
   onSubmit(){
     if (this.editDepForm.invalid) return;
-    this.loading.set(true);
     const updatedData = {id: this.dep.id, ...this.editDepForm.getRawValue()};
-    this.departmentService.updateDepartment(updatedData)
-      .pipe(
-        finalize(()=> this.loading.set(false))
-      )
-      .subscribe({
+    this.departmentService.updateDepartment(updatedData).subscribe({
         next: ((res) => {
           this.dialogRef.close({error: false, data: res});
         }),

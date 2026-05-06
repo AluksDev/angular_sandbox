@@ -1,11 +1,12 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, computed, effect, ElementRef, Injector, input, OnInit, signal, ViewChild } from '@angular/core';
-import { MatError, MatFormField, MatFormFieldModule, MatHint, MatLabel } from '@angular/material/form-field';
-import { MatInput, MatInputModule } from '@angular/material/input';
-import { ControlValueAccessor, FormControl, FormControlDirective, FormControlName, FormGroupDirective, FormsModule, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AfterViewInit, ChangeDetectionStrategy, Component, computed, effect, ElementRef, Injector, input, signal, ViewChild } from '@angular/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BaseFormControlAccessor } from '../../utils/control-value-accessor-base';
 import { MatIcon } from '@angular/material/icon';
 import { PasswordStrengthComponent } from '../password-strength-component/password-strength-component';
-import { CustomValidators } from '../../custom-validators';
+import { ErrorMessages } from '../../error-messages';
+import { CustomValidators } from '../../validators/custom-validators';
 
 @Component({
   selector: 'app-form-input-component',
@@ -72,19 +73,7 @@ export class FormInputComponent extends BaseFormControlAccessor implements After
 
   getErrorMessage(): string | null{
     if (!this.formControl.errors) return null;
-    const errors = this.formControl.errors ?? {};
-    for (const key of Object.keys(errors)){
-      switch (key) {
-        case 'required':
-          return 'This field is required';
-        case 'minlength':
-          return `Minimum length required is ${errors[key].requiredLength} characters`
-        case 'email':
-          return 'It must be a valid email'
-        case 'patternInvalid':
-          return 'Invalid pattern'
-      }
-    }
+    return ErrorMessages.getErrorMessage(this.formControl.errors);
   }
 
   showPassword = signal<boolean>(false);

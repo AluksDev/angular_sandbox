@@ -19,6 +19,7 @@
     "moduleResolution": "bundler",
     "useDefineForClassFields": false,
     "lib": ["ES2022", "dom"],
+    "types": ["jasmine", "node"],
     "noUnusedParameters": false,
     "noUnusedLocals": false,
     "noImplicitReturns": false,
@@ -34,12 +35,8 @@
     "strictBindCallApply": true,
     "paths": {
       "@api/*": ["api/*"],
-      "@apigeo/*": ["apigeo/*"],
       "@fuse": ["@fuse/"],
       "@fuse/*": ["@fuse/*"],
-      "@layout/*": ["app/layout/*"],
-      "@modules/*": ["app/modules/*"],
-      "@utils/*": ["app/utils/*"],
       "@app/*": ["app/*"],
       "@core/*": ["app/core/*"]
     }
