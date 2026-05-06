@@ -13,7 +13,7 @@
             <button mat-flat-button (click)="openAddDepDialog()">Add Department</button>
         }
     </div>
-    <div [class.hidden]="isLoading()">
+    <div [class.hidden]="loading$ | async">
         @if (totalDeps() === 0){
             <p class="text-center font-semibold">No departments found</p>
         } @else {
@@ -30,7 +30,7 @@
             </div>
         }
     </div>
-    <div [class.hidden]="!isLoading()" class="p-8 bg-gray-50 min-h-screen">
+    <div [class.hidden]="!(loading$ | async)" class="p-8 bg-gray-50 min-h-screen">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden animate-pulse">

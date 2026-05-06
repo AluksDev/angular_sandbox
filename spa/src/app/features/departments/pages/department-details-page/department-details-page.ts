@@ -5,7 +5,7 @@ import { BreadcrumbComponent } from "@app/shared/components/breadcrumb-component
 import { ICONS } from '@app/shared/ui/icon/icons';
 import { MatIconModule } from "@angular/material/icon";
 import { TableComponent } from "@app/shared/table-component/table-component";
-import { UsersService } from '@app/features/users/users.service';
+import { UsersService } from '@app/core/services/users.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { User } from '@api/users/DTOs/user.interace';
 import { mapApiUserToUser } from '@app/features/user/user.mapper';
@@ -13,10 +13,12 @@ import { TableColumnConfig } from '@app/shared/table-component/table.models';
 import { PageEvent } from '@angular/material/paginator';
 import { GetQuery } from '@api/shared/DTOs/api-get-users-query.interface';
 import { finalize } from 'rxjs';
+import { LoadingService } from '@app/core/services/loading.service';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-department-details-page',
-  imports: [BreadcrumbComponent, RouterLink, MatIconModule, TableComponent],
+  imports: [BreadcrumbComponent, RouterLink, MatIconModule, TableComponent, AsyncPipe],
   templateUrl: './department-details-page.html',
   styleUrl: './department-details-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -25,12 +27,13 @@ export class DepartmentDetailsPage implements OnInit{
   route = inject(ActivatedRoute);
   usersService = inject(UsersService);
   router = inject(Router);
+  loadingService = inject(LoadingService);
+  loading$ = this.loadingService.loading$;
   
   icons = ICONS.departments;
   departmentDetails = signal<Department>(null);
   users = signal<User[]>([]);
   totalUsers = signal<number>(0);
-  loadingUsers = signal<boolean>(false);
   query = signal<GetQuery>({
     limit: 10,
     offset: 0,
@@ -62,11 +65,7 @@ export class DepartmentDetailsPage implements OnInit{
   }
 
   loadUsers(options?: GetQuery) {
-    this.loadingUsers.set(true);
-    this.usersService.getAllUsers(options).pipe(
-      finalize(() => this.loadingUsers.set(false))
-    )
-    .subscribe({
+    this.usersService.getAllUsers(options).subscribe({
         next: (res => {
           if (!res) return;
           this.totalUsers.set(res.count);

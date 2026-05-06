@@ -1,5 +1,5 @@
 <div class="dialog-container">
-    @if (loading()){
+    @if (loading$ | async){
         <mat-spinner></mat-spinner>
     } @else {
         <div class="dialog-header">

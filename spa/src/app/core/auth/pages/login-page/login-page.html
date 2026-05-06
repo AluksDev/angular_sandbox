@@ -14,7 +14,7 @@
       </p>
     </div>
 
-    @if (isLoading()) {
+    @if (loading$ | async){
       <div
         class="flex justify-center py-10"
         role="status"

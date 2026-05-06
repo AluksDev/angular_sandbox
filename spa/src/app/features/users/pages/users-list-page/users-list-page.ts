@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal, DestroyRef, ViewChild } from '@angular/core';
 import { UsersFiltersComponent } from "../../components/users-filters-component/users-filters-component";
-import { UsersService } from '../../users.service';
-import { DepartmentsService } from '@app/features/departments/departments.service';
+import { UsersService } from '../../../../core/services/users.service';
+import { DepartmentsService } from '@app/core/services/departments.service';
 import { finalize, map, tap } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
@@ -11,11 +11,13 @@ import { TableActionConfig, TableColumnConfig } from '@app/shared/table-componen
 import { mapApiUserToUser } from '@app/features/user/user.mapper';
 import { GetQuery } from '@api/shared/DTOs/api-get-users-query.interface';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { AuthService } from '@app/core/auth/auth.service';
+import { AuthService } from '@app/core/services/auth.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { User } from '@api/users/DTOs/user.interace';
+import { AsyncPipe } from '@angular/common';
+import { LoadingService } from '@app/core/services/loading.service';
 
 
 type FilterValues = {
@@ -26,7 +28,7 @@ type FilterValues = {
 
 @Component({
   selector: 'app-users-list-page',
-  imports: [UsersFiltersComponent, TableComponent, MatButtonModule, MatIconModule, RouterLink],
+  imports: [UsersFiltersComponent, TableComponent, MatButtonModule, MatIconModule, RouterLink, AsyncPipe],
   templateUrl: './users-list-page.html',
   styleUrl: './users-list-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -38,11 +40,12 @@ export class UsersListPage implements OnInit{
   router = inject(Router);
   authService = inject(AuthService);
   destroyRef = inject(DestroyRef);
+  loadingService = inject(LoadingService);
+  loading$ = this.loadingService.loading$;
 
   totalUsers = signal<number>(0);
   usersList = signal<User[]>([]);
   departmentList = signal<Department[]>([]);
-  isLoading = signal<boolean>(false);
   isAdmin = signal<boolean>(false);
   query = signal<GetQuery>({
     limit: 10,
@@ -136,9 +139,7 @@ export class UsersListPage implements OnInit{
   }
 
   loadUsers(options?: GetQuery) {
-    this.isLoading.set(true);
     this.usersService.getAllUsers(options).pipe(
-      finalize(() => this.isLoading.set(false)),
       tap((res)=> this.totalUsers.set(res.count)),
       map(res => {
         return res.results.map(u => {
