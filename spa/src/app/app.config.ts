@@ -1,6 +1,5 @@
 import { registerLocaleData } from "@angular/common";
 import { provideHttpClient, withFetch, withInterceptors, withJsonpSupport } from "@angular/common/http";
-import localeCa from "@angular/common/locales/ca";
 import { ApplicationConfig, LOCALE_ID, provideExperimentalZonelessChangeDetection } from "@angular/core";
 import { LuxonDateAdapter } from "@angular/material-luxon-adapter";
 import { DateAdapter, MAT_DATE_FORMATS } from "@angular/material/core";
@@ -12,19 +11,16 @@ import { AuthService } from "@app/core/services/auth.service";
 import { provideIcons } from "@app/core/icons/icons.provider";
 import { RuntimeConfigService } from "@app/runtime-config.service";
 import { provideFuse } from "@fuse";
-import { FuseThemeService } from "@fuse/services/theme/theme.service"; // Importa los datos de localización para catalán
-// import {
-//   provideClientHydration,
-//   withEventReplay,
-// } from '@angular/platform-browser';
+import { FuseThemeService } from "@fuse/services/theme/theme.service";
+import localeEs from "@angular/common/locales/es";
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 import { authInterceptor } from "./core/interceptors/auth.interceptor";
 import { getCatPaginatorIntl } from "./i18n/cat-paginator-intl";
 import { errorInterceptor } from "./core/interceptors/error.interceptor";
 import { loadingInterceptor } from "./core/interceptors/loading.interceptor";
 
-registerLocaleData(localeCa, "ca-CA"); // Cambia 'ca-CA' a 'ca-ES' si es necesario
-registerLocaleData(localeCa, "ca-ES"); // Registrar el locale catalán como 'ca-ES'
+registerLocaleData(localeEs, "es-ES");
 
 // TODO: Initialize runtime configuration values from /assets/runtime-config.json when needed
 export const appConfig: ApplicationConfig = {
@@ -34,11 +30,11 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withFetch(), withInterceptors([authInterceptor, errorInterceptor, loadingInterceptor]), withJsonpSupport()),
     {
       provide: LOCALE_ID,
-      useValue: "ca-CA",
+      useValue: "es-ES",
     },
     {
-      provide: LOCALE_ID,
-      useValue: "ca-ES",
+      provide: MAT_DATE_LOCALE,
+      useValue: 'es-ES',
     },
     // },
     provideIcons(),

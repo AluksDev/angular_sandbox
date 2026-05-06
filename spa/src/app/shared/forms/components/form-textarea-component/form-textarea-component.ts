@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, computed, effect, Injector, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, effect, inject, Injector, input, signal } from '@angular/core';
 import { BaseFormControlAccessor } from '../../utils/control-value-accessor-base';
 import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatError, MatFormFieldModule } from '@angular/material/form-field';
 import { ErrorMessages } from '../../error-messages';
 import { MatInputModule } from '@angular/material/input';
 import { tap } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-form-textarea-component',
@@ -30,21 +31,21 @@ export class FormTextareaComponent extends BaseFormControlAccessor {
   minLength = input<number>();
 
   charCount = signal<number>(0)
+  destroyRef = inject(DestroyRef);
 
   constructor(injector: Injector){
     super(injector);
     effect(() => {
       if (!this.formControl) return;
 
-      this.formControl.valueChanges.subscribe(
-       value => {
+      this.formControl.valueChanges.pipe(
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(
+      value => {
           this.charCount.set(value.length);
         }
       )
-
-
-
-
       const validators = [];
       if (this.required()) {
         validators.push(Validators.required);
