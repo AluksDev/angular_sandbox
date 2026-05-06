@@ -27,6 +27,7 @@
                     placeholder="Enter username"
                     [required]="true"
                     type="text"
+                    [maxLength]="5"
                 />
                 <app-form-input-component 
                     formControlName="email"
@@ -55,6 +56,7 @@
             </mat-step>
             <mat-step formGroupName="1" [stepControl]="formArray.get([1])" label="Create your password">
                 <app-form-input-component 
+                    class="my-2"
                     formControlName="password"
                     label="Password"
                     placeholder=""
@@ -72,11 +74,7 @@
                     [required]="true"
                     type="password"
                 />
-                @if (formArray.at(1).errors?.['passwordMismatch'] && formArray.at(1)?.controls['password_confirm'].dirty){
-                    <div class="text-red-600 font-medium text-sm my-4">
-                        Passwords do not match
-                    </div>
-                }
+                <mat-error>{{ checkPasswordsErrorMessage() }}</mat-error>
                 <div>
                     <button mat-button matStepperPrevious type="button">Back</button>
                     @if (!hasRegistered()){

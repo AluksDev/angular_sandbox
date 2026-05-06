@@ -8,23 +8,27 @@ import { DepartmentsService } from '@app/core/services/departments.service';
 import { FormSelectComponent } from "@app/shared/forms/components/form-select-component/form-select-component";
 import { AsyncPipe } from '@angular/common';
 import { map } from 'rxjs';
-import { CustomValidators } from '@app/shared/forms/custom-validators';
 import { UserService } from '@app/core/services/user.service';
 import { Router } from '@angular/router';
 import { NotificationsService } from '@app/core/notifications/notification.service';
+import { UsersService } from '@app/core/services/users.service';
+import { MatError } from "@angular/material/form-field";
+import { ErrorMessages } from '@app/shared/forms/error-messages';
+import { CustomValidators } from '@app/shared/forms/validators/custom-validators';
 
 @Component({
   selector: 'app-user-create-dialog-component',
   imports: [
-    MatDialogModule, 
-    FormInputComponent, 
-    ReactiveFormsModule, 
-    FormsModule, 
-    MatButtonModule, 
-    PasswordGeneratorComponent, 
-    FormSelectComponent, 
-    AsyncPipe
-  ],
+    MatDialogModule,
+    FormInputComponent,
+    ReactiveFormsModule,
+    FormsModule,
+    MatButtonModule,
+    PasswordGeneratorComponent,
+    FormSelectComponent,
+    AsyncPipe,
+    MatError,
+],
   templateUrl: './user-create-dialog-component.html',
   styleUrl: './user-create-dialog-component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -34,13 +38,14 @@ export class UserCreateDialogComponent {
   dialogRef = inject(MatDialogRef<UserCreateDialogComponent>)
   departmentService = inject(DepartmentsService);
   userService = inject(UserService);
+  usersService = inject(UsersService);
   router = inject(Router);
   fb = inject(FormBuilder);
 
   createUser = this.fb.group(
     {
-      username: [''],
-      email: [''],
+      username: ['', {asyncValidators: CustomValidators.uniqueUsername(this.usersService)}],
+      email: ['', {asyncValidators: CustomValidators.uniqueEmail(this.usersService)}],
       password: [''],
       password_confirm: [''],
       first_name: [''],
@@ -65,6 +70,10 @@ export class UserCreateDialogComponent {
       })
     })
   );
+
+   checkPasswordsErrorMessage() {
+      return ErrorMessages.getErrorMessage(this.createUser.errors);
+    }
 
   onSubmit(){
     this.createUser.markAllAsTouched();

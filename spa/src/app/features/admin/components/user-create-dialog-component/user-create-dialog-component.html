@@ -68,9 +68,7 @@
                 />
             </div>
         </div>
-        @if (createUser.errors?.['passwordMismatch']){
-            <div class="text-red-500 text-xl">Passwords do not match</div>
-        }
+        <mat-error>{{ checkPasswordsErrorMessage() }}</mat-error>
         <app-password-generator-component />
         <mat-dialog-actions class="flex justify-end items-center gap-2 p-0">
             <button mat-button mat-dialog-close>Cancel</button>
