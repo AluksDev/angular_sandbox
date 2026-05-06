@@ -8,15 +8,15 @@ import { FormSelectComponent } from "@app/shared/forms/components/form-select-co
 import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
-import { DepartmentsService } from '@app/features/departments/departments.service';
+import { DepartmentsService } from '@app/core/services/departments.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MessageDialogComponent } from "@app/shared/components/message-dialog-component/message-dialog-component";
-import { UserService } from '../../user.service';
+import { UserService } from '../../../../core/services/user.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { finalize } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { AuthService } from '@app/core/auth/auth.service';
+import { AuthService } from '@app/core/services/auth.service';
+import { NotificationsService } from '@app/core/notifications/notification.service';
 
 @Component({
   selector: 'app-edit-user-page',
@@ -26,13 +26,13 @@ import { AuthService } from '@app/core/auth/auth.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditUserPage implements OnInit{
+  notificationService = inject(NotificationsService);
   route = inject(ActivatedRoute);
   fb = inject(FormBuilder);
   departmentService = inject(DepartmentsService);
   location = inject(Location);
   userService = inject(UserService);
   readonly dialog = inject(MatDialog);
-  private _snackBar = inject(MatSnackBar);
   authService = inject(AuthService);
 
   userDetails = signal<APIUser>(null);
@@ -132,19 +132,13 @@ export class EditUserPage implements OnInit{
     )
     .subscribe({
       next: (res => {
-        this.openSnackBar('User updated', 'Close');
+        this.notificationService.success('User updated')
         this.location.back();
       }),
       error: (err => {
         console.error(err);
-        this.openSnackBar('Something went wrong', 'Close');
+        this.notificationService.error('Something went wrong');
       })
     })
-  }
-
-  openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action, {
-      duration: 2000
-    });
   }
 }

@@ -2,16 +2,21 @@ import { Component, computed, inject, signal, viewChild } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { FormInputComponent } from '@app/shared/forms/components/form-input-component/form-input-component';
-import { AuthService } from '../../auth.service';
+import { AuthService } from '../../../services/auth.service';
 import { FormSelectComponent } from "@app/shared/forms/components/form-select-component/form-select-component";
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
-import { DepartmentsService } from '@app/features/departments/departments.service';
+import { DepartmentsService } from '@app/core/services/departments.service';
 import { Department } from '@api/departments/DTOs/department.interface';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { finalize, switchMap } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { switchMap } from 'rxjs';
 import { Router, RouterLink } from "@angular/router";
-import { UserService } from '@app/features/user/user.service';
+import { UserService } from '@app/core/services/user.service';
+import { NotificationsService } from '@app/core/notifications/notification.service';
+import { LoadingService } from '@app/core/services/loading.service';
+import { AsyncPipe } from '@angular/common';
+import { CustomValidators } from '@app/shared/forms/validators/custom-validators';
+import { ErrorMessages } from '@app/shared/forms/error-messages';
+import { MatError } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-register-page',
@@ -22,7 +27,9 @@ import { UserService } from '@app/features/user/user.service';
     FormSelectComponent, 
     MatStepperModule, 
     MatProgressSpinnerModule, 
-    RouterLink
+    RouterLink,
+    AsyncPipe,
+    MatError,
   ],
   templateUrl: './register-page.html',
   styleUrl: './register-page.scss',
@@ -32,9 +39,7 @@ export class RegisterPage{
   departmentService = inject(DepartmentsService);
   userService = inject(UserService);
   router = inject(Router);
-  passwordPattern =
-  '^(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,}$';
-
+  passwordPattern = '^(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,}$';
   departmentList = signal<Department[]>([]);
   departmentOptions = computed(() =>
   this.departmentList().map(dep => ({
@@ -43,19 +48,10 @@ export class RegisterPage{
   }))
 );
   hasRegistered = signal<boolean>(false);
-  loading = signal<boolean>(false);
+  loadingService = inject(LoadingService);
+  loading$ = this.loadingService.loading$;
   stepper = viewChild<MatStepper>('stepper'); 
-  private _snackBar = inject(MatSnackBar);
-
-   passwordMatchValidator(formGroup: AbstractControl){
-    const psw = formGroup.get('password').value;
-    const confirmPsw = formGroup.get('password_confirm').value;
-    if (psw !== confirmPsw){
-      return { passwordMismatch: true };
-    } else {
-      return null;
-    }
-  }
+  notificationService = inject(NotificationsService);
 
   hasCompletedRegistration = (formGroup: AbstractControl) => {
     if (this.hasRegistered()){
@@ -64,7 +60,6 @@ export class RegisterPage{
       return { incompleteRegistration: true }
     }
   }
-
 
   fb = inject(FormBuilder);
   registerForm = this.fb.group({
@@ -80,7 +75,7 @@ export class RegisterPage{
         password_confirm: ['']
       }, 
       { 
-        validators: [this.passwordMatchValidator, this.hasCompletedRegistration],
+        validators: [CustomValidators.passwordMatchValidator(), this.hasCompletedRegistration],
         updateOn: 'blur'
       }
       ),
@@ -94,13 +89,14 @@ export class RegisterPage{
     return this.registerForm.get('formArray') as FormArray;
   }
 
- 
+  checkPasswordsErrorMessage() {
+    return ErrorMessages.getErrorMessage(this.formArray.at(1).errors);
+  }
 
   registerUser(){
     const dataGroup = this.formArray.at(0);
     const pswGroup = this.formArray.at(1);
     if (pswGroup.get('password').invalid || pswGroup.get('password_confirm').invalid || dataGroup.invalid) return;
-    this.loading.set(true);
     const userData = dataGroup.value;
     const pswData = pswGroup.value;
     const formData = {...userData, ...pswData};
@@ -108,7 +104,6 @@ export class RegisterPage{
     this.authService.registerUser(formData)
     .pipe(
       switchMap(() => this.departmentService.getDepartments()),
-      finalize(() => this.loading.set(false))
     )
     .subscribe({
       next: ((res)=>{
@@ -122,10 +117,8 @@ export class RegisterPage{
       }),
       error: ((err)=>{
         console.error(err);
-        const errorMsg = err.error.username || 'Something went wrong';
-        this._snackBar.open(errorMsg, 'Close',{
-          duration: 3000
-        });
+        const errorMsg = err.error.username || err.error.password || 'Something went wrong';
+        this.notificationService.error(errorMsg);
         pswGroup.reset();
       })
     });
@@ -134,20 +127,13 @@ export class RegisterPage{
   assignDepartment(){
     if (this.formArray.at(2).invalid || this.formArray.at(2).get('department').value === '') return;
     const departmentId = parseInt(this.formArray.at(2).get('department').value);
-    this.loading.set(true);
-    this.userService.assignDepartmentToCurrentUser(departmentId)
-    .pipe(
-      finalize(() => this.loading.set(false))
-    )
-    .subscribe({
+    this.userService.assignDepartmentToCurrentUser(departmentId).subscribe({
       next: ((res) => {
         this.router.navigate(['/']);
       }),
       error: ((err) => {
         console.error(err);
-        this._snackBar.open('Something went wrong', 'Close',{
-          duration: 3000
-        });
+        this.notificationService.error('Failed to assign department. Please try again.');
       })
     })
   }

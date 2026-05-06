@@ -40,6 +40,10 @@ export class TableComponent <T> implements OnInit{
       : cols;
   });
 
+  hasSortableColumns = computed(() => 
+    this.columns().some(col => col.sortable)
+  );
+
   pageChange = output<PageEvent>();
   sortChange = output<Sort>();
   executeAction = output<{action: string, element: T}>();

@@ -1,23 +1,24 @@
-import { ChangeDetectionStrategy, Component, inject, signal} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormInputComponent } from "@app/shared/forms/components/form-input-component/form-input-component";
 import { FormBuilder, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatButtonModule } from '@angular/material/button';
-import { AuthService } from '../../auth.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from '../../../services/auth.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { finalize } from 'rxjs';
 import { Router, RouterLink } from "@angular/router";
+import { NotificationsService } from '@app/core/notifications/notification.service';
+import { LoadingService } from '@app/core/services/loading.service';
+import { AsyncPipe } from '@angular/common';
 
 
 @Component({
   selector: 'app-login-page',
-  imports: [FormInputComponent, FormsModule, ReactiveFormsModule, MatButtonModule, MatProgressSpinnerModule, RouterLink],
+  imports: [FormInputComponent, FormsModule, ReactiveFormsModule, MatButtonModule, MatProgressSpinnerModule, RouterLink, AsyncPipe],
   templateUrl: './login-page.html',
   styleUrl: './login-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginPage {
-  _snackBar = inject(MatSnackBar);
+  notificationService = inject(NotificationsService);
   authService = inject(AuthService);
   fb = inject(FormBuilder);
   loginForm = this.fb.group({
@@ -25,33 +26,25 @@ export class LoginPage {
     password: ['']
   })
 
-  isLoading = signal<boolean>(false);
+  loadingService = inject(LoadingService);
+  loading$ = this.loadingService.loading$;
   router = inject(Router);
 
   onSubmit() {
     this.loginForm.markAsTouched();
     if (this.loginForm.invalid) {
-      this._snackBar.open('Form invalid', 'Close', {
-          duration: 3000
-        });
+      this.notificationService.warning('Form invalid');
       return;
     };
     const data = this.loginForm.getRawValue();
-    this.isLoading.set(true);
-    this.authService.loginUser(data).pipe(
-      finalize(()=> this.isLoading.set(false))
-    ).subscribe({
+    this.authService.loginUser(data).subscribe({
       next: () => {
-        this._snackBar.open('Login Successful', 'Close', {
-          duration: 3000
-        });
+        this.notificationService.success('Login Successful');
         this.router.navigate(['/']);
       },
       error: (err) => {
         console.error("Error", err);
-        this._snackBar.open(this.getErrorMessage(err), 'Close', {
-          duration: 3000
-        });
+        this.notificationService.error(this.getErrorMessage(err));
         this.loginForm.reset();
       },
     })
@@ -59,9 +52,6 @@ export class LoginPage {
   getErrorMessage(error: any): string{
     if (error.status === 400){
       return 'Invalid username or password';
-    }
-    if (error.status === 0){
-      return 'Connection error - check your network';
     }
     return 'Login failed. Please try again.';
   }

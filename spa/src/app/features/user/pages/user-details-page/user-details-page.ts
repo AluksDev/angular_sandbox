@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { APIUser } from '@api/users/DTOs/user.interace';
 import { UserDetailsHeader } from "../../components/user-details-header/user-details-header";
 import { UserDetailsTabs } from "../../components/user-details-tabs/user-details-tabs";
-import { DepartmentsService } from '@app/features/departments/departments.service';
+import { DepartmentsService } from '@app/core/services/departments.service';
 import { Department } from '@api/departments/DTOs/department.interface';
 import { BreadcrumbComponent } from "@app/shared/components/breadcrumb-component/breadcrumb-component";
 
@@ -30,6 +30,7 @@ export class UserDetailsPage implements OnInit{
 
   ngOnInit(): void {
     this.userDetails.set(this.route.snapshot.data['userDetails']);
+    if (!this.userDetails().department) return;
     this.departmentsService.getDepartmentById(this.userDetails().department).subscribe({
       next: ((res) => {
         this.departmentDetails.set(res);

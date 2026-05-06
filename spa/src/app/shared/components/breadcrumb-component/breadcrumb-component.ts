@@ -12,7 +12,7 @@ import { Router, RouterLink } from '@angular/router';
 export class BreadcrumbComponent implements OnInit{
   router = inject(Router);
   
-  crumbs = signal<string[]>(['Dashboard']);
+  crumbs = signal<string[]>(['dashboard']);
   lastCrumb = input<string>();
 
   ngOnInit() {

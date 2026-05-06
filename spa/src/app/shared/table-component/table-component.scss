@@ -1,6 +1,17 @@
 :host ::ng-deep .mat-mdc-row.clickable {
   cursor: pointer !important;
 }
+:host ::ng-deep .mat-mdc-row.clickable:hover {
+  background-color: hsla(185, 100%, 28%, 0.1) !important;
+}
+
+.clickableCard {
+  cursor: pointer !important;
+}
+.clickableCard:hover {
+  background-color: hsla(185, 100%, 28%, 0.1) !important;
+}
+
 .mat-mdc-row:hover{
   background-color: rgba(0, 0, 0, 0.04);
 }
