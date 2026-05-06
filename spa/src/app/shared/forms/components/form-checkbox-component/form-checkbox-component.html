@@ -1,6 +1,14 @@
-<mat-checkbox 
-    [disabled]="isDisabled()"
-    [required]="isRequired()"
->
-    {{ label() }}
-</mat-checkbox>
+<div class="flex flex-col">
+    <mat-checkbox 
+        [formControl]="formControl"
+        [required]="required()"
+        [labelPosition]="labelPosition()"
+    >
+        {{ label() }}
+    </mat-checkbox>
+    @if (formControl.touched){
+        <div class="text-sm text-red-500 ml-3">
+            {{ getErrorMessage() }}
+        </div>
+    }
+</div>
