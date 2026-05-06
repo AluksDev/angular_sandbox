@@ -1,1 +1,20 @@
-<p>form-textarea-component works!</p>,
+<mat-form-field [appearance]="appearance()" class="w-full py-1 px-2">
+    @if (label()){
+        <mat-label>{{ label() }}</mat-label>
+    }
+    <textarea
+        matInput
+        [formControl]="formControl"
+        [placeholder]="placeholder()"
+        [required]="required()"
+        [attr.minlength]="minLength()"
+        [attr.maxlength]="maxLength()"
+    ></textarea>
+    @if (charCount() > 0){
+        <p class="text-xs text-gray-500">Chars: {{ charCount() }} @if (maxLength()){/{{maxLength()}}}</p>
+    }
+    @if (hint()) {
+        <mat-hint>{{ hint() }}</mat-hint>
+    }
+    <mat-error>{{ getErrorMessage() }}</mat-error>
+</mat-form-field>
