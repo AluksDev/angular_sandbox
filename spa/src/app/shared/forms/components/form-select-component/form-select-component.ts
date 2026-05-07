@@ -35,6 +35,7 @@ export class FormSelectComponent extends BaseFormControlAccessor{
   placeholder= input<string>();
   searchable = input<boolean>();
   appearance = input<string>("outline")
+  dataCy = input<string>();
 
   filteredOptions: Observable<SelectOptions[]>;
   constructor(injector: Injector) {

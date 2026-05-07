@@ -11,6 +11,7 @@
     [required]="required()"
     [attr.minlength]="minLength()"
     [attr.maxlength]="maxLength()"
+    [attr.data-cy]="dataCy()"
   />
   @if (iconName()){
     <mat-icon matPrefix>{{ iconName() }}</mat-icon>

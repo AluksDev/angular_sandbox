@@ -27,7 +27,8 @@
                     placeholder="Enter username"
                     [required]="true"
                     type="text"
-                    [maxLength]="5"
+                    [maxLength]="150"
+                    dataCy="username-input"
                 />
                 <app-form-input-component 
                     formControlName="email"
@@ -35,6 +36,7 @@
                     placeholder="Enter email"
                     [required]="false"
                     type="email"
+                    dataCy="email-input"
                 />
                 <app-form-input-component 
                     formControlName="first_name"
@@ -42,6 +44,7 @@
                     placeholder="Enter first name"
                     [required]="false"
                     type="text"
+                    dataCy="first-name-input"
                 />
                 <app-form-input-component 
                     formControlName="last_name"
@@ -49,9 +52,10 @@
                     placeholder="Enter last name"
                     [required]="false"
                     type="text"
+                    dataCy="last-name-input"
                 />
                 <div>
-                    <button mat-button matStepperNext type="button">Next</button>
+                    <button mat-button matStepperNext type="button" data-cy="next-btn">Next</button>
                 </div>
             </mat-step>
             <mat-step formGroupName="1" [stepControl]="formArray.get([1])" label="Create your password">
@@ -66,6 +70,7 @@
                     [pswStrengthCheck]="true"
                     hint="Minimum 8 characters long, at least one uppercase letter, one number, and one special character."
                     [validPattern]="passwordPattern"
+                    dataCy="password-input"
                 />
                 <app-form-input-component 
                     formControlName="password_confirm"
@@ -73,12 +78,13 @@
                     placeholder=""
                     [required]="true"
                     type="password"
+                    dataCy="repeat-password-input"
                 />
                 <mat-error>{{ checkPasswordsErrorMessage() }}</mat-error>
                 <div>
                     <button mat-button matStepperPrevious type="button">Back</button>
                     @if (!hasRegistered()){
-                        <button mat-button type="button" (click)="registerUser()">Register</button>
+                        <button mat-button type="button" (click)="registerUser()" data-cy="register-btn">Register</button>
                     } @else {
                         <button mat-button type="button" matStepperNext>Next</button>
                     }
@@ -91,11 +97,12 @@
                     placeholder="Select department"
                     [required]="false"
                     [options]="departmentOptions()"
+                    dataCy="dep-select"
                 />
                 <div>
                     <button mat-button matStepperPrevious type="button">Back</button>
-                    <button mat-button type="button" (click)="assignDepartment()">Assign Department</button>
-                    <a mat-button type="button" [routerLink]="['/']" >Close</a>
+                    <button mat-button type="button" (click)="assignDepartment()" data-cy="assign-dep-btn">Assign Department</button>
+                    <a mat-button type="button" [routerLink]="['/']" data-cy="close-btn">Close</a>
                 </div>
             </mat-step>
         </mat-stepper>

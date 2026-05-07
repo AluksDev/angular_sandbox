@@ -36,6 +36,7 @@ export class FormInputComponent extends BaseFormControlAccessor implements After
   autofocus = input<boolean>(false);
   pswStrengthCheck = input<boolean>(false);
   validPattern = input<string>();
+  dataCy = input<string>();
 
   @ViewChild('inputElement') inputElement!: ElementRef;
 

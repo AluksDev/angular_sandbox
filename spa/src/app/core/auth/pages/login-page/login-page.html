@@ -43,6 +43,7 @@
             label="Username"
             minLength="2"
             aria-label="Username"
+            dataCy="username-input"
           />
 
           <app-form-input-component
@@ -53,6 +54,7 @@
             label="Password"
             minLength="8"
             aria-label="Password"
+            dataCy="password-input"
           />
 
         </div>
@@ -64,6 +66,7 @@
           class="w-full !h-12 !text-base !rounded-lg mt-4 shadow-md transition-all hover:shadow-lg"
           [disabled]="loginForm.invalid"
           aria-label="Sign in to your account"
+          data-cy="submit-btn"
         >
           Sign In
         </button>
