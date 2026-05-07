@@ -12,17 +12,17 @@ describe('Register Flow', () => {
         
     })
     
-    it('should validate password strength', () => {
+    it('should validate password strenght', () => {
         cy.get('[data-cy="username-input"]').type('username');
         cy.get('[data-cy="next-btn"]').click();
         cy.get('[data-cy="password-input"]').type('weakpassword');
-        cy.get('[data-cy="psw-strength"]').should('contain.text', 'Weak')
+        cy.get('[data-cy="psw-strenght"]').should('contain.text', 'Weak')
         cy.get('[data-cy="password-input"]').clear().type('fairPassword');
-        cy.get('[data-cy="psw-strength"]').should('contain.text', 'Fair')
+        cy.get('[data-cy="psw-strenght"]').should('contain.text', 'Fair')
         cy.get('[data-cy="password-input"]').clear().type('g00dPassword');
-        cy.get('[data-cy="psw-strength"]').should('contain.text', 'Good')
+        cy.get('[data-cy="psw-strenght"]').should('contain.text', 'Good')
         cy.get('[data-cy="password-input"]').clear().type('str0ngPassword!');
-        cy.get('[data-cy="psw-strength"]').should('contain.text', 'Strong')
+        cy.get('[data-cy="psw-strenght"]').should('contain.text', 'Strong')
     })
 
     it('should show error if username already exists', () => {

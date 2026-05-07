@@ -24,8 +24,8 @@
      <mat-icon matSuffix class="cursor-pointer" (click)="togglePassword()">{{ eyeIcon() }}</mat-icon>
   }
 
-  @if (type() === 'password' && pswStrengthCheck()){
-    <app-password-strength-component 
+  @if (type() === 'password' && pswStrenghtCheck()){
+    <app-password-strenght-component 
       [password]="inputElement.value"
     />
   }
