@@ -1,7 +1,7 @@
 import { HttpRequest, HttpHandlerFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, retry, throwError, delay } from 'rxjs';
+import { catchError, retry, throwError, delay, EMPTY } from 'rxjs';
 import { NotificationsService } from '../notifications/notification.service';
 import { timer } from 'rxjs';
 
@@ -46,7 +46,7 @@ export function errorInterceptor(request: HttpRequest<unknown>, next: HttpHandle
           }
           break;
       }
-      return throwError(() => error);
+      return EMPTY;
     })
   );
 }
