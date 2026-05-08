@@ -1,0 +1,17 @@
+[
+    {
+        "id": 1,
+        "name": "IT",
+        "code": "IT"
+    },
+    {
+        "id": 2,
+        "name": "Sales",
+        "code": "SAL"
+    },
+    {
+        "id": 3,
+        "name": "Marketing",
+        "code": "MKT"
+    }
+]
