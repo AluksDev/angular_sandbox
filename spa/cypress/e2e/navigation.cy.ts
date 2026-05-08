@@ -1,22 +1,8 @@
 describe('Navigation', () => {
-    beforeEach(()=>{
-        cy.fixture('users').then((users) => {
-            const user = users.find(u => u.roles.includes('user'));
-            cy.intercept('GET', '/services/sandbox/auth/me/', {
-                statusCode: 200,
-                body: { 
-                    ...user
-                }
-            }).as('meRequest');
-        })
-        
-        cy.window().then((win) => {
-            win.localStorage.setItem('token', 'fake-jwt-token');
-        });
-        
-        cy.visit('/')
-        cy.wait('@meRequest');
-    })
+    beforeEach(() => {
+        cy.loginAs('user');
+        cy.visit('/');
+    });
 
     it('should navigate between sections', () => {
         const navItems = [
@@ -76,63 +62,58 @@ describe('Navigation', () => {
         }).as('departmentsRequest');
         cy.visit('/departments');
         cy.wait('@departmentsRequest');
-        cy.get('.fuse-vertical-navigation-item-active').should('contain.text', 'Departments').and('have.class', 'fuse-vertical-navigation-item-active');
-    })
+        cy.get('.fuse-vertical-navigation-item-active')
+            .should('contain.text', 'Departments')
+            .and('have.class', 'fuse-vertical-navigation-item-active');
+    });
 
     it('should generate correct breadcrumbs', () => {
         cy.fixture('users').then((users) => {
             const user = users.find(u => u.username === 'testuser');
 
-            cy.intercept('GET', `/services/sandbox/user/${user.id}`, {
-                statusCode: 200,
-                body: { ...user }
-            }).as('getUserDetailsRequest');
             cy.fixture('departments').then((departmentList) => {
                 const department = departmentList.find(dep => dep.id === user.department);
+
                 cy.intercept('GET', `/services/sandbox/department/${department.id}/`, {
                     statusCode: 200,
                     body: { ...department }
-                })
-            }).as('departmentRequest')
-            cy.visit(`/users/${user.id}`);
-            cy.wait('@getUserDetailsRequest');
-            cy.wait('@departmentRequest');
+                }).as('departmentRequest');
+
+                cy.intercept('GET', `/services/sandbox/user/${user.id}`, {
+                    statusCode: 200,
+                    body: { ...user }
+                }).as('getUserDetailsRequest');
+
+                cy.visit(`/users/${user.id}`);
+                cy.wait('@getUserDetailsRequest');
+                cy.wait('@departmentRequest');
+
+                cy.location('pathname').then((pathname) => {
+                    const segments = ['Dashboard', ...pathname.split('/').filter(Boolean)];
+
+                    cy.get('[data-cy="breadcrumb-item"]').should('have.length', segments.length);
+
+                    segments.forEach((segment, index) => {
+                        if (index === segments.length - 1) return;
+                        cy.get('[data-cy="breadcrumb-item"]')
+                            .eq(index)
+                            .should('contain.text', segment.charAt(0).toUpperCase() + segment.slice(1));
+                    });
+
+                    cy.get('[data-cy="breadcrumb-item"]')
+                        .last()
+                        .should('be.visible')
+                        .and('not.be.empty');
+                });
+            });
         });
-        cy.location('pathname').then((pathname) => {
-            const segments = ['Dashboard', ...pathname.split('/').filter(Boolean)];
-
-            cy.get('[data-cy="breadcrumb-item"]').should('have.length', segments.length);
-
-            segments.forEach((segment, index) => {
-                if (index === segments.length - 1) return;
-
-                cy.get('[data-cy="breadcrumb-item"]')
-                    .eq(index)
-                    .should('contain.text', segment.charAt(0).toUpperCase() + segment.slice(1));
-            });
-
-            cy.get('[data-cy="breadcrumb-item"]')
-                .last()
-                .should('be.visible')
-                .and('not.be.empty');
-            });
-        })
+    });
 
     describe('Admin route protection', () => {
         describe('when user is admin', () => {
             beforeEach(() => {
-                cy.fixture('users').then((users) => {
-                    const user = users.find(u => u.roles.includes('admin'));
-                    cy.intercept('GET', '/services/sandbox/auth/me/', {
-                        statusCode: 200,
-                        body: { ...user }
-                    }).as('meRequest');
-                });
-                cy.window().then((win) => {
-                    win.localStorage.setItem('token', 'fake-jwt-token');
-                });
+                cy.loginAs('admin');
                 cy.visit('/');
-                cy.wait('@meRequest');
             });
 
             it('should allow navigation to protected route', () => {
@@ -156,18 +137,8 @@ describe('Navigation', () => {
 
         describe('when user is NOT admin', () => {
             beforeEach(() => {
-                cy.fixture('users').then((users) => {
-                    const user = users.find(u => u.roles.includes('user'));
-                    cy.intercept('GET', '/services/sandbox/auth/me/', {
-                        statusCode: 200,
-                        body: { ...user }
-                    }).as('meRequest');
-                });
-                cy.window().then((win) => {
-                    win.localStorage.setItem('token', 'fake-jwt-token');
-                });
+                cy.loginAs('user');
                 cy.visit('/');
-                cy.wait('@meRequest');
             });
 
             it('should redirect to 403', () => {

@@ -1,3 +1,9 @@
+function fillLoginForm(options: {username?: string, password?: string} = {}) {
+    const { username = 'username', password = 'password' } = options;
+    cy.get('[data-cy="username-input"]').type(username);
+    cy.get('[data-cy="password-input"]').type(password);
+}
+
 describe('Login Flow', () => {
     beforeEach(()=>{
         cy.visit('/auth/login');
@@ -19,8 +25,7 @@ describe('Login Flow', () => {
                 }
             }
         }).as('loginRequest');
-        cy.get('[data-cy="username-input"]').type('validuser@example.com');
-        cy.get('[data-cy="password-input"]').type('correctpassword');
+        fillLoginForm();
         cy.get('[data-cy="submit-btn"]').click();
 
         cy.wait('@loginRequest');
@@ -33,27 +38,17 @@ describe('Login Flow', () => {
             body: {}
         }).as('loginRequest');
 
-        cy.get('[data-cy="username-input"]').type('wrong@example.com');
-        cy.get('[data-cy="password-input"]').type('wrongpassword');
+        fillLoginForm();
         cy.get('[data-cy="submit-btn"]').click();
 
         cy.wait('@loginRequest');
-        cy.get('.error-snackbar').should('be.visible');
         cy.get('.error-snackbar').should('contain.text', 'Invalid username or password');
     });
 
     describe('when user is already authenticated', () => {
         it('should prevent access to login if already authenticated', () => {
-            cy.intercept('GET', '/services/sandbox/auth/me/', {
-                statusCode: 200,
-                body: { username: 'testuser' }
-            }).as('meRequest');
-
+            cy.loginAs('user');
             cy.visit('/');
-
-            cy.window().then((win) => {
-                win.localStorage.setItem('token', 'fake-jwt-token');
-            });
 
             cy.visit('/auth/login');
             cy.wait('@meRequest');

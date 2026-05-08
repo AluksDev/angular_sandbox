@@ -1,3 +1,12 @@
+function fillRegistrationForm(options: { username?: string; password?: string } = {}) {
+  const { username = 'testuser', password = 'passWord1!' } = options;
+
+  cy.get('[data-cy="username-input"]').type(username);
+  cy.get('[data-cy="next-btn"]').click();
+  cy.get('[data-cy="password-input"]').type(password);
+  cy.get('[data-cy="repeat-password-input"]').type(password);
+}
+
 describe('Register Flow', () => {
     beforeEach(()=>{
         cy.visit('/auth/register');
@@ -31,10 +40,7 @@ describe('Register Flow', () => {
             body: { username: 'A user with that username already exists.'}
         }).as('registerRequest');
 
-        cy.get('[data-cy="username-input"]').type('username');
-        cy.get('[data-cy="next-btn"]').click();
-        cy.get('[data-cy="password-input"]').type('passWord1!');
-        cy.get('[data-cy="repeat-password-input"]').type('passWord1!');
+        fillRegistrationForm();
         cy.get('[data-cy="register-btn"]').click();
         cy.wait('@registerRequest');
         cy.get('.error-snackbar').should('contain.text', 'A user with that username already exists.');
@@ -52,20 +58,16 @@ describe('Register Flow', () => {
                     }}
             }).as('registerRequest');
 
-            cy.intercept('GET', '/services/sandbox/department/?ordering=name', {
-                statusCode: 200,
-                body: { 
-                    results: [
-                        { id: 1, name: 'dep-1' },
-                        { id: 2, name: 'dep-2' }
-                    ] 
-                }
-            }).as('departmentsRequest');
+            cy.fixture('departments').then(departmentList => {
+                cy.intercept('GET', '/services/sandbox/department/?ordering=name', {
+                    statusCode: 200,
+                    body: { 
+                        results: departmentList
+                    }
+                }).as('departmentsRequest');
+            })
 
-            cy.get('[data-cy="username-input"]').type('username');
-            cy.get('[data-cy="next-btn"]').click();
-            cy.get('[data-cy="password-input"]').type('passWord1!');
-            cy.get('[data-cy="repeat-password-input"]').type('passWord1!');
+            fillRegistrationForm();
             cy.get('[data-cy="register-btn"]').click();
 
             cy.wait('@registerRequest');

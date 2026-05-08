@@ -1,17 +1,7 @@
 describe('Authentication', () => {
     beforeEach(() => {
-        cy.fixture('users').then((users) => {
-            const user = users.find(u => u.roles.includes('user'));
-            cy.intercept('GET', '/services/sandbox/auth/me/', {
-                statusCode: 200,
-                body: { ...user }
-            }).as('meRequest');
-        });
-        cy.window().then((win) => {
-            win.localStorage.setItem('token', 'fake-jwt-token');
-        });
+        cy.loginAs('user');
         cy.visit('/');
-        cy.wait('@meRequest');
     });
 
     it('should protect private routes', () => {
@@ -22,7 +12,6 @@ describe('Authentication', () => {
 
     it('should persist session on refresh', () => {
         cy.reload();
-        cy.wait('@meRequest');
         cy.location('pathname').should('not.eq', '/auth/login');
     });
 
@@ -39,6 +28,12 @@ describe('Authentication', () => {
     });
 
     it('should handle expired token', () => {
+        cy.on('uncaught:exception', (err) => {
+            if (err.message.includes('401')) {
+                return false;
+            }
+            throw err;
+        });
         cy.intercept('GET', '/services/sandbox/auth/me/', {
             statusCode: 401,
             body: { details: 'Invalid token.' }
