@@ -281,6 +281,4 @@ describe('Users CRUD', () => {
             cy.get('.success-snackbar').should('contain.text', 'Created user with id: 100');
         })
     })
-
-    
 });
