@@ -84,7 +84,7 @@ export class UsersFiltersComponent implements OnInit{
         skip(1),
         filter(values => {
           const dep = values.department;
-          return !dep || this.depSelectOptions().some(opt => opt.value === dep);
+          return !dep || this.depSelectOptions().some(opt => opt.value === dep);  //only let this value through if the department field is empty, or if it matches a real department ID
         })
       )
       .subscribe(values => {
