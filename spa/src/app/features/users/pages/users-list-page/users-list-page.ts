@@ -18,6 +18,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { User } from '@api/users/DTOs/user.interace';
 import { AsyncPipe } from '@angular/common';
 import { LoadingService } from '@app/core/services/loading.service';
+import { MatDialog } from '@angular/material/dialog';
+import { MessageDialogComponent } from '@app/shared/components/message-dialog-component/message-dialog-component';
+import { UserService } from '@app/core/services/user.service';
 
 
 type FilterValues = {
@@ -41,7 +44,9 @@ export class UsersListPage implements OnInit{
   authService = inject(AuthService);
   destroyRef = inject(DestroyRef);
   loadingService = inject(LoadingService);
+  dialog = inject (MatDialog);
   loading$ = this.loadingService.loading$;
+  userService = inject(UserService);
 
   totalUsers = signal<number>(0);
   usersList = signal<User[]>([]);
@@ -106,8 +111,8 @@ export class UsersListPage implements OnInit{
       color: 'warn'
     },
     {
-      key: 'deactivate',
-      label: 'Deactivate',
+      key: 'status',
+      label: 'Change Status',
       color: 'danger'
     },
   ]
@@ -240,9 +245,36 @@ export class UsersListPage implements OnInit{
       case 'edit':
         this.router.navigate(['/users', userId, 'edit']);
         break;
+      case 'status':
+        this.openDeactivateDialog(userId, element.username, element.status);
+        break;
     }
   }
   @ViewChild(TableComponent) table!: TableComponent<User>;
+
+  openDeactivateDialog(id: number, username: string, status: string){
+    const nextStatus = status === 'active' ? 'inactive' : 'active';
+    const is_active = status === 'active' ? true: false;
+    const dialogRef = this.dialog.open(MessageDialogComponent, {
+      data: {
+        title: `This action will change this user status to: ${nextStatus}`,
+        message: 'Are you sure you want to continue?',
+        action: 'status'
+      }
+    });
+    dialogRef.afterClosed().subscribe(res => {
+      if (res && res === 'status'){
+        this.changeUserStatus(id, username, is_active);
+      }
+    })
+  }
+
+  changeUserStatus(id: number, username: string, is_active: boolean){
+    this.userService.updateUser(id, { username: username, is_active: !is_active }).subscribe(res => {
+      if (!res) return;
+      this.loadUsers(this.query());
+    })
+  }
 
   resetTable() {
     if(!this.table) return;

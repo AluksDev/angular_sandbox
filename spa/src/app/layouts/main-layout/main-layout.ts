@@ -6,14 +6,14 @@ import { CdkTableModule } from "@angular/cdk/table";
 import { UserSidebarSnippetComponent } from "@app/features/user/components/user-sidebar-snippet-component/user-sidebar-snippet-component";
 import { AuthService } from '@app/core/services/auth.service';
 import { finalize, map } from 'rxjs';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe, NgIf, NgClass } from '@angular/common';
 import { mapApiUserToUser } from '@app/features/user/user.mapper';
 import { MatIcon } from "@angular/material/icon";
 import { NotificationsService } from '@app/core/notifications/notification.service';
 
 @Component({
   selector: 'app-main-layout',
-  imports: [MatSidenavModule, FuseVerticalNavigationComponent, RouterOutlet, CdkTableModule, UserSidebarSnippetComponent, AsyncPipe, NgIf, RouterLink, MatIcon],
+  imports: [MatSidenavModule, FuseVerticalNavigationComponent, RouterOutlet, CdkTableModule, UserSidebarSnippetComponent, AsyncPipe, NgIf, RouterLink, MatIcon, NgClass],
   templateUrl: './main-layout.html',
   styleUrl: './main-layout.scss',
 })
