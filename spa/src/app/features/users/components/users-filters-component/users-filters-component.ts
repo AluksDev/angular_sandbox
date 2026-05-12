@@ -100,4 +100,4 @@ export class UsersFiltersComponent implements OnInit{
       this.filterForm.patchValue({ status: '' });
     }
   }
- }
+}
