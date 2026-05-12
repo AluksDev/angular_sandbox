@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, OnInit, signal, DestroyRef,
 import { UsersFiltersComponent } from "../../components/users-filters-component/users-filters-component";
 import { UsersService } from '../../../../core/services/users.service';
 import { DepartmentsService } from '@app/core/services/departments.service';
-import { finalize, map, tap } from 'rxjs';
+import { map, tap } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
 import { Department } from '@api/departments/DTOs/department.interface';

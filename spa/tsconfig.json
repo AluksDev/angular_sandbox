@@ -5,7 +5,9 @@
     "strictNullChecks": false,
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
+    "ignoreDeprecations": "6.0",
     "baseUrl": "./src",
+    "rootDir": "./src",
     "outDir": "./dist",
     "forceConsistentCasingInFileNames": true,
     "sourceMap": true,
@@ -42,7 +44,6 @@
     }
   },
   "angularCompilerOptions": {
-    "allowSyntheticDefaultImports": true,
     "enableI18nLegacyMessageIdFormat": false
   }
 }
