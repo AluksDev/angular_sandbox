@@ -4,14 +4,14 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BaseFormControlAccessor } from '../../utils/control-value-accessor-base';
 import { MatIcon } from '@angular/material/icon';
-import { PasswordStrengthComponent } from '../password-strength-component/password-strength-component';
 import { ErrorMessages } from '../../error-messages';
 import { CustomValidators } from '../../validators/custom-validators';
+import { PasswordStrenghtComponent } from '../password-strenght-component/password-strenght-component';
 
 @Component({
   selector: 'app-form-input-component',
   standalone: true,
-  imports: [MatFormFieldModule, ReactiveFormsModule, MatIcon, MatInputModule, FormsModule, PasswordStrengthComponent],
+  imports: [MatFormFieldModule, ReactiveFormsModule, MatIcon, MatInputModule, FormsModule, PasswordStrenghtComponent],
   templateUrl: './form-input-component.html',
   styleUrls: ['./form-input-component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -34,8 +34,9 @@ export class FormInputComponent extends BaseFormControlAccessor implements After
   iconName = input<string>();
   appearance= input<string>('outline')
   autofocus = input<boolean>(false);
-  pswStrengthCheck = input<boolean>(false);
+  pswStrenghtCheck = input<boolean>(false);
   validPattern = input<string>();
+  dataCy = input<string>();
 
   @ViewChild('inputElement') inputElement!: ElementRef;
 

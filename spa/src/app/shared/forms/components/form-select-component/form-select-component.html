@@ -6,6 +6,7 @@
       [formControl]="formControl"
       [placeholder]="placeholder() ?? 'Pick One'"
       [matAutocomplete]="auto"
+      [attr.data-cy]="dataCy()"
     >
       <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayWith">
       @for (option of filteredOptions | async; track option.value) {
@@ -15,7 +16,7 @@
       }
     </mat-autocomplete>
   } @else {
-      <mat-select [formControl]="formControl" [placeholder]="placeholder() ?? 'Pick One'">
+      <mat-select [formControl]="formControl" [placeholder]="placeholder() ?? 'Pick One'" [attr.data-cy]="dataCy()">
           @for (option of options(); track option.value) {
           <mat-option [value]="option.value">
             {{ option.label }}
