@@ -1,1 +1,14 @@
-<p>form-datepicker-component works!</p>,
+<mat-form-field [appearance]="appearance()" class="w-full py-1 px-2">
+    <mat-label>{{ label() }}</mat-label>
+    <input
+        matInput 
+        [matDatepicker]="picker" 
+        [formControl]="formControl"
+    >
+    <mat-hint>{{ hint() }}</mat-hint>
+    <mat-error>{{ getErrorMessage() }}</mat-error>
+    <mat-datepicker-toggle matIconSuffix [for]="picker">
+        <mat-icon matDatepickerToggleIcon>{{ iconName() }}</mat-icon>
+    </mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+</mat-form-field>

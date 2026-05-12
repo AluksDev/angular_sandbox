@@ -1,17 +1,17 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
 @Component({
-  selector: 'app-password-strength-component',
+  selector: 'app-password-strenght-component',
   imports: [],
-  templateUrl: './password-strength-component.html',
-  styleUrl: './password-strength-component.scss',
+  templateUrl: './password-strenght-component.html',
+  styleUrl: './password-strenght-component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PasswordStrengthComponent {
+export class PasswordStrenghtComponent {
   password = input.required<string>();
 
-  // Derived strength signal
-  strength = computed(() => {
+  // Derived strenght signal
+  strenght = computed(() => {
     const pwd = this.password();
     if (!pwd) return 0;
     
@@ -25,8 +25,8 @@ export class PasswordStrengthComponent {
   });
 
   // Derived text for the UI
-  strengthText = computed(() => {
+  strenghtText = computed(() => {
     const scores = ['Weak', 'Weak', 'Fair', 'Good', 'Strong'];
-    return scores[this.strength()];
+    return scores[this.strenght()];
   });
  }

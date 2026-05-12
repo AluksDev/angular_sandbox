@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Department } from '@api/departments/DTOs/department.interface';
 import { FormInputComponent } from '@app/shared/forms/components/form-input-component/form-input-component';
 import { FormSelectComponent } from '@app/shared/forms/components/form-select-component/form-select-component';
-import { debounceTime, skip } from 'rxjs';
+import { debounceTime, filter, skip } from 'rxjs';
 
 type FilterValues = {
   search?: string;
@@ -45,7 +45,7 @@ export class UsersFiltersComponent implements OnInit{
   });
 
   getDepartmentName(id: number): string {
-    return this.depSelectOptions().find(dep => dep.value === id).label;
+    return this.depSelectOptions().find(dep => dep.value === id)?.label ?? '';
   }
   
   fb = inject(FormBuilder);
@@ -82,6 +82,10 @@ export class UsersFiltersComponent implements OnInit{
       .pipe(
         debounceTime(300),
         skip(1),
+        filter(values => {
+          const dep = values.department;
+          return !dep || this.depSelectOptions().some(opt => opt.value === dep);  //only let this value through if the department field is empty, or if it matches a real department ID
+        })
       )
       .subscribe(values => {
         this.filterChange.emit(values)

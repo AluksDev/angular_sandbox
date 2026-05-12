@@ -50,6 +50,7 @@
       matSort 
       [class.hidden]="loading()"
       (matSortChange)="onSortChange($event)"
+      data-cy="users-table"
     >
     @for (column of columns(); track column.key){
         <ng-container [matColumnDef]="column.key">
@@ -92,7 +93,7 @@
           <td mat-cell *matCellDef="let element" class="py-1 flex justify-center gap-4">
 
             @for (action of actions(); track action.key) {
-              <button (click)="onActionClick(action.key, element)" mat-stroked-button [ngClass]="action.color ? action.color + '-btn' : null" class="mx-2">
+              <button data-cy="table-action-button" (click)="onActionClick(action.key, element)" mat-stroked-button [ngClass]="action.color ? action.color + '-btn' : null" class="mx-2">
                 {{ action.label }}
               </button>
             }

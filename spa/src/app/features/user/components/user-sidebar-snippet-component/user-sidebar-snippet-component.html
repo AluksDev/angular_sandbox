@@ -1,4 +1,4 @@
-<div [matMenuTriggerFor]="userMenu" class="flex items-center justify-between p-2 m-2 rounded-xl bg-white border border-gray-200 shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 group cursor-pointer">
+<div [matMenuTriggerFor]="userMenu" class="flex items-center justify-between p-2 m-2 rounded-xl bg-white border border-gray-200 shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 group cursor-pointer" data-cy="user-snippet">
   <div class="flex items-center gap-2">
     <div class="relative h-10 w-10 overflow-hidden rounded-lg shadow-inner bg-gray-100">
       <img 
@@ -31,7 +31,7 @@
     <mat-icon>person</mat-icon>
     <span>Account</span>
   </button>
-  <button mat-menu-item (click)="onAction('logout')">
+  <button mat-menu-item (click)="onAction('logout')" data-cy="logout-btn">
     <mat-icon>logout</mat-icon>
     <span>Logout</span>
   </button>

@@ -35,19 +35,26 @@ export class FormSelectComponent extends BaseFormControlAccessor{
   placeholder= input<string>();
   searchable = input<boolean>();
   appearance = input<string>("outline")
+  dataCy = input<string>();
 
   filteredOptions: Observable<SelectOptions[]>;
   constructor(injector: Injector) {
     super(injector);
-    
+
     effect(() => {
       if (!this.formControl || !this.searchable()) return;
-      const currentOptions = this.options();
+      
+      const currentOptions = this.options() ?? [];
+
       this.filteredOptions = this.formControl.valueChanges.pipe(
-        startWith(currentOptions),
+        startWith(this.formControl.value),
         map(value => {
-          const displayValue = typeof value === 'string' ? value : '';
-          return this.searchFilter(displayValue);
+          const isStoredId = currentOptions.some(opt => opt.value === value);
+          if (isStoredId) return currentOptions;
+          const typed = typeof value === 'string' ? value : '';
+          return currentOptions.filter(opt =>
+            opt.label.toLowerCase().includes(typed.toLowerCase())
+          );
         })
       );
     });
@@ -62,15 +69,6 @@ export class FormSelectComponent extends BaseFormControlAccessor{
     const validators = [];
     if (this.required()){
       validators.push(Validators.required);
-    }
-    if (this.searchable()) {
-      this.filteredOptions = this.formControl.valueChanges.pipe(
-        startWith(this.formControl.value),
-        map(value => {
-          const displayValue = typeof value === 'string' ? value : '';
-          return this.searchFilter(displayValue);
-        })
-      );
     }
     this.formControl!.setValidators(validators);
     this.formControl!.updateValueAndValidity();

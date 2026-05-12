@@ -71,7 +71,7 @@ export class UserCreateDialogComponent {
     })
   );
 
-   checkPasswordsErrorMessage() {
+  checkPasswordsErrorMessage() {
       return ErrorMessages.getErrorMessage(this.createUser.errors);
     }
 
