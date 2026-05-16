@@ -1,93 +1,250 @@
-# spa
+# Angular SPA
 
+A modern Single Page Application (SPA) built with **Angular 19.1.1**, featuring a rich user interface with charts, mapping capabilities, file uploads, and multilingual support.
 
+> **Note**: The backend API for this application is developed and maintained by another team member.
 
-## Getting started
+## Quick Start
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+### Prerequisites
+- Node.js (latest LTS recommended)
+- npm or yarn package manager
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+### Installation
 
-## Add your files
+1. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+2. **Start development server**
+   ```bash
+   npm start
+   ```
+   
+   The application will be available at `http://localhost:4201`
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+The build artifacts will be stored in the `dist/` directory.
+
+## Technology Stack
+
+### Core Framework
+- **Angular**: 19.1.1
+- **TypeScript**: 5.6.3
+- **RxJS**: 7.8.1
+
+### Styling & UI
+- **Tailwind CSS**: 3.4.17 (Utility-first CSS framework)
+- **SCSS**: Component-scoped styles
+- **Angular Material**: 19.1.1 (Pre-built UI components)
+
+### Charts & Visualization
+- **ApexCharts**: Modern charting library
+- **Chart.js**: Simple yet flexible charting
+- **ng2-charts**: Angular wrapper for Chart.js
+- **OpenLayers**: 10.2.1 (Mapping library)
+
+### Forms & Input
+- **Reactive Forms**: Advanced form handling
+- **ngx-quill**: WYSIWYG rich text editor
+- **ng-select**: Advanced select component
+- **ngx-material-timepicker**: Time picking component
+
+### Utilities
+- **@ngneat/transloco**: Internationalization
+- **@ngx-translate/core**: Translation management
+- **ngx-moment**: Moment.js integration
+- **Luxon**: Modern date/time library
+- **lodash-es**: Utility functions
+- **crypto-js**: Cryptographic library
+
+### File Handling
+- **ng2-file-upload**: File upload component
+
+### UI/UX
+- **ngx-skeleton-loader**: Skeleton loading states
+- **flag-icons**: Country flag icons
+- **ngx-flag-icon-css**: Flag icon CSS
+
+### Testing
+- **Jasmine**: Unit testing framework
+- **Karma**: Test runner
+- **Cypress**: End-to-end testing
+
+### Development Tools
+- **ESLint**: Code linting
+- **Prettier**: Code formatting
+- **YASAG**: API code generator
+
+## Available Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm start` | Run development server on port 4201 |
+| `npm run build` | Build for production |
+| `npm run watch` | Build in watch mode (development) |
+| `npm test` | Run unit tests via Karma |
+| `npm run lint` | Lint TypeScript and template code |
+| `npm run lint:fix` | Fix linting issues automatically |
+| `npm run prettier` | Format code with Prettier |
+| `npm run apigen` | Generate API client from Swagger |
+| `ng serve` | Angular CLI serve command |
+
+## Testing
+
+### Unit Tests
+```bash
+npm test
+```
+
+Runs tests using Jasmine and Karma in watch mode.
+
+### E2E Tests
+```bash
+npx cypress open
+```
+
+Open Cypress Test Runner for end-to-end testing.
+
+## Project Structure
 
 ```
-cd existing_repo
-git remote add origin https://gitlab.ajuntament.bcn/dti/sandbox/spa.git
-git branch -M main
-git push -uf origin main
+src/
+├── app/               # Angular application
+│   ├── components/    # Reusable components
+│   ├── pages/         # Page components
+│   ├── services/      # API and business logic services
+│   ├── models/        # TypeScript interfaces and models
+│   ├── interceptors/  # HTTP interceptors
+│   ├── guards/        # Route guards
+│   ├── pipes/         # Custom pipes
+│   └── app.module.ts  # Main app module
+├── assets/            # Static assets (images, icons)
+├── styles/            # Global styles
+├── environments/      # Environment configurations
+└── main.ts            # Application entry point
 ```
 
-## Integrate with your tools
+## Configuration Files
 
-- [ ] [Set up project integrations](https://gitlab.ajuntament.bcn/dti/sandbox/spa/-/settings/integrations)
+- **angular.json**: Angular CLI configuration
+- **tsconfig.json**: TypeScript configuration
+- **tailwind.config.js**: Tailwind CSS configuration
+- **karma.conf.js**: Karma test runner configuration
+- **cypress.config.js**: Cypress E2E test configuration
+- **transloco.config.js**: Internationalization configuration
+- **proxy.conf.json**: Development API proxy configuration
 
-## Collaborate with your team
+## Development Workflow
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+### Code Style
+- Code is automatically formatted with **Prettier**
+- Linting enforced with **ESLint**
+- **TypeScript** strict mode enabled
+- Type annotations required for all code
 
-## Test and Deploy
+### API Integration
+- Client code auto-generated from Swagger/OpenAPI definitions
+- API endpoints proxied in development (`proxy.conf.json`)
+- Swagger definition available at `swagger.json`
 
-Use the built-in continuous integration in GitLab.
+### Styling Guidelines
+- Use **Tailwind CSS** utility classes for layout and spacing
+- Component-specific styles in **SCSS** files
+- Leverage **Angular Material** components for consistency
+- Follow BEM methodology for custom SCSS
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+### Internationalization
+- Multi-language support via **@ngneat/transloco**
+- Translation configuration in `transloco.config.js`
+- Add new languages through translation files
 
-***
+## Docker Support
 
-# Editing this README
+### Development
+Build and run the SPA with backend API:
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+```bash
+docker-compose build
+docker-compose up
+```
 
-## Suggestions for a good README
+- Frontend: `http://localhost:4200`
+- API/Swagger: `http://localhost:8000/swagger`
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+### Production Testing
+```bash
+docker-compose -f docker-compose.production-test.yml up
+```
 
-## Name
-Choose a self-explaining name for your project.
+## Backend API
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+This Angular application connects to a backend API developed by another team member. The API documentation is available in Swagger/OpenAPI format:
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+- **API Definition**: `swagger.json`
+- **Swagger UI**: `http://localhost:8000/swagger` (when running locally)
 
 ## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+1. Create a feature branch from `main`
+2. Make your changes
+3. Run linting: `npm run lint:fix`
+4. Run tests: `npm test`
+5. Commit with clear, descriptive messages
+6. Push and create a pull request
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+### Code Quality Checklist
+- [ ] Code passes ESLint checks (`npm run lint`)
+- [ ] Code is formatted with Prettier (`npm run prettier`)
+- [ ] Unit tests pass (`npm test`)
+- [ ] New features include unit tests
+- [ ] Type annotations are present
+- [ ] No console errors or warnings
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+## Troubleshooting
+
+### Port Already in Use
+If port 4201 is already in use:
+```bash
+npm start -- --port 4202
+```
+
+### Module Not Found
+Clear node_modules and reinstall:
+```bash
+rm -rf node_modules package-lock.json
+npm install
+```
+
+### Build Issues
+Try cleaning the Angular cache:
+```bash
+ng cache clean
+npm run build
+```
+
+## Additional Resources
+
+- [Angular Documentation](https://angular.io/docs)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
+- [RxJS Documentation](https://rxjs.dev/)
+- [Angular Material](https://material.angular.io/)
 
 ## License
-For open source projects, say how it is licensed.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+See LICENSE.md for license information.
+
+## Support
+
+For issues and questions, please refer to the repository's issues section.
+
+---
+
+**Last Updated**: May 16, 2026
