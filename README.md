@@ -2,7 +2,7 @@
 
 A modern Single Page Application (SPA) built with **Angular 19.1.1**, featuring a rich user interface with charts, mapping capabilities.
 
-[Angular Gif](./docs/angular_video.gif)
+![Angular Gif](./docs/angular_video.gif)
 
 > **Note**: The backend API for this application is developed and maintained by another team member.
 
